@@ -1,0 +1,176 @@
+/* ===== Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background: linear-gradient(to bottom, #2FD6CB 7%, #4A67DF 57%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* ===== Container ===== */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ===== Card Branco ===== */
+.login-card {
+  background: #E9F0EF;
+  width: 600px;
+  height: 600px;
+  border-radius: 30px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.logo {
+  align-self: flex-center;
+  margin-bottom: 1rem;
+  height: 40px;
+}
+
+.welcome {
+  font-size: 45px;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  margin-right: 10rem;
+
+}
+
+.welcome .highlight {
+  text-decoration: underline wavy #2FD6CB;
+  text-underline-offset: 12%;
+  text-decoration-thickness:11%;
+}
+
+
+
+/* ===== Textfields ===== */
+.textfield {
+  width: 495px;
+  margin-bottom: 1rem;
+}
+
+.textfield input {
+  width: 100%;
+  height: 56px;
+  padding: 0 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textfield input:focus {
+  border-color: #4A67DF;
+  
+}
+
+/* ===== Checkbox ===== */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 495px;
+  margin: 1rem 0;
+}
+.remember {
+  display: flex;
+  align-items: center;
+}
+.remember input[type="checkbox"] {
+  accent-color: #4A67DF; /* usa cor oficial */
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+
+.remember span {
+  font-size: 16px;
+  font-weight: 400;
+}
+.forgot {
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+.forgot:hover {
+  color: #4A67DF;
+}
+
+
+/* ===== Botão ===== */
+.enter-btn {
+  width: 136px;
+  height: 96px;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  background: #4A67DF;
+  color: #E9F0EF;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+  margin-left: 11rem;
+  margin-top: 0rem;
+}
+
+.enter-btn:hover {
+  background: #3c56b6;
+  transform: scale(1.02);
+}
+
+.enter-btn:active {
+  transform: scale(0.97);
+}
+
+/* ===== Cadastro ===== */
+.signup {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.link {
+  color: #4A67DF;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Rodapé ===== */
+.terms {
+  margin-top: 2rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: #E9F0EF;
+  text-align: center;
+  width: 80%;
+}
+
+.terms .underline {
+  font-weight: 700;
+  text-decoration: underline;
+  color: #E9F0EF;
+}
