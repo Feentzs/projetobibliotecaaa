@@ -156,6 +156,143 @@ body {
   color: var(--primary);
 }
 
+/* ===== SEARCH OVERLAY ===== */
+.search-overlay {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(11, 20, 40, 0.2);
+  margin-top: 12px;
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  border: 1.5px solid #e2e8ff;
+}
+
+.search-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.search-overlay .search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1.5px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.search-result-item:hover {
+  background: var(--muted);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.search-result-item img {
+  width: 50px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.search-result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-result-info h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-info p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--muted-text);
+}
+
+.search-overlay .no-results {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted-text);
+  font-style: italic;
+}
+
+/* Ajustes para a barra de pesquisa no header */
+.header-search {
+  position: center;
+}
+
+.header-search .search-overlay {
+  width: 100%;
+}
+
+/* Ajustes para a barra de pesquisa no hero */
+.hero .search {
+  position: relative;
+}
+
+.hero .search-overlay {
+  width: 100%;
+}
+
+/* Overlay de fundo quando a pesquisa está ativa */
+.search-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.search-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* ===== HERO SECTION ===== */
 .hero {
   padding: 24px 0;
@@ -765,5 +902,40 @@ h2 u {
     visibility: visible;
     flex: 1 0 100%;
     width: 100%;
+  }
+}
+
+/* ===== RESPONSIVE DESIGN PARA SEARCH OVERLAY ===== */
+@media (max-width: 768px) {
+  .search-overlay {
+    position: fixed;
+    top: 80px;
+    left: 16px;
+    right: 16px;
+    max-height: calc(100vh - 120px);
+    border-radius: 16px;
+  }
+  
+  .hero .search-overlay {
+    position: absolute;
+  }
+  
+  .header-search .search-overlay {
+    position: fixed;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-result-item {
+    padding: 10px;
+  }
+  
+  .search-result-item img {
+    width: 40px;
+    height: 60px;
+  }
+  
+  .search-overlay {
+    padding: 12px;
   }
 }

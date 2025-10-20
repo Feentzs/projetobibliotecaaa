@@ -84,6 +84,113 @@ function createCard(book){
   return card;
 }
 
+// ===== SISTEMA DE PESQUISA COM OVERLAY =====
+function initSearch() {
+  const searchInput = document.getElementById('searchInput');
+  const headerSearchInput = document.getElementById('headerSearchInput');
+  const heroSearchOverlay = document.getElementById('heroSearchOverlay');
+  const headerSearchOverlay = document.getElementById('headerSearchOverlay');
+  const searchBackdrop = document.getElementById('searchBackdrop');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => handleSearch(e.target.value, heroSearchOverlay));
+    searchInput.addEventListener('focus', () => showSearchOverlay(heroSearchOverlay, searchBackdrop));
+  }
+
+  if (headerSearchInput) {
+    headerSearchInput.addEventListener('input', (e) => handleSearch(e.target.value, headerSearchOverlay));
+    headerSearchInput.addEventListener('focus', () => showSearchOverlay(headerSearchOverlay, searchBackdrop));
+  }
+
+  // Fechar overlay ao clicar no backdrop
+  if (searchBackdrop) {
+    searchBackdrop.addEventListener('click', () => {
+      hideSearchOverlays();
+    });
+  }
+
+  // Fechar overlay ao pressionar ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      hideSearchOverlays();
+    }
+  });
+}
+
+function showSearchOverlay(overlay, backdrop) {
+  if (overlay && backdrop) {
+    overlay.classList.add('active');
+    backdrop.classList.add('active');
+  }
+}
+
+function hideSearchOverlays() {
+  const overlays = document.querySelectorAll('.search-overlay');
+  const backdrop = document.getElementById('searchBackdrop');
+  const inputs = document.querySelectorAll('#searchInput, #headerSearchInput');
+  
+  overlays.forEach(overlay => overlay.classList.remove('active'));
+  if (backdrop) backdrop.classList.remove('active');
+  
+  // Remover foco dos inputs
+  inputs.forEach(input => input.blur());
+}
+
+function handleSearch(query, overlay) {
+  const q = query.trim().toLowerCase();
+  const allBooks = [...recommended, ...library, ...topRated, ...newReleases, ...popularNow];
+  
+  if (!overlay) return;
+
+  if (q.length === 0) {
+    overlay.innerHTML = '<div class="no-results">Digite para buscar livros...</div>';
+    return;
+  }
+
+  const results = allBooks.filter(b => 
+    (b.title + b.author + (b.genre || '')).toLowerCase().includes(q)
+  );
+
+  renderSearchResults(results, overlay);
+}
+
+function renderSearchResults(results, overlay) {
+  if (!overlay) return;
+
+  if (results.length === 0) {
+    overlay.innerHTML = '<div class="no-results">Nenhum livro encontrado</div>';
+    return;
+  }
+
+  const resultsHTML = results.slice(0, 8).map(book => `
+    <a href="#" class="search-result-item" data-book-id="${book.id}">
+      <img src="${book.cover}" alt="${book.title}" />
+      <div class="search-result-info">
+        <h4>${book.title}</h4>
+        <p>${book.author}</p>
+        <div class="search-result-meta">
+          <span>${book.genre}</span>
+          <span>•</span>
+          <span>⭐ ${book.rating?.toFixed(1).replace('.', ',') || '0,0'}</span>
+        </div>
+      </div>
+    </a>
+  `).join('');
+
+  overlay.innerHTML = `<div class="search-results">${resultsHTML}</div>`;
+
+  // Adicionar event listeners para os resultados
+  overlay.querySelectorAll('.search-result-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const bookId = item.getAttribute('data-book-id');
+      // Aqui você pode adicionar a lógica para quando um resultado é clicado
+      console.log('Livro clicado:', bookId);
+      hideSearchOverlays();
+    });
+  });
+}
+
 // ===== EFEITO DE MIGRAÇÃO DA BARRA DE PESQUISA =====
 function initSearchMigration() {
   const heroSearch = document.querySelector('.hero .search');
@@ -93,79 +200,52 @@ function initSearchMigration() {
   
   if (!heroSearch || !headerSearch || !heroSection) return;
   
-  // Clone o input do hero para o header para manter o valor
   const heroInput = document.getElementById('searchInput');
   const headerInput = document.getElementById('headerSearchInput');
+  const heroOverlay = document.getElementById('heroSearchOverlay');
+  const headerOverlay = document.getElementById('headerSearchOverlay');
   
-  // Sincronizar os inputs
   function syncInputs(source, target) {
     target.value = source.value;
+    // Sincronizar também os overlays
+    if (source === heroInput) {
+      handleSearch(source.value, headerOverlay);
+    } else {
+      handleSearch(source.value, heroOverlay);
+    }
   }
   
-  heroInput.addEventListener('input', () => {
-    syncInputs(heroInput, headerInput);
-    handleSearch.call(heroInput);
-  });
+  heroInput.addEventListener('input', () => syncInputs(heroInput, headerInput));
+  headerInput.addEventListener('input', () => syncInputs(headerInput, heroInput));
   
-  headerInput.addEventListener('input', () => {
-    syncInputs(headerInput, heroInput);
-    handleSearch.call(headerInput);
-  });
-  
-  // Observar a interseção do hero section
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) {
-        // Hero saiu da view - mostrar search no header
         heroSearch.classList.add('hidden');
         headerSearch.classList.remove('hidden');
         header.classList.add('with-search');
+        // Transferir o overlay ativo se houver
+        if (heroOverlay.classList.contains('active')) {
+          heroOverlay.classList.remove('active');
+          headerOverlay.classList.add('active');
+        }
       } else {
-        // Hero está visível - mostrar search no hero
         heroSearch.classList.remove('hidden');
         headerSearch.classList.add('hidden');
         header.classList.remove('with-search');
+        // Transferir o overlay ativo se houver
+        if (headerOverlay.classList.contains('active')) {
+          headerOverlay.classList.remove('active');
+          heroOverlay.classList.add('active');
+        }
       }
     });
   }, {
-    threshold: 0.1, // Quando 10% do hero sair da tela
-    rootMargin: '-80px 0px 0px 0px' // Considerar o header fixo
+    threshold: 0.1,
+    rootMargin: '-80px 0px 0px 0px'
   });
   
   observer.observe(heroSection);
-}
-
-// ===== FUNÇÃO DE BUSCA =====
-function handleSearch() {
-  const q = this.value.trim().toLowerCase();
-  const allBooks = [...recommended, ...library, ...topRated, ...newReleases, ...popularNow];
-  const results = allBooks.filter(b=> (b.title+b.author+(b.genre||'')).toLowerCase().includes(q));
-  
-  // Atualiza todos os carrosséis com os resultados
-  const carousels = [
-    'recCarousel',
-    'libraryCarousel', 
-    'topRatedCarousel',
-    'newReleasesCarousel',
-    'popularNowCarousel'
-  ];
-  
-  carousels.forEach(carouselId => {
-    const root = document.getElementById(carouselId);
-    if (root) {
-      root.innerHTML = '';
-      results.slice(0, 8).forEach(b => root.appendChild(createCard(b)));
-    }
-  });
-}
-
-// Aplicar a ambos os inputs de busca
-function initSearch() {
-  const searchInput = document.getElementById('searchInput');
-  const headerSearchInput = document.getElementById('headerSearchInput');
-
-  if (searchInput) searchInput.addEventListener('input', handleSearch);
-  if (headerSearchInput) headerSearchInput.addEventListener('input', handleSearch);
 }
 
 // Função para verificar e atualizar a visibilidade das setas
