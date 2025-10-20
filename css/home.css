@@ -32,6 +32,11 @@ body {
 .site-header {
   background: #fff;
   border-bottom: 1px solid #e6e9ef;
+  transition: all 0.3s ease;
+}
+
+.site-header.with-search {
+  padding: 8px 0;
 }
 
 .sticky-header {
@@ -44,6 +49,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  transition: all 0.3s ease;
 }
 
 .brand {
@@ -67,6 +74,86 @@ body {
 .nav-links a.active {
   background: var(--primary);
   color: #fff;
+}
+
+/* ===== BARRAS DE PESQUISA ===== */
+/* Barra de pesquisa do header */
+.header-search {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+}
+
+.header-search.hidden {
+  opacity: 0;
+  visibility: hidden;
+  flex: 0 0 0;
+  width: 0;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 10px 40px 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #e2e8ff;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--primary);
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.header-search input:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(74, 103, 223, 0.1);
+}
+
+.header-search svg {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 18px;
+  width: 18px;
+  color: var(--primary);
+}
+
+/* Hero search original */
+.search {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.search.hidden {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.search input {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  border-radius: 999px;
+  border: 0;
+  outline: none;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--primary);
+}
+
+.search svg {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  color: var(--primary);
 }
 
 /* ===== HERO SECTION ===== */
@@ -96,33 +183,6 @@ body {
 
 .hero-text p {
   margin: 4 0 16px;
-}
-
-/* ===== SEARCH ===== */
-.search {
-  position: relative;
-  margin-top: 20px;
-  margin-bottom: 12px;
-}
-
-.search input {
-  width: 100%;
-  padding: 12px 44px 12px 16px;
-  border-radius: 999px;
-  border: 0;
-  outline: none;
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--primary);
-}
-
-.search svg {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 20px;
-  width: 20px;
-  color: var(--primary);
 }
 
 /* ===== HERO SHAPES ===== */
@@ -653,6 +713,10 @@ h2 u {
   .hero-art img {
     width: 180px;
   }
+  
+  .header-search {
+    flex: 0 0 200px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -678,5 +742,28 @@ h2 u {
   .btn.icon {
     width: 40px;
     height: 40px;
+  }
+  
+  .header-search {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav {
+    flex-wrap: wrap;
+  }
+  
+  .header-search {
+    order: 3;
+    flex: 1 0 100%;
+    margin-top: 12px;
+  }
+  
+  .header-search:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+    flex: 1 0 100%;
+    width: 100%;
   }
 }

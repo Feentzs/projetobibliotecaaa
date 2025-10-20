@@ -84,6 +84,90 @@ function createCard(book){
   return card;
 }
 
+// ===== EFEITO DE MIGRAÇÃO DA BARRA DE PESQUISA =====
+function initSearchMigration() {
+  const heroSearch = document.querySelector('.hero .search');
+  const headerSearch = document.querySelector('.header-search');
+  const header = document.querySelector('.site-header');
+  const heroSection = document.querySelector('.hero');
+  
+  if (!heroSearch || !headerSearch || !heroSection) return;
+  
+  // Clone o input do hero para o header para manter o valor
+  const heroInput = document.getElementById('searchInput');
+  const headerInput = document.getElementById('headerSearchInput');
+  
+  // Sincronizar os inputs
+  function syncInputs(source, target) {
+    target.value = source.value;
+  }
+  
+  heroInput.addEventListener('input', () => {
+    syncInputs(heroInput, headerInput);
+    handleSearch.call(heroInput);
+  });
+  
+  headerInput.addEventListener('input', () => {
+    syncInputs(headerInput, heroInput);
+    handleSearch.call(headerInput);
+  });
+  
+  // Observar a interseção do hero section
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        // Hero saiu da view - mostrar search no header
+        heroSearch.classList.add('hidden');
+        headerSearch.classList.remove('hidden');
+        header.classList.add('with-search');
+      } else {
+        // Hero está visível - mostrar search no hero
+        heroSearch.classList.remove('hidden');
+        headerSearch.classList.add('hidden');
+        header.classList.remove('with-search');
+      }
+    });
+  }, {
+    threshold: 0.1, // Quando 10% do hero sair da tela
+    rootMargin: '-80px 0px 0px 0px' // Considerar o header fixo
+  });
+  
+  observer.observe(heroSection);
+}
+
+// ===== FUNÇÃO DE BUSCA =====
+function handleSearch() {
+  const q = this.value.trim().toLowerCase();
+  const allBooks = [...recommended, ...library, ...topRated, ...newReleases, ...popularNow];
+  const results = allBooks.filter(b=> (b.title+b.author+(b.genre||'')).toLowerCase().includes(q));
+  
+  // Atualiza todos os carrosséis com os resultados
+  const carousels = [
+    'recCarousel',
+    'libraryCarousel', 
+    'topRatedCarousel',
+    'newReleasesCarousel',
+    'popularNowCarousel'
+  ];
+  
+  carousels.forEach(carouselId => {
+    const root = document.getElementById(carouselId);
+    if (root) {
+      root.innerHTML = '';
+      results.slice(0, 8).forEach(b => root.appendChild(createCard(b)));
+    }
+  });
+}
+
+// Aplicar a ambos os inputs de busca
+function initSearch() {
+  const searchInput = document.getElementById('searchInput');
+  const headerSearchInput = document.getElementById('headerSearchInput');
+
+  if (searchInput) searchInput.addEventListener('input', handleSearch);
+  if (headerSearchInput) headerSearchInput.addEventListener('input', handleSearch);
+}
+
 // Função para verificar e atualizar a visibilidade das setas
 function updateNavButtons(carousel, prevButton, nextButton) {
   const scrollLeft = carousel.scrollLeft;
@@ -435,31 +519,6 @@ function tagEdgeCardsGeneric(root) {
   if (leftIdx !== -1) cards[leftIdx].classList.add('edge-left');
 }
 
-// Search
-const searchInput = document.getElementById('searchInput');
-if (searchInput) searchInput.addEventListener('input', ()=>{
-  const q = searchInput.value.trim().toLowerCase();
-  const allBooks = [...recommended, ...library, ...topRated, ...newReleases, ...popularNow];
-  const results = allBooks.filter(b=> (b.title+b.author+(b.genre||'')).toLowerCase().includes(q));
-  
-  // Atualiza todos os carrosséis com os resultados
-  const carousels = [
-    'recCarousel',
-    'libraryCarousel', 
-    'topRatedCarousel',
-    'newReleasesCarousel',
-    'popularNowCarousel'
-  ];
-  
-  carousels.forEach(carouselId => {
-    const root = document.getElementById(carouselId);
-    if (root) {
-      root.innerHTML = '';
-      results.slice(0, 8).forEach(b => root.appendChild(createCard(b)));
-    }
-  });
-});
-
 function filterByGenre(genre){
   const carousels = [
     { id: 'recCarousel', data: recommended },
@@ -492,20 +551,28 @@ document.addEventListener('click', (e)=>{
     : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.8l1.76 3.57 3.94.57-2.85 2.78.67 3.92L12 13.9l-3.52 1.86.67-3.92L6.3 8.94l3.94-.57L12 4.8z" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>`;
 });
 
-// Init render
-renderCategories();
-renderCarousel();
-renderLibraryCarousel();
-renderTopRatedCarousel();
-renderNewReleasesCarousel();
-renderPopularNowCarousel();
+// ===== INICIALIZAÇÃO =====
+function init() {
+  renderCategories();
+  renderCarousel();
+  renderLibraryCarousel();
+  renderTopRatedCarousel();
+  renderNewReleasesCarousel();
+  renderPopularNowCarousel();
 
-wireCategoriesCarousel();
-wireCarousel();
-wireLibraryCarousel();
-wireTopRatedCarousel();
-wireNewReleasesCarousel();
-wirePopularNowCarousel();
+  wireCategoriesCarousel();
+  wireCarousel();
+  wireLibraryCarousel();
+  wireTopRatedCarousel();
+  wireNewReleasesCarousel();
+  wirePopularNowCarousel();
+  
+  initSearch();
+  initSearchMigration();
+}
+
+// Inicializar quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', init);
 
 // Função original para a página da biblioteca (mantida para compatibilidade)
 function renderLibrary(rootId='libraryGridPage'){
