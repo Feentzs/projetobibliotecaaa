@@ -173,7 +173,7 @@ body {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
+  z-index: 1001;
   border: 1.5px solid #e2e8ff;
 }
 
@@ -282,7 +282,7 @@ body {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  z-index: 998;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -905,6 +905,77 @@ h2 u {
   }
 }
 
+/* ===== PÁGINA DO LIVRO ===== */
+.book-details-section {
+  margin-top: 40px;
+}
+
+.book-details-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 40px;
+  box-shadow: 0 16px 40px rgba(20, 30, 60, 0.16);
+  display: flex;
+  gap: 40px;
+}
+
+.book-cover {
+  flex-shrink: 0;
+}
+
+.cover-image {
+  width: 280px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(11, 20, 40, 0.12);
+}
+
+.book-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.book-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.author {
+  font-size: 16px;
+  color: var(--muted-text);
+  font-weight: 500;
+}
+
+.book-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.book-tags {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.book-description {
+  margin-top: 8px;
+}
+
+.book-description p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted-text);
+  margin: 0;
+}
+
 /* ===== RESPONSIVE DESIGN PARA SEARCH OVERLAY ===== */
 @media (max-width: 768px) {
   .search-overlay {
@@ -923,6 +994,22 @@ h2 u {
   .header-search .search-overlay {
     position: fixed;
   }
+  
+  .book-details-card {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+  }
+  
+  .cover-image {
+    width: 200px;
+    height: 300px;
+    align-self: center;
+  }
+  
+  .book-title {
+    font-size: 24px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -937,5 +1024,19 @@ h2 u {
   
   .search-overlay {
     padding: 12px;
+  }
+  
+  .book-details-card {
+    padding: 20px;
+  }
+  
+  .book-title {
+    font-size: 20px;
+  }
+  
+  .book-tags {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }

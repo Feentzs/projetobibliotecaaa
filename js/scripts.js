@@ -61,9 +61,16 @@ const popularNow = [
 
 const allGenres = Array.from(new Set([...recommended, ...library, ...topRated, ...newReleases, ...popularNow].map(b=>b.genre))).filter(Boolean);
 
+// ===== NAVEGAÇÃO PARA PÁGINA DO LIVRO =====
+function navigateToBook(bookId) {
+  window.location.href = `livro.html?id=${bookId}`;
+}
+
 function createCard(book){
   const card = document.createElement('article');
   card.className = 'card';
+  card.setAttribute('data-book-id', book.id);
+  card.style.cursor = 'pointer';
   card.innerHTML = `
     <img src="${book.cover}" alt="${book.title}" />
     <div class="card-body">
@@ -81,6 +88,18 @@ function createCard(book){
       </div>
     </div>
   `;
+  
+  // Adicionar event listener para navegação
+  card.addEventListener('click', function(e) {
+    // Evitar navegação se clicar nos botões
+    if (e.target.closest('.btn')) {
+      return;
+    }
+    
+    // Navegar para a página do livro
+    navigateToBook(book.id);
+  });
+  
   return card;
 }
 
@@ -184,9 +203,8 @@ function renderSearchResults(results, overlay) {
     item.addEventListener('click', (e) => {
       e.preventDefault();
       const bookId = item.getAttribute('data-book-id');
-      // Aqui você pode adicionar a lógica para quando um resultado é clicado
-      console.log('Livro clicado:', bookId);
       hideSearchOverlays();
+      navigateToBook(bookId);
     });
   });
 }
