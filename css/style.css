@@ -37,7 +37,7 @@ body {
 }
 
 .logo {
-  align-self: flex-center;
+  align-self: center;
   margin-bottom: 1rem;
   height: 40px;
 }
@@ -47,38 +47,79 @@ body {
   font-weight: 700;
   margin-bottom: 2rem;
   margin-right: 10rem;
-
 }
 
 .welcome .highlight {
   text-decoration: underline wavy #2FD6CB;
   text-underline-offset: 12%;
-  text-decoration-thickness:11%;
+  text-decoration-thickness: 11%;
 }
 
-
-
-/* ===== Textfields ===== */
-.textfield {
-  width: 495px;
-  margin-bottom: 1rem;
+/* ===== Textfields Material Design ===== */
+.input-contain{
+    position: relative;
+    margin-bottom: 2rem; /* Adiciona espaçamento */
+    width: 495px; /* Largura do seu design */
+    margin-bottom: 1rem;
 }
 
-.textfield input {
-  width: 100%;
-  height: 56px;
-  padding: 0 1rem;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  font-family: "Montserrat", sans-serif;
-  outline: none;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
+/* Input field */
+input{
+    height: 5rem;
+    width: 100%; /* Usa largura total do container */
+    border: 2px solid black;
+    border-radius: 1rem;
+    padding: 0 1.2rem; /* Espaçamento interno */
+    font-size: 1.4rem;
+    background-color: #E9F0EF;
 }
 
-.textfield input:focus {
-  border-color: #4A67DF;
-  
+input:focus{
+    outline: none;
+    border-color: #4A67DF; /* Cor do tutorial */
+}
+
+/* Texto placeholder animado */
+.placeholder-text{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 3px solid transparent;
+    background-color: transparent;
+    pointer-events: none; /* Permite clicar no input */
+    display: flex;
+    align-items: center;
+    padding: 0 1.2rem; /* Mesmo padding do input */
+    font-size: 1.4rem;
+}
+
+.text{
+    font-size: 1.4rem;
+    padding: 0 0.5rem;
+    background-color: #E9F0EF;
+    color: black;
+    transform: translate(0);
+    transition: transform 0.15s ease-out, 
+                font-size 0.15s ease-out, 
+                background-color 0.2s ease-out, 
+                color 0.15s ease-out;
+}
+
+/* Efeito quando o input está em foco OU tem valor */
+input:focus + .placeholder-text .text,
+:not(input[value=""]) + .placeholder-text .text {
+    background-color: #E9F0EF;
+    font-size: 1.1rem;
+    color: black;
+    transform: translate(0, -170%);
+}
+
+/* Cor específica para o estado de foco */
+input:focus + .placeholder-text .text {
+    border-color: #4A67DF;
+    color: #4A67DF;
 }
 
 /* ===== Checkbox ===== */
@@ -174,3 +215,4 @@ body {
   text-decoration: underline;
   color: #E9F0EF;
 }
+

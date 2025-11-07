@@ -6,57 +6,59 @@
   <title>Login - BiblioTec</title>
   <link rel="icon" href="images/logosemtxt.svg">
   <link rel="stylesheet" href="css/style.css">
-
-  <!-- Fonte Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
 <body>
-  <!-- Fundo -->
   <div class="login-container">
-    <!-- Card branco -->
     <div class="login-card">
       <img src="images/logo.svg" alt="BiblioTec Logo" class="logo">
 
-<h1 class="welcome">
-  Bem-vindo de <br>
-  <span class="highlight">Volta</span>!
-</h1>
+      <h1 class="welcome">
+        Bem-vindo de <br>
+        <span class="highlight">Volta</span>!
+      </h1>
 
-<form class="form">
-  <div class="textfield">
-    e-mail
-    <input type="email" required placeholder="Insira o e-mail aqui">
-  </div>
+      <form class="form">
+        <!-- Campo de E-mail corrigido -->
+        <div class="input-contain">
+          <input type="text" id="email" name="email" autocomplete="off" value="">
+          <label class="placeholder-text" for="email" id="placeholder-email">
+             <div class="text">Email</div>
+          </label>
+        </div>
 
-  <div class="textfield">
-    senha
-    <input type="password" required placeholder="Insira a senha aqui">
-  </div>
+        <!-- Campo de Senha corrigido -->
+        <div class="input-contain">
+          <input type="password" id="password" name="password" autocomplete="off" value="">
+          <label class="placeholder-text" for="password" id="placeholder-password">
+             <div class="text">Senha</div>
+          </label>
+        </div>
 
-  <div class="options">
-    <label class="remember">
-      <input type="checkbox">
-        <span>Lembrar de mim</span>
-    </label>
-     <a href="#" class="forgot">Esqueceu a senha?</a>
-  </div>
+        <div class="options">
+          <label class="remember">
+            <input type="checkbox">
+            <span>Lembrar de mim</span>
+          </label>
+          <a href="#" class="forgot">Esqueceu a senha?</a>
+        </div>
 
-  <button type="submit" class="enter-btn">Entrar</button>
-</form>
+        <button type="submit" class="enter-btn">Entrar</button>
+      </form>
 
-      <!-- Cadastro -->
-      <p class="signup">Não possui uma conta? 
+      <p class="signup">
+        Não possui uma conta? 
         <a href="#" class="link">Clique Aqui</a>
       </p>
     </div>
 
-    <!-- Rodapé -->
     <p class="terms">
       Ao entrar, você concorda com os nossos 
       <a href="#" class="underline">Termos de Uso</a> e 
       <a href="#" class="underline">Política de Privacidade</a>
     </p>
   </div>
+  
+  <script src="js/main.js"></script>
 </body>
 </html>
