@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Gerenciar Livros — BiblioTec</title>
+    <link rel="icon" href="images/logosemtxt.svg">
+    <link rel="stylesheet" href=".\css\home.css" />
+    <link rel="stylesheet" href=".\css\admin.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="site-header sticky-header">
+      <div class="container nav">
+        <img src="images/logo.svg" alt="BiblioTec Logo" class="logo" style="width: 180px; height: 44px;">
+        <nav class="nav-links">
+          <a href="home.html">Voltar ao Início</a>
+          <a href="admin.html" class="active">Gerenciar Livros</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="container">
+        <div class="admin-header">
+          <h1>Gerenciar Catálogo de Livros</h1>
+          <button id="btnAddBook" class="btn btn-primary">+ Adicionar Novo Livro</button>
+        </div>
+
+        <!-- Formulário Modal -->
+        <div id="bookModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 id="modalTitle">Adicionar Novo Livro</h2>
+              <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="bookForm">
+              <input type="hidden" id="bookId" name="id">
+              
+              <div class="form-group">
+                <label for="bookTitle">Título do Livro *</label>
+                <input type="text" id="bookTitle" name="title" required>
+              </div>
+
+              <div class="form-group">
+                <label for="bookAuthor">Autor *</label>
+                <input type="text" id="bookAuthor" name="author" required>
+              </div>
+
+              <div class="form-group">
+                <label for="bookCover">URL da Imagem da Capa *</label>
+                <input type="url" id="bookCover" name="cover" required>
+                <small>Cole o link completo da imagem</small>
+              </div>
+
+              <div class="form-group">
+                <label for="bookPdf">URL do PDF do Livro</label>
+                <input type="url" id="bookPdf" name="pdf">
+                <small>Cole o link completo do PDF (opcional)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="bookDescription">Descrição</label>
+                <textarea id="bookDescription" name="description" rows="4"></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bookGenre">Categoria *</label>
+                  <input type="text" id="bookGenre" name="genre" required list="genreList">
+                  <datalist id="genreList">
+                    <option value="Clássico">
+                    <option value="Romance">
+                    <option value="Ficção">
+                    <option value="Fantasia">
+                    <option value="Drama">
+                    <option value="Suspense">
+                    <option value="Thriller">
+                    <option value="História">
+                    <option value="Filosofia">
+                    <option value="Biografia">
+                    <option value="Autoajuda">
+                    <option value="Infantojuvenil">
+                    <option value="Realismo">
+                    <option value="Modernismo">
+                    <option value="Realismo Mágico">
+                    <option value="Teatro">
+                    <option value="Poesia">
+                    <option value="Contos">
+                    <option value="Policial">
+                  </datalist>
+                </div>
+
+                <div class="form-group">
+                  <label for="bookRating">Avaliação (0-5) *</label>
+                  <input type="number" id="bookRating" name="rating" min="0" max="5" step="0.1" value="4" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="bookPages">Número de Páginas</label>
+                <input type="number" id="bookPages" name="pages" min="1" placeholder="Ex: 300">
+                <small>Total de páginas do livro (opcional)</small>
+              </div>
+
+              <div class="form-group">
+                <label>Carrosséis onde o livro aparecerá *</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="carousels" value="recommended">
+                    <span>Livros Recomendados</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="carousels" value="library">
+                    <span>Continue Lendo</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="carousels" value="topRated">
+                    <span>Mais Bem Avaliados</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="carousels" value="newReleases">
+                    <span>Novos Lançamentos</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="carousels" value="popularNow">
+                    <span>Populares Agora</span>
+                  </label>
+                </div>
+                <small>Selecione pelo menos um carrossel</small>
+              </div>
+
+              <div class="form-group" id="progressGroup" style="display: none;">
+                <label for="bookProgress">Progresso de Leitura (%)</label>
+                <input type="number" id="bookProgress" name="progress" min="0" max="100" value="0">
+                <small>Apenas para livros em "Continue Lendo"</small>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancelForm">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar Livro</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Lista de Livros -->
+        <div class="books-list">
+          <div class="books-header">
+            <h2>Livros no Catálogo</h2>
+            <div class="filter-group">
+              <input type="text" id="searchBooks" placeholder="Buscar por título ou autor...">
+              <select id="filterCarousel">
+                <option value="">Todos os carrosséis</option>
+                <option value="recommended">Recomendados</option>
+                <option value="library">Continue Lendo</option>
+                <option value="topRated">Mais Bem Avaliados</option>
+                <option value="newReleases">Novos Lançamentos</option>
+                <option value="popularNow">Populares Agora</option>
+              </select>
+            </div>
+          </div>
+          <div id="booksGrid" class="books-grid"></div>
+        </div>
+      </div>
+    </main>
+
+    <script src=".\js\admin.js"></script>
+  </body>
+</html>
+

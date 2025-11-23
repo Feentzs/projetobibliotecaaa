@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayrton: O Herói Revelado - BiblioTec</title>
+  <link rel="icon" href="images/logosemtxt.svg">
+  <link rel="stylesheet" href="css/home.css">
+  
+  <!-- Fonte Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header sticky-header">
+    <div class="container nav">
+      <img src="images/logo.svg" alt="BiblioTec Logo" class="logo" style="width: 180px; height: 44px;">
+      <nav class="nav-links">
+        <a href="home.html">Início</a>
+        <a href="library.html">Minha Biblioteca</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Book Details Section -->
+    <section class="container book-details-section">
+      <div class="book-details-card">
+        <div class="book-cover">
+          <img src="https://covers.openlibrary.org/b/id/12628263-L.jpg" alt="Capa do livro Ayrton: O Herói Revelado" class="cover-image">
+        </div>
+        
+        <div class="book-info">
+          <div class="book-meta">
+            <span class="author">Ernesto Rodrigues</span>
+            <div class="title-actions-row">
+              <h1 class="book-title">Ayrton: o Herói Revelado</h1>
+              <div class="actions">
+                <button class="btn read continue-btn" id="readBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span id="readBtnText">Ler agora</span>
+                </button>
+                <button class="btn icon fav" aria-label="Adicionar aos favoritos" data-id="ayrton" data-active="false">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 4.8l1.76 3.57 3.94.57-2.85 2.78.67 3.92L12 13.9l-3.52 1.86.67-3.92L6.3 8.94l3.94-.57L12 4.8z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <div class="book-tags">
+              <span class="badge">Biografia</span>
+              <div class="meta">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2.5l2.76 5.59 6.16.9-4.46 4.35 1.05 6.12L12 17.77 6.49 19.46l1.05-6.12L3.08 8.99l6.16-.9L12 2.5z" fill="#2FD6CB"/>
+                </svg>
+                <span id="ratingSpan">4.8</span>
+                <span class="badge" id="pagesBadge">512 Páginas</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="book-description">
+            <p id="bookDescriptionText">
+              "Ayrton: o Herói Revelado" é uma biografia completa de Ernesto Rodrigues que busca desvendar o homem por trás do ícone Ayrton Senna, tricampeão mundial de Fórmula 1. A obra explora sua carreira vitoriosa, desafios enfrentados, vida pessoal, amores, frustrações e seu impacto no Brasil e no mundo. Baseada em pesquisa meticulosa e mais de 200 entrevistas, apresenta revelações inéditas e um retrato profundo de Senna, mostrando não apenas o piloto genial, mas também o ser humano complexo e apaixonado que marcou para sempre a história do esporte brasileiro.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Books Section -->
+    <section class="container carousel-section">
+      <div class="section-header">
+        <h2><span>Livros <u>Relacionados</u></span></h2>
+      </div>
+      <div class="carousel-wrap">
+        <button id="prevRelated" class="carousel-nav left" aria-label="Anterior">◀</button>
+        <div id="relatedCarousel" class="carousel"></div>
+        <button id="nextRelated" class="carousel-nav right" aria-label="Próximo">▶</button>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <script src="js/scripts.js"></script>
+  <script src="js/livro.js"></script>
+</body>
+</html>

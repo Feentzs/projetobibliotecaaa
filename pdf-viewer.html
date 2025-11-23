@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitor de PDF — BiblioTec</title>
+  <link rel="icon" href="images/logosemtxt.svg">
+  <link rel="stylesheet" href="css/pdf-viewer.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="pdf-header">
+    <div class="header-content">
+      <button class="btn-back" id="btnBack" aria-label="Voltar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <div class="book-info">
+        <h1 id="bookTitle">Carregando...</h1>
+        <span id="bookAuthor" class="author"></span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="btnHighlight" title="Grifar texto selecionado">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </button>
+        <button class="btn-icon" id="btnBookmark" title="Marcar página">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="pdf-main">
+    <div class="pdf-container">
+      <!-- Botão Anterior -->
+      <button class="nav-page-btn prev" id="btnPrev" aria-label="Página anterior">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <!-- Canvas do PDF -->
+      <div class="pdf-viewer" id="pdfViewer">
+        <div class="page-container" id="pageContainer">
+          <canvas id="pdfCanvas"></canvas>
+        </div>
+        <div class="highlights-layer" id="highlightsLayer"></div>
+      </div>
+
+      <!-- Botão Próximo -->
+      <button class="nav-page-btn next" id="btnNext" aria-label="Próxima página">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Controles -->
+    <div class="controls">
+      <div class="page-info">
+        <span id="currentPage">1</span>
+        <span class="separator">/</span>
+        <span id="totalPages">1</span>
+      </div>
+      <div class="zoom-controls">
+        <button class="btn-zoom" id="btnZoomOut" title="Diminuir zoom">−</button>
+        <span id="zoomLevel">100%</span>
+        <button class="btn-zoom" id="btnZoomIn" title="Aumentar zoom">+</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de Highlights -->
+  <div class="modal" id="highlightsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Textos Grifados</h2>
+        <button class="modal-close" id="closeHighlightsModal">&times;</button>
+      </div>
+      <div class="highlights-list" id="highlightsList"></div>
+    </div>
+  </div>
+
+  <script src="js/pdf-viewer.js"></script>
+</body>
+</html>
+

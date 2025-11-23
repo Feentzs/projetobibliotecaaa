@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - BiblioTec</title>
+  <link rel="icon" href="images/logosemtxt.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <img src="images/logo.svg" alt="BiblioTec Logo" class="logo">
+
+      <h1 class="welcome">
+        Bem-vindo de <br>
+        <span class="highlight">Volta</span>!
+      </h1>
+
+      <form class="form">
+        <!-- Campo de E-mail corrigido -->
+        <div class="input-contain">
+          <input type="text" id="email" name="email" autocomplete="off" value="">
+          <label class="placeholder-text" for="email" id="placeholder-email">
+             <div class="text">Email</div>
+          </label>
+        </div>
+
+        <!-- Campo de Senha corrigido -->
+        <div class="input-contain">
+          <input type="password" id="password" name="password" autocomplete="off" value="">
+          <label class="placeholder-text" for="password" id="placeholder-password">
+             <div class="text">Senha</div>
+          </label>
+        </div>
+
+        <div class="options">
+          <label class="remember">
+            <input type="checkbox">
+            <span>Lembrar de mim</span>
+          </label>
+          <a href="#" class="forgot">Esqueceu a senha?</a>
+        </div>
+
+        <button type="submit" class="enter-btn">Entrar</button>
+      </form>
+
+      <p class="signup">
+        Não possui uma conta? 
+        <a href="#" class="link">Clique Aqui</a>
+      </p>
+    </div>
+
+    <p class="terms">
+      Ao entrar, você concorda com os nossos 
+      <a href="#" class="underline">Termos de Uso</a> e 
+      <a href="#" class="underline">Política de Privacidade</a>
+    </p>
+  </div>
+  
+  <script src="js/main.js"></script>
+</body>
+</html>

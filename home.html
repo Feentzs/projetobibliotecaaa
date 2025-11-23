@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Início — BiblioTec</title>
+    <link rel="icon" href="images/logosemtxt.svg">
+    <link rel="stylesheet" href=".\css\home.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="site-header sticky-header">
+      <div class="container nav">
+        <img src="images/logo.svg" alt="BiblioTec Logo" class="logo" style="width: 180px; height: 44px;">
+        <nav class="nav-links">
+          <a href="index.html" class="active">Início</a>
+          <a href="library.html">Minha Biblioteca</a>
+        </nav>
+        <!-- Barra de pesquisa no header (inicialmente escondida) -->
+        <div class="header-search hidden">
+          <input id="headerSearchInput" placeholder="Buscar por título, autor ou assunto" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none">
+            <circle cx="11" cy="11" r="6" stroke="#4A67DF" stroke-width="1.6" fill="none" />
+            <path d="M21 21l-4.3-4.3" stroke="#4A67DF" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <div class="search-overlay" id="headerSearchOverlay"></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-text">
+            <h1>Encontre<br>livros <span class="underline">incríveis</span></h1>
+            <p>Descubra histórias que transformam, conhecimentos que inspiram<br>e aventuras que nunca terminam</p>
+            <div class="search">
+              <input id="searchInput" placeholder="Buscar por título, autor ou assunto" />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none">
+                <circle cx="11" cy="11" r="6" stroke="#4A67DF" stroke-width="1.6" fill="none" />
+                <path d="M21 21l-4.3-4.3" stroke="#4A67DF" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+              <div class="search-overlay" id="heroSearchOverlay"></div>
+            </div>
+          </div>
+          <div class="hero-shapes">
+            <div class="shape r20"></div>
+            <div class="shape rf"></div>
+            <div class="shape r28"></div>
+            <div class="shape r12"></div>
+            <div class="shape r36"></div>
+            <div class="shape clip r20"></div>
+            <div class="shape r28"></div>
+            <div class="shape rf"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container categories">
+        <h2>Explore por Categorias</h2>
+        <p class="muted">Navegue por nosso catálogo organizado e encontre exatamente o que você procura</p>
+        <div class="categories-carousel-wrap">
+          <button id="prevCategories" class="categories-nav left" aria-label="Categorias anteriores">◀</button>
+          <div id="categoriesCarousel" class="categories-carousel"></div>
+          <button id="nextCategories" class="categories-nav right" aria-label="Próximas categorias">▶</button>
+        </div>
+      </section>
+
+      <section class="container carousel-section">
+        <div class="section-header">
+          <h2>Livros <u>Recomendados</u></h2>
+        </div>
+        <div class="carousel-wrap">
+          <button id="prevRec" class="carousel-nav left" aria-label="Anterior">◀</button>
+          <div id="recCarousel" class="carousel"></div>
+          <button id="nextRec" class="carousel-nav right" aria-label="Próximo">▶</button>
+        </div>
+      </section>
+
+      <section class="container carousel-section" style="margin-top:20px">
+        <div class="section-header">
+          <h2><span>Continue <u>Lendo</u></span></h2>
+        </div>
+        <div class="carousel-wrap">
+          <button id="prevLibrary" class="carousel-nav left" aria-label="Anterior">◀</button>
+          <div id="libraryCarousel" class="carousel"></div>
+          <button id="nextLibrary" class="carousel-nav right" aria-label="Próximo">▶</button>
+        </div>
+      </section>
+
+      <!-- Livros Mais Bem Avaliados -->
+      <section class="container carousel-section" style="margin-top:20px">
+        <div class="section-header">
+          <h2><span>Livros <u>Mais Bem Avaliados</u></span></h2>
+        </div>
+        <div class="carousel-wrap">
+          <button id="prevTopRated" class="carousel-nav left" aria-label="Anterior">◀</button>
+          <div id="topRatedCarousel" class="carousel"></div>
+          <button id="nextTopRated" class="carousel-nav right" aria-label="Próximo">▶</button>
+        </div>
+      </section>
+
+      <!-- Novos Lançamentos -->
+      <section class="container carousel-section" style="margin-top:20px">
+        <div class="section-header">
+          <h2><span>Novos <u>Lançamentos</u></span></h2>
+        </div>
+        <div class="carousel-wrap">
+          <button id="prevNewReleases" class="carousel-nav left" aria-label="Anterior">◀</button>
+          <div id="newReleasesCarousel" class="carousel"></div>
+          <button id="nextNewReleases" class="carousel-nav right" aria-label="Próximo">▶</button>
+        </div>
+      </section>
+
+      <!-- Populares Agora -->
+      <section class="container carousel-section" style="margin-top:20px">
+        <div class="section-header">
+          <h2><span>Populares <u>Agora</u></span></h2>
+        </div>
+        <div class="carousel-wrap">
+          <button id="prevPopularNow" class="carousel-nav left" aria-label="Anterior">◀</button>
+          <div id="popularNowCarousel" class="carousel"></div>
+          <button id="nextPopularNow" class="carousel-nav right" aria-label="Próximo">▶</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Backdrop para a pesquisa -->
+    <div class="search-backdrop" id="searchBackdrop"></div>
+
+    <nav class="mobile-bottom-nav" aria-label="Menu principal móvel">
+      <button type="button" class="mobile-nav-link" data-action="mobile-search" aria-label="Pesquisar livros">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" fill="none"></circle>
+          <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+        </svg>
+        <span>Buscar</span>
+      </button>
+      <a href="home.html" class="mobile-nav-link active" aria-label="Tela inicial">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-7H10v7H5a1 1 0 0 1-1-1v-9.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>Início</span>
+      </a>
+      <a href="library.html" class="mobile-nav-link" aria-label="Minha biblioteca">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 3h3v18H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm9 0h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3V3zm-6 5h3v13H9V8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>Biblioteca</span>
+      </a>
+    </nav>
+
+    <footer class="site-footer">
+      <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 24px 40px;border-top:1px solid #e6e9ef;margin-top:24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="https://cdn.builder.io/api/v1/image/assets%2F1746b4eeaa7f4d50839af1541435ce09%2Ff0ec8a86e8b14880a1d4609159320175?format=webp&width=800" alt="Logo" style="height:40px;width:auto" />
+          <div style="color:#64748b;font-size:14px">© <span id="year"></span> Bibliotec</div>
+        </div>
+        <nav style="display:flex;align-items:center;gap:16px;font-size:14px">
+          <a href="#" style="color:#64748b;text-decoration:none">Política de Privacidade</a>
+          <a href="#" style="color:#64748b;text-decoration:none">Termos de Uso</a>
+        </nav>
+      </div>
+      <script>document.getElementById('year').textContent = String(new Date().getFullYear());</script>
+    </footer>
+
+    <script src=".\js\scripts.js"></script>
+  </body>
+</html>
