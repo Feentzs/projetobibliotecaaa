@@ -58,6 +58,7 @@ const defaultBooks = {
 };
 
 // Carregar dados do localStorage ou usar padrão
+// Nota: Esta função agora também tenta carregar do JSONBin via storage.js
 function loadBooksData() {
   const stored = localStorage.getItem('biblioTecBooks');
   if (stored) {
@@ -77,6 +78,31 @@ function loadBooksData() {
     }
   }
   return defaultBooks;
+}
+
+// Função para carregar dados do JSONBin (chamada na inicialização)
+async function loadBooksDataFromCloud() {
+  try {
+    if (typeof loadBooksFromCloud === 'function') {
+      const cloudData = await loadBooksFromCloud();
+      if (cloudData) {
+        // Mesclar com dados padrão
+        const merged = {
+          recommended: cloudData.recommended || defaultBooks.recommended,
+          library: cloudData.library || defaultBooks.library,
+          topRated: cloudData.topRated || defaultBooks.topRated,
+          newReleases: cloudData.newReleases || defaultBooks.newReleases,
+          popularNow: cloudData.popularNow || defaultBooks.popularNow
+        };
+        // Salvar no localStorage como cache
+        localStorage.setItem('biblioTecBooks', JSON.stringify(merged));
+        return merged;
+      }
+    }
+  } catch (error) {
+    console.warn('Erro ao carregar do JSONBin, usando dados locais:', error);
+  }
+  return null;
 }
 
 // Carregar dados dinamicamente
@@ -742,7 +768,22 @@ function reloadBooksData() {
 }
 
 // ===== INICIALIZAÇÃO =====
-function init() {
+async function init() {
+  // Tentar carregar dados do JSONBin primeiro
+  try {
+    const cloudData = await loadBooksDataFromCloud();
+    if (cloudData) {
+      recommended = cloudData.recommended;
+      library = cloudData.library;
+      topRated = cloudData.topRated;
+      newReleases = cloudData.newReleases;
+      popularNow = cloudData.popularNow;
+      allGenres = Array.from(new Set([...recommended, ...library, ...topRated, ...newReleases, ...popularNow].map(b=>b.genre))).filter(Boolean);
+    }
+  } catch (error) {
+    console.warn('Usando dados locais:', error);
+  }
+  
   renderCategories();
   renderCarousel();
   renderLibraryCarousel();
@@ -773,15 +814,39 @@ function init() {
     reloadBooksData();
   });
   
-  // Recarregar a cada 2 segundos para detectar mudanças na mesma aba (fallback)
-  let lastDataHash = JSON.stringify(booksData);
-  setInterval(() => {
-    const current = localStorage.getItem('biblioTecBooks');
-    if (current && current !== lastDataHash) {
-      lastDataHash = current;
-      reloadBooksData();
+  // Sincronizar com JSONBin periodicamente (a cada 10 segundos)
+  setInterval(async () => {
+    try {
+      const cloudData = await loadBooksDataFromCloud();
+      if (cloudData) {
+        const cloudStr = JSON.stringify({
+          recommended: cloudData.recommended,
+          library: cloudData.library,
+          topRated: cloudData.topRated,
+          newReleases: cloudData.newReleases,
+          popularNow: cloudData.popularNow
+        });
+        const localStr = JSON.stringify({
+          recommended,
+          library,
+          topRated,
+          newReleases,
+          popularNow
+        });
+        if (cloudStr !== localStr) {
+          recommended = cloudData.recommended;
+          library = cloudData.library;
+          topRated = cloudData.topRated;
+          newReleases = cloudData.newReleases;
+          popularNow = cloudData.popularNow;
+          allGenres = Array.from(new Set([...recommended, ...library, ...topRated, ...newReleases, ...popularNow].map(b=>b.genre))).filter(Boolean);
+          reloadBooksData();
+        }
+      }
+    } catch (error) {
+      // Silenciosamente falha
     }
-  }, 2000);
+  }, 10000);
 }
 
 // Inicializar quando o DOM estiver pronto

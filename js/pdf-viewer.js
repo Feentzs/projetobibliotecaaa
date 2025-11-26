@@ -273,6 +273,13 @@ function saveProgress() {
           localStorage.setItem('biblioTecBooks', JSON.stringify(booksData));
           // Disparar evento para atualizar outras páginas
           window.dispatchEvent(new CustomEvent('booksUpdated'));
+          
+          // Sincronizar com a nuvem se disponível
+          if (typeof saveBooksToCloud === 'function') {
+            saveBooksToCloud(booksData).catch(err => {
+              console.error('Erro ao sincronizar progresso:', err);
+            });
+          }
         }
       } catch (e) {
         console.error('Erro ao salvar progresso:', e);
@@ -298,6 +305,13 @@ function addToLibraryCarousel() {
       booksData.library.push(bookToAdd);
       localStorage.setItem('biblioTecBooks', JSON.stringify(booksData));
       window.dispatchEvent(new CustomEvent('booksUpdated'));
+      
+      // Sincronizar com a nuvem se disponível
+      if (typeof saveBooksToCloud === 'function') {
+        saveBooksToCloud(booksData).catch(err => {
+          console.error('Erro ao sincronizar:', err);
+        });
+      }
     }
   } catch (e) {
     console.error('Erro ao adicionar ao carrossel:', e);

@@ -1,29 +1,6 @@
 // ===== GERENCIAMENTO DE LIVROS =====
-
-// Carregar livros do localStorage ou usar dados padrão
-function loadBooks() {
-  const stored = localStorage.getItem('biblioTecBooks');
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch (e) {
-      console.error('Erro ao carregar livros:', e);
-    }
-  }
-  // Se não houver dados, retornar objeto vazio (usuário pode adicionar livros)
-  return {
-    recommended: [],
-    library: [],
-    topRated: [],
-    newReleases: [],
-    popularNow: []
-  };
-}
-
-// Salvar livros no localStorage
-function saveBooks(books) {
-  localStorage.setItem('biblioTecBooks', JSON.stringify(books));
-}
+// Nota: As funções loadBooks() e saveBooks() agora estão em storage.js
+// e usam JSONBin.io para armazenamento compartilhado entre máquinas
 
 // Obter próximo ID disponível
 function getNextId(books) {
@@ -36,8 +13,9 @@ function getNextId(books) {
 }
 
 // Inicializar página
-let allBooks = loadBooks();
+let allBooks = loadBooks(); // Carrega do localStorage primeiro (fallback)
 let editingBookId = null;
+let isInitialized = false;
 
 const modal = document.getElementById('bookModal');
 const form = document.getElementById('bookForm');
@@ -169,6 +147,7 @@ function handleSubmit(e) {
     allBooks[carousel].push({ ...bookData });
   });
   
+  // Salvar localmente e na nuvem
   saveBooks(allBooks);
   renderBooks();
   closeModal();
@@ -177,6 +156,11 @@ function handleSubmit(e) {
   window.dispatchEvent(new CustomEvent('booksUpdated'));
   
   alert(editingBookId ? 'Livro atualizado com sucesso!' : 'Livro adicionado com sucesso!');
+  
+  // Sincronizar com a nuvem em background
+  saveBooksToCloud(allBooks).catch(err => {
+    console.error('Erro ao sincronizar com a nuvem:', err);
+  });
 }
 
 function deleteBook(bookId) {
@@ -186,6 +170,7 @@ function deleteBook(bookId) {
     allBooks[carousel] = allBooks[carousel].filter(b => b.id !== bookId);
   });
   
+  // Salvar localmente e na nuvem
   saveBooks(allBooks);
   renderBooks();
   
@@ -193,6 +178,11 @@ function deleteBook(bookId) {
   window.dispatchEvent(new CustomEvent('booksUpdated'));
   
   alert('Livro excluído com sucesso!');
+  
+  // Sincronizar com a nuvem em background
+  saveBooksToCloud(allBooks).catch(err => {
+    console.error('Erro ao sincronizar com a nuvem:', err);
+  });
 }
 
 function renderBooks() {
@@ -283,7 +273,38 @@ window.editBook = editBook;
 window.deleteBook = deleteBook;
 
 // Inicializar
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Carregar dados do JSONBin (armazenamento compartilhado)
+  try {
+    const cloudData = await loadBooksFromCloud();
+    if (cloudData) {
+      allBooks = cloudData;
+      // Salvar no localStorage como cache
+      localStorage.setItem('biblioTecBooks', JSON.stringify(cloudData));
+    }
+  } catch (error) {
+    console.warn('Usando dados locais (JSONBin não disponível):', error);
+  }
+  
+  isInitialized = true;
   renderBooks();
+  
+  // Sincronizar periodicamente (a cada 5 segundos)
+  setInterval(async () => {
+    try {
+      const cloudData = await loadBooksFromCloud();
+      if (cloudData) {
+        const cloudStr = JSON.stringify(cloudData);
+        const localStr = JSON.stringify(allBooks);
+        if (cloudStr !== localStr) {
+          allBooks = cloudData;
+          localStorage.setItem('biblioTecBooks', JSON.stringify(cloudData));
+          renderBooks();
+        }
+      }
+    } catch (error) {
+      // Silenciosamente falha, usa dados locais
+    }
+  }, 5000);
 });
 
