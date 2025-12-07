@@ -1,0 +1,561 @@
+/* dark-mode.css */
+/* ===== DARK MODE VARIABLES ===== */
+:root {
+  /* Cores principais do modo escuro */
+  --bg: #0e1514;
+  --text: #eae9fc;
+  --primary: #203eb6;
+  --accent: #29d1c6;
+  --muted-text: #a0a3b8;
+  
+  /* Cores secundárias ajustadas para o modo escuro */
+  --card: #1a2322;
+  --muted: #222b2a;
+  
+  /* Cores específicas para componentes */
+  --border-color: #2a3534;
+  --hover-bg: #222b2a;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+/* Forçar seletor mais específico para o modo escuro */
+body.dark-mode,
+body:has(#dark-mode-style:not([disabled])) {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Seletor específico para o index.html */
+body.dark-mode .landing-wrapper,
+body:has(#dark-mode-style:not([disabled])) .landing-wrapper {
+  background: var(--bg) !important;
+}
+/* ===== MENU HAMBÚRGUER DO USUÁRIO NO MODO ESCURO ===== */
+.dark-mode .hamburger-menu div,
+body:has(#dark-mode-style:not([disabled])) .hamburger-menu div {
+  background-color: var(--text) !important;
+}
+
+.dark-mode .user-menu-dropdown,
+body:has(#dark-mode-style:not([disabled])) .user-menu-dropdown {
+  background: var(--card) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+              0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Avatar mantém o gradiente mas adaptado */
+.dark-mode .user-avatar,
+body:has(#dark-mode-style:not([disabled])) .user-avatar {
+  background: var(--primary) !important;
+  box-shadow: 0 4px 12px rgba(107, 140, 255, 0.4) !important;
+}
+
+/* Nome e email com contraste adequado */
+.dark-mode .user-name,
+body:has(#dark-mode-style:not([disabled])) .user-name {
+  color: var(--text) !important;
+}
+
+.dark-mode .user-email,
+body:has(#dark-mode-style:not([disabled])) .user-email {
+  color: var(--text) !important;
+  opacity: 0.65 !important;
+}
+
+/* Itens do menu com fundo mais escuro */
+.dark-mode .menu-item,
+body:has(#dark-mode-style:not([disabled])) .menu-item {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text) !important;
+}
+
+.dark-mode .menu-item:hover,
+body:has(#dark-mode-style:not([disabled])) .menu-item:hover {
+  background: var(--primary) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(107, 140, 255, 0.3) !important;
+}
+
+/* Item com switch não muda de cor no hover */
+.dark-mode .menu-item:has(.theme-switch),
+body:has(#dark-mode-style:not([disabled])) .menu-item:has(.theme-switch) {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark-mode .menu-item:has(.theme-switch):hover,
+body:has(#dark-mode-style:not([disabled])) .menu-item:has(.theme-switch):hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+/* Switch adaptado para dark mode */
+.dark-mode .switch-slider,
+body:has(#dark-mode-style:not([disabled])) .switch-slider {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark-mode .switch-slider:before,
+body:has(#dark-mode-style:not([disabled])) .switch-slider:before {
+  background: #e0e0e0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-mode .theme-switch input:checked + .switch-slider,
+body:has(#dark-mode-style:not([disabled])) .theme-switch input:checked + .switch-slider {
+  background: var(--primary) !important;
+}
+
+.dark-mode .theme-switch:hover .switch-slider,
+body:has(#dark-mode-style:not([disabled])) .theme-switch:hover .switch-slider {
+  box-shadow: 0 0 0 8px rgba(107, 140, 255, 0.15) !important;
+}
+
+/* Logout com estilo destrutivo adaptado */
+.dark-mode .logout-btn,
+body:has(#dark-mode-style:not([disabled])) .logout-btn {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #f87171 !important;
+}
+
+.dark-mode .logout-btn:hover,
+body:has(#dark-mode-style:not([disabled])) .logout-btn:hover {
+  background: #dc2626 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
+}
+
+/* Ícones com visibilidade adequada */
+.dark-mode .menu-item-icon,
+body:has(#dark-mode-style:not([disabled])) .menu-item-icon {
+  opacity: 0.9 !important;
+}
+
+.dark-mode .menu-item:hover .menu-item-icon,
+body:has(#dark-mode-style:not([disabled])) .menu-item:hover .menu-item-icon {
+  opacity: 1 !important;
+}
+
+/* Backdrop transparente no dark mode */
+.dark-mode .menu-backdrop,
+body:has(#dark-mode-style:not([disabled])) .menu-backdrop {
+  background: transparent !important;
+}
+
+/* State layer no dark mode */
+.dark-mode .menu-item::after,
+body:has(#dark-mode-style:not([disabled])) .menu-item::after {
+  background: currentColor !important;
+}
+
+.dark-mode .menu-item:active::after,
+body:has(#dark-mode-style:not([disabled])) .menu-item:active::after {
+  opacity: 0.12 !important;
+}
+/* ===== CORREÇÕES ESPECÍFICAS PARA O INDEX.HTML ===== */
+
+/* Corrigir cores dos textos no hero */
+.dark-mode .title-landing,
+.dark-mode .snippet-1,
+.dark-mode .snippet-2,
+.dark-mode .snippet-3 {
+  color: var(--text) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+/* Específico para os snippets de texto na collage */
+.dark-mode .snippet-1 {
+  color: var(--accent) !important;
+}
+
+.dark-mode .snippet-2 {
+  color: var(--primary) !important;
+}
+
+.dark-mode .snippet-3 {
+  color: var(--text) !important;
+}
+
+/* Corrigir cor do texto do botão "Explorar Agora" */
+.dark-mode .btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #3a56e6 100%) !important;
+  color: #fff !important;
+}
+
+.dark-mode .btn-primary:hover {
+  color: #fff !important;
+  background: linear-gradient(135deg, #3a56e6 0%, var(--primary) 100%) !important;
+}
+
+/* Corrigir botão secundário */
+.dark-mode .btn-secondary {
+  background: transparent !important;
+  color: var(--text) !important;
+  border: 2px solid var(--text) !important;
+}
+
+.dark-mode .btn-secondary:hover {
+  background: var(--text) !important;
+  color: var(--bg) !important;
+}
+
+/* Corrigir botão grande */
+.dark-mode .btn-large {
+  background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+  color: #fff !important;
+}
+
+.dark-mode .btn-large:hover {
+  color: #fff !important;
+}
+
+/* Ajustar imagens no modo escuro */
+.dark-mode .collage-image {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* Garantir que o body tenha a classe dark-mode quando apropriado */
+body.dark-mode {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Seletor alternativo para compatibilidade */
+body:has(#dark-mode-style:not([disabled])) {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Corrigir a imagem do logo no header */
+body.dark-mode #header-logo,
+body:has(#dark-mode-style:not([disabled])) #header-logo {
+  content: url('../images/logo-dark.svg');
+}
+
+/* Corrigir a imagem do logo no hero */
+body.dark-mode .hero-content .header-logo,
+body:has(#dark-mode-style:not([disabled])) .hero-content .header-logo {
+  content: url('../images/logo-dark.svg');
+  filter: brightness(1) !important;
+}
+
+/* Corrigir a imagem da ilustração central */
+body.dark-mode .logo-center,
+body:has(#dark-mode-style:not([disabled])) .logo-center {
+  content: url('../images/ilustdark.png');
+  filter: brightness(0.95) contrast(1.05);
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* ===== HEADER E NAVEGAÇÃO ===== */
+.site-header {
+  background: var(--card) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.nav-links a {
+  color: var(--text) !important;
+}
+
+.nav-links a:hover {
+  background: var(--hover-bg) !important;
+}
+
+.nav-links a.active {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+/* ===== CARTÕES E SEÇÕES ===== */
+.login-card,
+.card,
+.book-details-card,
+.book-card-admin,
+.modal-content {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  box-shadow: 0 8px 24px var(--shadow-color) !important;
+}
+
+.card:hover {
+  transform: translateY(-4px) scale(1.005) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+  background: linear-gradient(135deg, var(--primary) 0%, #3a56e6 100%) !important;
+  color: #fff !important;
+}
+
+.btn-secondary {
+  background: var(--muted) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+.btn-icon {
+  background: var(--muted) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+.btn.icon {
+  background: var(--muted) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+/* ===== CAMPOS DE FORMULÁRIO ===== */
+input, textarea, select {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary) !important;
+}
+
+.input-contain input {
+  background-color: var(--bg) !important;
+  border-color: var(--text) !important;
+  color: var(--text) !important;
+}
+
+.input-contain input:focus {
+  border-color: var(--primary) !important;
+}
+
+.placeholder-text .text {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+input:focus + .placeholder-text .text {
+  color: var(--primary) !important;
+}
+
+/* ===== BADGES E TAGS ===== */
+.badge {
+  background: var(--muted) !important;
+  color: var(--muted-text) !important;
+}
+
+.genre-tag {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+/* ===== CHIPS ===== */
+.chip {
+  background: var(--muted) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+.chip.active {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+/* ===== SEARCH OVERLAY ===== */
+.search-overlay {
+  background: var(--card) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+.search-result-item {
+  background: var(--muted) !important;
+}
+
+.search-result-item:hover {
+  background: var(--hover-bg) !important;
+  border-color: var(--primary) !important;
+}
+
+/* ===== HERO SECTIONS ===== */
+.hero-inner {
+  background: linear-gradient(90deg, var(--primary) 18%, var(--accent) 68%) !important;
+}
+
+.landing-hero {
+  background: linear-gradient(135deg, #151c2b 0%, #1a2322 100%) !important;
+}
+
+/* ===== FEATURES SECTION ===== */
+.features-section {
+  background: var(--card) !important;
+}
+
+.feature-item {
+  background: var(--muted) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.feature-item:hover {
+  border-color: var(--primary) !important;
+}
+
+/* ===== QUOTE SECTION ===== */
+.quote-section {
+  background: linear-gradient(135deg, #151c2b 0%, #1a2322 100%) !important;
+}
+
+/* ===== FINAL SECTION ===== */
+.final-section {
+  background: var(--muted) !important;
+}
+
+/* ===== PÁGINA DO LIVRO ===== */
+.book-description p {
+  color: var(--muted-text) !important;
+}
+
+/* ===== ADMIN PAGE ===== */
+.modal {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+.checkbox-label:hover {
+  background: var(--hover-bg) !important;
+}
+
+/* ===== MOBILE BOTTOM NAV ===== */
+.mobile-bottom-nav {
+  background: var(--card) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.mobile-nav-link {
+  color: var(--muted-text) !important;
+}
+
+.mobile-nav-link.active {
+  color: var(--primary) !important;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.site-footer a {
+  color: var(--muted-text) !important;
+}
+
+/* ===== TEXT COLORS ===== */
+.author,
+.book-subtitle,
+.book-author,
+.subtitle-landing,
+.features-header p,
+.feature-item p,
+.muted {
+  color: var(--muted-text) !important;
+}
+
+/* ===== UNDERLINE ===== */
+.underline,
+h2 u {
+  text-decoration-color: var(--accent) !important;
+  -webkit-text-decoration-color: var(--accent) !important;
+  -moz-text-decoration-color: var(--accent) !important;
+}
+
+/* ===== HERO SHAPES ===== */
+.hero-shapes .shape {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ===== CAROUSEL NAV ===== */
+.carousel-nav,
+.categories-nav {
+  background: rgba(26, 35, 34, 0.8) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text) !important;
+}
+
+/* ===== LINKS ===== */
+a {
+  color: var(--accent) !important;
+}
+
+.forgot {
+  color: var(--accent) !important;
+}
+
+.link {
+  color: var(--accent) !important;
+}
+
+.terms {
+  color: var(--muted-text) !important;
+}
+
+.terms .underline {
+  color: var(--muted-text) !important;
+}
+
+/* ===== LOGIN PAGE ===== */
+.login-container {
+  background: linear-gradient(to bottom, var(--accent) 7%, var(--primary) 57%) !important;
+}
+
+.welcome .highlight {
+  text-decoration-color: var(--accent) !important;
+}
+
+/* ===== CHECKBOX ===== */
+.remember input[type="checkbox"] {
+  accent-color: var(--primary) !important;
+}
+
+/* ===== MODAL ===== */
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="number"],
+.form-group textarea {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.form-actions {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+/* ===== SEARCH INPUTS ===== */
+.search input,
+.header-search input {
+  background: var(--muted) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+.search svg,
+.header-search svg {
+  color: var(--primary) !important;
+}
+
+/* ===== COLLAGE ELEMENTS ===== */
+.collage-base {
+  background: rgba(26, 35, 34, 0.5) !important;
+  border: 3px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ===== IMAGES ===== */
+.collage-image,
+.feature-image-1,
+.quote-image {
+  border-color: var(--border-color) !important;
+}

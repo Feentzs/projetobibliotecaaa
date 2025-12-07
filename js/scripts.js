@@ -58,7 +58,6 @@ const defaultBooks = {
 };
 
 // Carregar dados do localStorage ou usar padrão
-// Nota: Esta função agora também tenta carregar do JSONBin via storage.js
 function loadBooksData() {
   const stored = localStorage.getItem('biblioTecBooks');
   if (stored) {
@@ -767,6 +766,152 @@ function reloadBooksData() {
   renderPopularNowCarousel();
 }
 
+// ===== MENU HAMBÚRGUER DO USUÁRIO =====
+function initUserMenu() {
+  const menuCheckbox = document.getElementById('menu_checkbox');
+  const menuDropdown = document.getElementById('user-menu-dropdown');
+  const hamburgerMenu = document.querySelector('.hamburger-menu');
+  
+  if (!menuCheckbox || !menuDropdown) return;
+  
+  // Criar backdrop dinamicamente
+  const menuBackdrop = document.createElement('div');
+  menuBackdrop.className = 'menu-backdrop';
+  hamburgerMenu.parentNode.appendChild(menuBackdrop);
+  
+  // Elementos do tema no menu
+  const themeSwitch = document.getElementById('theme-switch');
+  const sunIconMenu = document.getElementById('sun-icon-menu');
+  const moonIconMenu = document.getElementById('moon-icon-menu');
+  const darkModeStyle = document.getElementById('dark-mode-style');
+  
+  // Botões do menu
+  const accountBtn = document.getElementById('account-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  
+  // Carregar informações do usuário
+  function loadUserInfo() {
+    const userName = document.getElementById('current-username');
+    const userEmail = document.getElementById('current-useremail');
+    
+    // Tentar carregar do localStorage
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    
+    if (userName) {
+      userName.textContent = userData.name || 'Usuário';
+    }
+    
+    if (userEmail) {
+      userEmail.textContent = userData.email || 'usuario@exemplo.com';
+    }
+  }
+  
+  // Configurar tema no menu - CORRIGIDO
+  function setupThemeInMenu() {
+    if (!darkModeStyle || !themeSwitch) return;
+    
+    // Verificar se o modo escuro está ativo
+    const isDark = !darkModeStyle.disabled;
+    
+    // Atualizar switch - CORRIGIDO: agora mostra o estado correto
+    themeSwitch.checked = isDark;
+    
+    // Atualizar ícones
+    if (sunIconMenu && moonIconMenu) {
+      if (isDark) {
+        sunIconMenu.style.display = 'none';
+        moonIconMenu.style.display = 'block';
+      } else {
+        sunIconMenu.style.display = 'block';
+        moonIconMenu.style.display = 'none';
+      }
+    }
+  }
+  
+  // Fechar menu
+  function closeMenu() {
+    menuCheckbox.checked = false;
+  }
+  
+  // Event Listeners
+  menuBackdrop.addEventListener('click', closeMenu);
+  
+  // Fechar menu ao pressionar ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && menuCheckbox.checked) {
+      closeMenu();
+    }
+  });
+  
+  // Alternar tema pelo switch - CORRIGIDO
+  if (themeSwitch) {
+    themeSwitch.addEventListener('change', function() {
+      const isDark = this.checked;
+      
+      console.log('Switch alterado para:', isDark ? 'escuro' : 'claro');
+      console.log('darkModeStyle.disabled antes:', darkModeStyle.disabled);
+      
+      // Atualizar tema - CORRIGIDO: inverter a lógica
+      if (darkModeStyle) {
+        // Se o switch está marcado (checked), ativar modo escuro (disabled = false)
+        // Se o switch não está marcado, ativar modo claro (disabled = true)
+        darkModeStyle.disabled = !isDark;
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        console.log('darkModeStyle.disabled depois:', darkModeStyle.disabled);
+      }
+      
+      // Atualizar ícones no menu
+      if (sunIconMenu && moonIconMenu) {
+        if (isDark) {
+          sunIconMenu.style.display = 'none';
+          moonIconMenu.style.display = 'block';
+        } else {
+          sunIconMenu.style.display = 'block';
+          moonIconMenu.style.display = 'none';
+        }
+      }
+      
+      // Recarregar a página para aplicar todas as mudanças de tema
+      setTimeout(() => {
+        location.reload();
+      }, 300);
+    });
+  }
+  
+  // Configurar conta (placeholder)
+  if (accountBtn) {
+    accountBtn.addEventListener('click', function() {
+      closeMenu();
+      alert('Funcionalidade de configuração de conta será implementada em breve!');
+    });
+  }
+  
+  // Logout
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function() {
+      if (confirm('Tem certeza que deseja sair?')) {
+        // Limpar dados do usuário (opcional)
+        localStorage.removeItem('userSession');
+        
+        // Redirecionar para login
+        window.location.href = 'login.html';
+      }
+    });
+  }
+  
+  // Inicializar
+  loadUserInfo();
+  setupThemeInMenu();
+  
+  // Verificar se há mudanças nos dados do usuário
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'userData') {
+      loadUserInfo();
+    }
+  });
+}
+
 // ===== INICIALIZAÇÃO =====
 async function init() {
   // Tentar carregar dados do JSONBin primeiro
@@ -801,6 +946,9 @@ async function init() {
   initSearch();
   initSearchMigration();
   initMobileBottomNav();
+  
+  // Inicializar menu do usuário
+  initUserMenu();
   
   // Listener para atualizar quando dados mudarem (de outra aba/página)
   window.addEventListener('storage', (e) => {
@@ -859,3 +1007,122 @@ function renderLibrary(rootId='libraryGridPage'){
   root.innerHTML='';
   library.forEach(b=>root.appendChild(createCard(b)));
 }
+
+// dark-mode.js - CORRIGIDO para funcionar com o switch
+document.addEventListener('DOMContentLoaded', function() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const darkModeStyle = document.getElementById('dark-mode-style');
+  const themeIcon = document.getElementById('theme-icon');
+  const sunIcon = document.getElementById('sun-icon');
+  const moonIcon = document.getElementById('moon-icon');
+  
+  // Verificar preferência salva
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Aplicar tema salvo ou preferência do sistema
+  if (savedTheme === 'light') {
+    darkModeStyle.disabled = true;
+    updateThemeIcon(false);
+  } else if (savedTheme === 'dark') {
+    darkModeStyle.disabled = false;
+    updateThemeIcon(true);
+  } else if (prefersDark) {
+    // Se não tiver preferência salva, usar preferência do sistema
+    darkModeStyle.disabled = false;
+    localStorage.setItem('theme', 'dark');
+    updateThemeIcon(true);
+  } else {
+    darkModeStyle.disabled = true;
+    updateThemeIcon(false);
+  }
+  
+  // Aplicar tema inicial
+  applyDarkModeTheme(!darkModeStyle.disabled);
+  
+  // Sincronizar com o switch do menu hambúrguer se existir
+  const themeSwitch = document.getElementById('theme-switch');
+  if (themeSwitch) {
+    // Atualizar o switch para refletir o estado atual
+    themeSwitch.checked = !darkModeStyle.disabled;
+    
+    // Atualizar ícones no menu hambúrguer
+    const sunIconMenu = document.getElementById('sun-icon-menu');
+    const moonIconMenu = document.getElementById('moon-icon-menu');
+    if (sunIconMenu && moonIconMenu) {
+      if (!darkModeStyle.disabled) { // Modo escuro ativo
+        sunIconMenu.style.display = 'none';
+        moonIconMenu.style.display = 'block';
+      } else { // Modo claro ativo
+        sunIconMenu.style.display = 'block';
+        moonIconMenu.style.display = 'none';
+      }
+    }
+  }
+  
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      const isDark = darkModeStyle.disabled;
+      
+      if (isDark) {
+        // Ativar modo escuro
+        darkModeStyle.disabled = false;
+        localStorage.setItem('theme', 'dark');
+        updateThemeIcon(true);
+      } else {
+        // Ativar modo claro
+        darkModeStyle.disabled = true;
+        localStorage.setItem('theme', 'light');
+        updateThemeIcon(false);
+      }
+      
+      // Sincronizar com o switch do menu hambúrguer
+      if (themeSwitch) {
+        themeSwitch.checked = !darkModeStyle.disabled;
+      }
+      
+      // Aplicar mudanças visuais
+      applyDarkModeTheme(!isDark);
+      location.reload();
+    });
+  }
+  
+  function updateThemeIcon(isDark) {
+    if (sunIcon && moonIcon) {
+      if (isDark) {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    }
+  }
+  
+  function applyDarkModeTheme(isDark) {
+    // 1. Trocar logo do header
+    const headerLogo = document.getElementById('header-logo');
+    if (headerLogo) {
+      headerLogo.src = isDark ? 'images/logo-dark.svg' : 'images/logo-light.svg';
+    }
+    
+    // 2. Trocar imagem da ilustração do hero
+    const logoCenter = document.querySelector('.logo-center');
+    if (logoCenter) {
+      logoCenter.src = isDark ? './images/ilustdark.png' : './images/ilust1.webp';
+    }
+    
+    // 3. Trocar logo no hero-content
+    const heroLogo = document.querySelector('.hero-content .header-logo');
+    if (heroLogo) {
+      heroLogo.src = isDark ? './images/logo-dark.svg' : './images/logo-light.svg';
+    }
+    
+    // 4. Aplicar classe dark-mode ao body para estilos CSS
+    if (isDark) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }
+});

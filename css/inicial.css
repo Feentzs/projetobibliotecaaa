@@ -34,6 +34,24 @@ body {
   transition: all 0.3s ease;
 }
 
+.theme-btn {
+  display: grid !important;
+  place-items: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #f8faff 0%, #eef2ff 100%) !important;
+  color: var(--primary) !important;
+  border: 1.5px solid #e2e8ff !important;
+  box-shadow: 0 4px 12px rgba(74, 103, 223, 0.1) !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.theme-btn svg {
+  pointer-events: none !important;
+}
 .site-header.with-search {
   padding: 8px 0;
 }
@@ -1173,6 +1191,205 @@ body {
 .btn-large:hover {
   transform: translateY(-6px);
   box-shadow: 0 18px 50px rgba(74, 103, 223, 0.4);
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA BOTÃO DE TEMA ===== */
+.btn-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f8faff 0%, #eef2ff 100%);
+  color: var(--primary);
+  border: 1.5px solid #e2e8ff;
+  box-shadow: 0 4px 12px rgba(74, 103, 223, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1000;
+}
+
+.btn-icon:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(74, 103, 223, 0.2);
+}
+
+/* Garantir que o SVG não bloqueie cliques */
+.btn-icon svg {
+  pointer-events: none !important;
+}
+
+#theme-toggle {
+  pointer-events: auto !important;
+}
+
+/* ===== CORREÇÕES PARA O MODO ESCURO NO INDEX.HTML ===== */
+/* Corrigir cores do hero no modo escuro */
+.dark-mode .landing-hero {
+  background: linear-gradient(135deg, #151c2b 0%, #1a2322 100%) !important;
+}
+
+.dark-mode .hero-content .header-logo {
+  filter: brightness(0) invert(1);
+}
+
+.dark-mode .title-landing {
+  color: var(--text) !important;
+}
+
+.dark-mode .subtitle-landing {
+  color: var(--muted-text) !important;
+}
+
+/* Corrigir features section */
+.dark-mode .features-section {
+  background: var(--bg) !important;
+}
+
+.dark-mode .features-header h2 {
+  color: var(--text) !important;
+}
+
+.dark-mode .features-header p {
+  color: var(--muted-text) !important;
+}
+
+.dark-mode .feature-item {
+  background: var(--card) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-mode .feature-item h3 {
+  color: var(--text) !important;
+}
+
+.dark-mode .feature-item p {
+  color: var(--muted-text) !important;
+}
+
+/* Corrigir quote section */
+.dark-mode .quote-section {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a2949 100%) !important;
+}
+
+/* Corrigir final section */
+.dark-mode .final-section {
+  background: var(--card) !important;
+}
+
+.dark-mode .final-content h2 {
+  color: var(--text) !important;
+}
+
+/* Corrigir botões no modo escuro */
+.dark-mode .btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #3a56e6 100%) !important;
+}
+
+.dark-mode .btn-secondary {
+  background: transparent !important;
+  color: var(--text) !important;
+  border: 2px solid var(--text) !important;
+}
+
+.dark-mode .btn-large {
+  background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+}
+
+/* Corrigir elementos do collage no modo escuro */
+.dark-mode .collage-base {
+  background: rgba(26, 35, 34, 0.5) !important;
+  border: 3px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .circle-yellow-1 {
+  background: rgba(41, 209, 198, 0.49) !important; /* Ajuste para accent */
+}
+
+.dark-mode .circle-yellow-2,
+.dark-mode .circle-yellow-3 {
+  background: var(--accent) !important;
+  opacity: 0.7 !important;
+}
+
+.dark-mode .shape-blue-1,
+.dark-mode .shape-blue-2 {
+  background: var(--primary) !important;
+}
+
+.dark-mode .shape-green {
+  background: var(--accent) !important;
+}
+
+.dark-mode .text-snippet {
+  mix-blend-mode: normal !important;
+}
+
+.dark-mode .snippet-1,
+.dark-mode .snippet-2 {
+  color: var(--text) !important;
+}
+
+/* Corrigir stroke lines */
+.dark-mode .stroke-1 {
+  background: var(--text) !important;
+}
+
+.dark-mode .stroke-2 {
+  background: var(--primary) !important;
+}
+
+/* Corrigir site-header no modo escuro */
+.dark-mode .site-header {
+  background: var(--card) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.dark-mode .nav-links a {
+  color: var(--text) !important;
+}
+
+.dark-mode .nav-links a:hover {
+  background: var(--hover-bg) !important;
+}
+
+/* Ajustar botão de tema no modo escuro */
+.dark-mode .btn-icon {
+  background: var(--muted) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+/* Garantir que o modo escuro seja aplicado */
+body:has(#dark-mode-style:not([disabled])) {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Classe utilitária para modo escuro */
+.dark-mode {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+/* Transições suaves para modo escuro */
+body,
+.site-header,
+.nav-links a,
+.card,
+.btn,
+input,
+textarea,
+select,
+.feature-item {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease,
+              transform 0.3s ease,
+              box-shadow 0.3s ease;
 }
 
 /* ===== ANIMATIONS ===== */

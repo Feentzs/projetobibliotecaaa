@@ -6,16 +6,87 @@
     <title>Início — BiblioTec</title>
     <link rel="icon" href="images/logosemtxt.svg">
     <link rel="stylesheet" href=".\css\home.css" />
+    <link rel="stylesheet" href="css/dark-mode.css" id="dark-mode-style">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
     <header class="site-header sticky-header">
       <div class="container nav">
-        <img src="images/logo.svg" alt="BiblioTec Logo" class="logo" style="width: 180px; height: 44px;">
+        <img src="images/logo.svg" alt="BiblioTec Logo" class="logo" id="header-logo" style="width: 180px; height: 44px;">
         <nav class="nav-links">
           <a href="index.html" class="active">Início</a>
           <a href="library.html">Minha Biblioteca</a>
         </nav>
+        <!-- Botão hambúrguer do usuário -->
+        <div class="user-menu-container">
+          <input type="checkbox" id="menu_checkbox">
+          <label for="menu_checkbox" class="hamburger-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+          </label>
+          
+          <!-- Dropdown do menu -->
+          <div class="user-menu-dropdown" id="user-menu-dropdown">
+            <div class="user-info">
+              <div class="user-avatar">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                  <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="user-details">
+                <span class="user-name" id="current-username">Usuário</span>
+                <span class="user-email" id="current-useremail">usuario@exemplo.com</span>
+              </div>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <div class="menu-items">
+              <button type="button" class="menu-item" id="theme-toggle-menu">
+                <div class="menu-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="sun-icon-menu">
+                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path d="M12 4V2M12 20V22M4 12H2M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5M17.6859 17.69L18.5 18.5M21 12H20" 
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="moon-icon-menu" style="display: none;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" 
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <span class="menu-item-text">Modo Escuro</span>
+                <label class="theme-switch">
+                  <input type="checkbox" id="theme-switch">
+                  <span class="switch-slider"></span>
+                </label>
+              </button>
+              
+              <button type="button" class="menu-item" id="account-btn">
+                <div class="menu-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="menu-item-text">Configurar Conta</span>
+              </button>
+              
+              <button type="button" class="menu-item logout-btn" id="logout-btn">
+                <div class="menu-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M16 17l5-5-5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 12H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="menu-item-text">Sair</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
         <!-- Barra de pesquisa no header (inicialmente escondida) -->
         <div class="header-search hidden">
           <input id="headerSearchInput" placeholder="Buscar por título, autor ou assunto" />
