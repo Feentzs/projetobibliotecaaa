@@ -102,13 +102,61 @@
   <main>
     <section class="container">
       <h1>Minha Biblioteca</h1>
+      
+      <!-- Carrossel de Livros Favoritados -->
+      <div class="carousel-section">
+        <div class="section-header">
+          <h2>📚 Livros Favoritados</h2>
+          <div class="carousel-controls">
+            <button class="carousel-btn prev" id="favorites-prev" aria-label="Anterior">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button class="carousel-btn next" id="favorites-next" aria-label="Próximo">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel" id="favoritesCarousel">
+          <div class="carousel-track" id="favoritesTrack"></div>
+        </div>
+      </div>
+
+      <!-- Carrossel de Livros Reservados -->
+      <div class="carousel-section">
+        <div class="section-header">
+          <h2>⏳ Livros Reservados</h2>
+          <div class="carousel-controls">
+            <button class="carousel-btn prev" id="reserved-prev" aria-label="Anterior">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button class="carousel-btn next" id="reserved-next" aria-label="Próximo">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel" id="reservedCarousel">
+          <div class="carousel-track" id="reservedTrack"></div>
+        </div>
+      </div>
+
+      <!-- Grade de Todos os Livros da Biblioteca -->
+      <div class="section-header" style="margin-top: 40px;">
+        <h2>📖 Todos os Livros</h2>
+      </div>
       <div id="libraryGridPage" class="grid"></div>
     </section>
   </main>
-<img
-          src=".\images\construction.gif"
-          >
+
   <script src=".\js\storage.js"></script>
   <script src=".\js\scripts.js"></script>
+  <script src=".\js\library-carousel.js"></script>
 </body>
 </html>

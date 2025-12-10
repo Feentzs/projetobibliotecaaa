@@ -49,8 +49,59 @@
 
       <p class="signup">
         Não possui uma conta? 
-        <a href="#" class="link">Clique Aqui</a>
+        <a href="#" class="link" id="signup-link">Clique Aqui</a>
       </p>
+    </div>
+
+    <!-- Modal de Registro -->
+    <div id="signupModal" class="login-modal" style="display: none;">
+      <div class="login-card modal-card">
+        <button class="modal-close-btn" id="closeSignup">&times;</button>
+        
+        <img src="images/logo-light.svg" alt="BiblioTec Logo" class="logo">
+
+        <h1 class="welcome">
+          Criar <br>
+          <span class="highlight">Conta</span>
+        </h1>
+
+        <form class="form" id="signup-form">
+          <div class="input-contain">
+            <input type="text" id="signup-name" name="name" autocomplete="off" required>
+            <label class="placeholder-text" for="signup-name">
+              <div class="text">Nome</div>
+            </label>
+          </div>
+
+          <div class="input-contain">
+            <input type="email" id="signup-email" name="email" autocomplete="off" required>
+            <label class="placeholder-text" for="signup-email">
+              <div class="text">Email</div>
+            </label>
+          </div>
+
+          <div class="input-contain">
+            <input type="password" id="signup-password" name="password" autocomplete="off" required>
+            <label class="placeholder-text" for="signup-password">
+              <div class="text">Senha</div>
+            </label>
+          </div>
+
+          <div class="input-contain">
+            <input type="password" id="signup-confirm" name="confirm" autocomplete="off" required>
+            <label class="placeholder-text" for="signup-confirm">
+              <div class="text">Confirmar Senha</div>
+            </label>
+          </div>
+
+          <button type="submit" class="enter-btn">Registrar</button>
+        </form>
+
+        <p class="signup" style="margin-top: 10px;">
+          Já tem uma conta? 
+          <a href="#" class="link" id="login-link">Voltar ao Login</a>
+        </p>
+      </div>
     </div>
 
     <p class="terms">
@@ -60,6 +111,7 @@
     </p>
   </div>
   
-  <script src="js/main.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>

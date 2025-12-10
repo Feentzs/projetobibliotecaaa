@@ -3,170 +3,316 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Gerenciar Livros — BiblioTec</title>
+    <title>Painel Administrativo — BiblioTec</title>
     <link rel="icon" href="images/logosemtxt.svg">
-    <link rel="stylesheet" href=".\css\home.css" />
-    <link rel="stylesheet" href=".\css\admin.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <header class="site-header sticky-header">
-      <div class="container nav">
-        <img src="images/logo.svg" alt="BiblioTec Logo" class="logo" style="width: 180px; height: 44px;">
-        <nav class="nav-links">
-          <a href="home.html">Voltar ao Início</a>
-          <a href="admin.html" class="active">Gerenciar Livros</a>
+    <link rel="stylesheet" href="css/admin.css" />
+    </head>
+  <body class="admin-body">
+    <div class="admin-wrapper">
+      
+      <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+          <img src="images/logo-light.svg" alt="BiblioTec" class="sidebar-logo">
+          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="sidebar-item active" data-tab="dashboard">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+            </svg>
+            <span>Dashboard</span>
+          </button>
+          
+          <button class="sidebar-item" data-tab="books">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke-linecap="round"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Acervo</span>
+          </button>
+          
+          <button class="sidebar-item" data-tab="users">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-linecap="round"/>
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke-linecap="round"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke-linecap="round"/>
+            </svg>
+            <span>Usuários</span>
+          </button>
+          
+          <button class="sidebar-item" data-tab="reservations">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M16 2v4M8 2v4M3 10h18" stroke-linecap="round"/>
+            </svg>
+            <span>Reservas</span>
+          </button>
         </nav>
-      </div>
-    </header>
 
-    <main class="admin-main">
-      <div class="container">
-        <div class="admin-header">
-          <h1>Gerenciar Catálogo de Livros</h1>
-          <button id="btnAddBook" class="btn btn-primary">+ Adicionar Novo Livro</button>
+        <div class="sidebar-footer">
+          <button class="sidebar-theme-btn" id="themeToggleAdmin" title="Tema">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+          <a href="home.html" class="sidebar-logout-btn" title="Sair">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round"/>
+              <path d="M16 17l5-5-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 12H9" stroke-linecap="round"/>
+            </svg>
+          </a>
         </div>
+      </aside>
 
-        <!-- Formulário Modal -->
-        <div id="bookModal" class="modal">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2 id="modalTitle">Adicionar Novo Livro</h2>
-              <button class="modal-close" id="closeModal">&times;</button>
+      <main class="admin-main">
+        
+        <section class="admin-tab-content active" id="dashboard-tab">
+          <div class="content-header">
+            <div>
+              <h1>Visão Geral</h1>
+              <p class="content-subtitle">Bem-vindo de volta, Administrador.</p>
             </div>
-            <form id="bookForm">
-              <input type="hidden" id="bookId" name="id">
-              
-              <div class="form-group">
-                <label for="bookTitle">Título do Livro *</label>
-                <input type="text" id="bookTitle" name="title" required>
-              </div>
+            </div>
 
-              <div class="form-group">
-                <label for="bookAuthor">Autor *</label>
-                <input type="text" id="bookAuthor" name="author" required>
+          <div class="dashboard-hero">
+            <div class="hero-card">
+              <div class="hero-icon">📚</div>
+              <div class="hero-content">
+                <h3>Total de Livros</h3>
+                <p class="hero-value" id="totalBooksValue">0</p>
               </div>
-
-              <div class="form-group">
-                <label for="bookCover">URL da Imagem da Capa *</label>
-                <input type="url" id="bookCover" name="cover" required>
-                <small>Cole o link completo da imagem</small>
+            </div>
+            <div class="hero-card">
+              <div class="hero-icon">👥</div>
+              <div class="hero-content">
+                <h3>Usuários Ativos</h3>
+                <p class="hero-value" id="totalUsersValue">0</p>
               </div>
-
-              <div class="form-group">
-                <label for="bookPdf">URL do PDF do Livro</label>
-                <input type="url" id="bookPdf" name="pdf">
-                <small>Cole o link completo do PDF (opcional)</small>
+            </div>
+            <div class="hero-card">
+              <div class="hero-icon">📅</div>
+              <div class="hero-content">
+                <h3>Reservas (Semana)</h3>
+                <p class="hero-value" id="weekReservationsValue">0</p>
               </div>
-
-              <div class="form-group">
-                <label for="bookDescription">Descrição</label>
-                <textarea id="bookDescription" name="description" rows="4"></textarea>
+            </div>
+            <div class="hero-card">
+              <div class="hero-icon">🔥</div>
+              <div class="hero-content">
+                <h3>Em Alta</h3>
+                <p class="hero-value" id="topBookValue" style="font-size: 1.25rem;">—</p>
               </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="bookGenre">Categoria *</label>
-                  <input type="text" id="bookGenre" name="genre" required list="genreList">
-                  <datalist id="genreList">
-                    <option value="Clássico">
-                    <option value="Romance">
-                    <option value="Ficção">
-                    <option value="Fantasia">
-                    <option value="Drama">
-                    <option value="Suspense">
-                    <option value="Thriller">
-                    <option value="História">
-                    <option value="Filosofia">
-                    <option value="Biografia">
-                    <option value="Autoajuda">
-                    <option value="Infantojuvenil">
-                    <option value="Realismo">
-                    <option value="Modernismo">
-                    <option value="Realismo Mágico">
-                    <option value="Teatro">
-                    <option value="Poesia">
-                    <option value="Contos">
-                    <option value="Policial">
-                  </datalist>
-                </div>
-
-                <div class="form-group">
-                  <label for="bookRating">Avaliação (0-5) *</label>
-                  <input type="number" id="bookRating" name="rating" min="0" max="5" step="0.1" value="4" required>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="bookPages">Número de Páginas</label>
-                <input type="number" id="bookPages" name="pages" min="1" placeholder="Ex: 300">
-                <small>Total de páginas do livro (opcional)</small>
-              </div>
-
-              <div class="form-group">
-                <label>Carrosséis onde o livro aparecerá *</label>
-                <div class="checkbox-group">
-                  <label class="checkbox-label">
-                    <input type="checkbox" name="carousels" value="recommended">
-                    <span>Livros Recomendados</span>
-                  </label>
-                  <label class="checkbox-label">
-                    <input type="checkbox" name="carousels" value="library">
-                    <span>Continue Lendo</span>
-                  </label>
-                  <label class="checkbox-label">
-                    <input type="checkbox" name="carousels" value="topRated">
-                    <span>Mais Bem Avaliados</span>
-                  </label>
-                  <label class="checkbox-label">
-                    <input type="checkbox" name="carousels" value="newReleases">
-                    <span>Novos Lançamentos</span>
-                  </label>
-                  <label class="checkbox-label">
-                    <input type="checkbox" name="carousels" value="popularNow">
-                    <span>Populares Agora</span>
-                  </label>
-                </div>
-                <small>Selecione pelo menos um carrossel</small>
-              </div>
-
-              <div class="form-group" id="progressGroup" style="display: none;">
-                <label for="bookProgress">Progresso de Leitura (%)</label>
-                <input type="number" id="bookProgress" name="progress" min="0" max="100" value="0">
-                <small>Apenas para livros em "Continue Lendo"</small>
-              </div>
-
-              <div class="form-actions">
-                <button type="button" class="btn btn-secondary" id="cancelForm">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Salvar Livro</button>
-              </div>
-            </form>
+            </div>
           </div>
-        </div>
 
-        <!-- Lista de Livros -->
-        <div class="books-list">
-          <div class="books-header">
-            <h2>Livros no Catálogo</h2>
-            <div class="filter-group">
-              <input type="text" id="searchBooks" placeholder="Buscar por título ou autor...">
-              <select id="filterCarousel">
-                <option value="">Todos os carrosséis</option>
-                <option value="recommended">Recomendados</option>
-                <option value="library">Continue Lendo</option>
-                <option value="topRated">Mais Bem Avaliados</option>
-                <option value="newReleases">Novos Lançamentos</option>
-                <option value="popularNow">Populares Agora</option>
+          <div class="dashboard-grid">
+            <div class="dashboard-card">
+              <h3>Fluxo de Reservas</h3>
+              <canvas id="reservationsChart" class="chart-canvas"></canvas>
+            </div>
+            <div class="dashboard-card">
+              <h3>Top 5 Mais Lidos</h3>
+              <canvas id="topBooksChart" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-tab-content" id="books-tab">
+          <div class="content-header">
+            <div>
+              <h1>Acervo</h1>
+              <p class="content-subtitle">Gerencie o catálogo da biblioteca</p>
+            </div>
+            <button id="btnAddBook" class="btn btn-primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Novo Livro
+            </button>
+          </div>
+          
+          <div class="search-bar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="bookSearchInput" placeholder="Pesquisar por título, autor..." />
+          </div>
+
+          <div class="books-list" id="booksList"></div>
+        </section>
+
+        <section class="admin-tab-content" id="users-tab">
+          <div class="content-header">
+            <div>
+              <h1>Usuários</h1>
+              <p class="content-subtitle">Controle de membros e permissões</p>
+            </div>
+            <button id="btnAddUser" class="btn btn-primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Adicionar Usuário
+            </button>
+          </div>
+
+          <div class="search-bar">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="userSearchInput" placeholder="Buscar por nome ou email..." />
+          </div>
+
+          <div class="users-list" id="usersList"></div>
+        </section>
+
+        <section class="admin-tab-content" id="reservations-tab">
+          <div class="content-header">
+            <div>
+              <h1>Reservas</h1>
+              <p class="content-subtitle">Monitoramento de empréstimos</p>
+            </div>
+          </div>
+
+          <div class="search-bar">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="reservationSearchInput" placeholder="Filtrar reservas..." />
+          </div>
+
+          <div class="reservations-list" id="reservationsList"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="bookModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="bookModalTitle">Novo Livro</h2>
+          <button class="modal-close" id="closeBookModal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+          </button>
+        </div>
+        <form id="bookForm" class="admin-form">
+          <input type="hidden" id="bookId" name="id">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookTitle">Título</label>
+              <input type="text" id="bookTitle" name="title" required placeholder="Ex: Dom Casmurro" />
+            </div>
+            <div class="form-group">
+              <label for="bookAuthor">Autor</label>
+              <input type="text" id="bookAuthor" name="author" required placeholder="Ex: Machado de Assis" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookGenre">Gênero</label>
+              <select id="bookGenre" name="genre" required>
+                <option value="">Selecione...</option>
+                <option value="Clássico">Clássico</option>
+                <option value="Romance">Romance</option>
+                <option value="Ficção Científica">Ficção Científica</option>
+                <option value="Fantasia">Fantasia</option>
+                <option value="Suspense">Suspense</option>
+                <option value="Biografia">Biografia</option>
+                <option value="História">História</option>
+                <option value="Infantojuvenil">Infantojuvenil</option>
+                <option value="Poesia">Poesia</option>
+                <option value="Autoajuda">Autoajuda</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="bookRating">Avaliação</label>
+              <input type="number" id="bookRating" name="rating" min="0" max="5" step="0.1" value="4" required />
+            </div>
           </div>
-          <div id="booksGrid" class="books-grid"></div>
-        </div>
-      </div>
-    </main>
 
-    <script src=".\js\storage.js"></script>
-    <script src=".\js\admin.js"></script>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookCover">URL da Capa</label>
+              <input type="url" id="bookCover" name="cover_url" required placeholder="https://..." />
+            </div>
+            <div class="form-group">
+              <label for="bookPages">Páginas</label>
+              <input type="number" id="bookPages" name="pages" min="1" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bookDescription">Sinopse</label>
+            <textarea id="bookDescription" name="description" rows="3"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeBookModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="userModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="userModalTitle">Novo Usuário</h2>
+          <button class="modal-close" id="closeUserModal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+          </button>
+        </div>
+        <form id="userForm" class="admin-form">
+          <input type="hidden" id="userId" name="id">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userName">Nome Completo</label>
+              <input type="text" id="userName" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="userEmail">E-mail</label>
+              <input type="email" id="userEmail" name="email" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="userPassword">Senha</label>
+            <input type="password" id="userPassword" name="password" required />
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeUserModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="test-data.js"></script>
+    <script src="js/user-data.js"></script>
+    <script src="js/admin.js"></script>
   </body>
 </html>
-

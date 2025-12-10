@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste API</title>
+</head>
+<body>
+    <h1>Teste de API</h1>
+    <button onclick="testarAPI()">Testar API</button>
+    <pre id="resultado"></pre>
+
+    <script>
+        async function testarAPI() {
+            const resultado = document.getElementById('resultado');
+            
+            try {
+                console.log('Testando http://localhost:3000/api/books');
+                const response = await fetch('http://localhost:3000/api/books');
+                console.log('Status:', response.status);
+                
+                if (!response.ok) {
+                    resultado.textContent = `Erro: ${response.status} ${response.statusText}`;
+                    return;
+                }
+                
+                const data = await response.json();
+                resultado.textContent = `✅ Sucesso!\nTotal de livros: ${data.length}\n\nPrimeiro livro:\n${JSON.stringify(data[0], null, 2)}`;
+            } catch (error) {
+                resultado.textContent = `❌ Erro: ${error.message}`;
+                console.error('Erro completo:', error);
+            }
+        }
+    </script>
+</body>
+</html>

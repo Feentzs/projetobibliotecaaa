@@ -184,6 +184,17 @@ input:focus + .placeholder-text .text {
   transform: scale(0.97);
 }
 
+.enter-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.enter-btn:disabled:hover {
+  background: #4A67DF;
+  transform: none;
+}
+
 /* ===== Cadastro ===== */
 .signup {
   font-size: 16px;
@@ -198,6 +209,89 @@ input:focus + .placeholder-text .text {
 
 .link:hover {
   text-decoration: underline;
+}
+
+/* ===== Modal de Registro ===== */
+.login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-modal .modal-card {
+  position: relative;
+  width: 600px;
+  height: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close-btn:hover {
+  color: #4A67DF;
+}
+
+.login-modal .welcome {
+  margin-right: 0;
+  margin-top: 10px;
+}
+
+.login-modal input {
+  height: 4rem;
+  font-size: 1.2rem;
+}
+
+.login-modal .input-contain {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.login-modal .placeholder-text {
+  font-size: 1.2rem;
+}
+
+.login-modal .text {
+  font-size: 1.2rem;
+}
+
+.login-modal .enter-btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /* ===== Rodapé ===== */
@@ -216,3 +310,98 @@ input:focus + .placeholder-text .text {
   color: #E9F0EF;
 }
 
+/* ===== VALIDAÇÃO E MENSAGENS ===== */
+.input-contain.error input {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2;
+}
+
+.input-contain.error input:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.error-message {
+  display: block;
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  padding: 0 1.2rem;
+  animation: slideDown 0.2s ease-out;
+}
+
+.form-error-message {
+  display: block;
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #dc2626;
+  font-size: 0.95rem;
+  font-weight: 500;
+  animation: slideDown 0.3s ease-out;
+}
+
+.form-success-message {
+  display: block;
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #10b981;
+  font-size: 0.95rem;
+  font-weight: 500;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== DARK MODE PARA FORMULÁRIOS ===== */
+body.dark-mode .input-contain {
+  color: #fff;
+}
+
+body.dark-mode input {
+  background-color: #1a202c;
+  color: #fff;
+  border-color: #4b5563;
+}
+
+body.dark-mode input:focus {
+  border-color: #4A67DF;
+  background-color: #1a202c;
+}
+
+body.dark-mode .text {
+  background-color: #1a202c;
+  color: #e2e8f0;
+}
+
+body.dark-mode input:focus + .placeholder-text .text,
+body.dark-mode :not(input[value=""]) + .placeholder-text .text {
+  background-color: #1a202c;
+  color: #e2e8f0;
+}
+
+body.dark-mode .form-error-message {
+  background-color: #7f1d1d;
+  color: #fca5a5;
+  border-left-color: #fca5a5;
+}
+
+body.dark-mode .form-success-message {
+  background-color: #064e3b;
+  color: #a7f3d0;
+  border-left-color: #a7f3d0;
+}
