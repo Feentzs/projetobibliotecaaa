@@ -200,6 +200,89 @@ input:focus + .placeholder-text .text {
   text-decoration: underline;
 }
 
+/* ===== Modal de Registro ===== */
+.login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-modal .modal-card {
+  position: relative;
+  width: 600px;
+  height: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close-btn:hover {
+  color: #4A67DF;
+}
+
+.login-modal .welcome {
+  margin-right: 0;
+  margin-top: 10px;
+}
+
+.login-modal input {
+  height: 4rem;
+  font-size: 1.2rem;
+}
+
+.login-modal .input-contain {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.login-modal .placeholder-text {
+  font-size: 1.2rem;
+}
+
+.login-modal .text {
+  font-size: 1.2rem;
+}
+
+.login-modal .enter-btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 /* ===== Rodapé ===== */
 .terms {
   margin-top: 2rem;
@@ -215,4 +298,5 @@ input:focus + .placeholder-text .text {
   text-decoration: underline;
   color: #E9F0EF;
 }
+
 

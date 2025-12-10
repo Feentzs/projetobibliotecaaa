@@ -4,21 +4,23 @@
 function loadDarkModePreference() {
   const saved = localStorage.getItem('darkMode');
   if (saved === 'true') {
-    document.documentElement.setAttribute('data-theme', 'dark');
+    document.body.classList.add('dark-mode');
     return true;
+  } else {
+    document.body.classList.remove('dark-mode');
   }
   return false;
 }
 
 // Alternar modo escuro
 function toggleDarkMode() {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const isDark = document.body.classList.contains('dark-mode');
   
   if (isDark) {
-    document.documentElement.removeAttribute('data-theme');
+    document.body.classList.remove('dark-mode');
     localStorage.setItem('darkMode', 'false');
   } else {
-    document.documentElement.setAttribute('data-theme', 'dark');
+    document.body.classList.add('dark-mode');
     localStorage.setItem('darkMode', 'true');
   }
   
@@ -27,29 +29,15 @@ function toggleDarkMode() {
 
 // Atualizar ícone do botão
 function updateDarkModeButton() {
-  const btn = document.getElementById('darkModeToggle');
+  const btn = document.getElementById('theme-switch');
   if (!btn) return;
   
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const icon = btn.querySelector('svg');
+  const isDark = document.body.classList.contains('dark-mode');
   
   if (isDark) {
-    // Ícone de sol (modo claro)
-    if (icon) {
-      icon.innerHTML = `
-        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
-        <path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      `;
-    }
-    btn.setAttribute('aria-label', 'Ativar modo claro');
+    btn.checked = true;
   } else {
-    // Ícone de lua (modo escuro)
-    if (icon) {
-      icon.innerHTML = `
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      `;
-    }
-    btn.setAttribute('aria-label', 'Ativar modo escuro');
+    btn.checked = false;
   }
 }
 
@@ -57,28 +45,18 @@ function updateDarkModeButton() {
 function initDarkMode() {
   loadDarkModePreference();
   
-  // Adicionar botão toggle se não existir
-  const existingBtn = document.getElementById('darkModeToggle');
-  if (!existingBtn) {
-    const header = document.querySelector('.site-header .nav');
-    if (header) {
-      const btn = document.createElement('button');
-      btn.id = 'darkModeToggle';
-      btn.className = 'dark-mode-toggle';
-      btn.setAttribute('aria-label', 'Alternar modo escuro');
-      btn.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      `;
-      btn.addEventListener('click', toggleDarkMode);
-      header.appendChild(btn);
-    }
-  } else {
-    existingBtn.addEventListener('click', toggleDarkMode);
+  // Procurar checkbox de tema
+  const themeSwitch = document.getElementById('theme-switch');
+  if (themeSwitch) {
+    themeSwitch.addEventListener('change', toggleDarkMode);
+    updateDarkModeButton();
   }
   
-  updateDarkModeButton();
+  // Procurar botão de tema no menu
+  const themeToggleMenu = document.getElementById('theme-toggle-menu');
+  if (themeToggleMenu) {
+    themeToggleMenu.addEventListener('click', toggleDarkMode);
+  }
 }
 
 // Inicializar quando o DOM estiver pronto
