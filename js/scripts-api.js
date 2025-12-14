@@ -1,7 +1,6 @@
 // ===== CARREGAMENTO DINÂMICO DE DADOS DO BACKEND =====
 
 let recommended = [];
-let library = [];
 let topRated = [];
 let newReleases = [];
 let popularNow = [];
@@ -50,29 +49,6 @@ async function loadBooksFromAPI() {
     topRated = [];
     newReleases = [];
     popularNow = [];
-    return [];
-  }
-}
-
-// Carregar biblioteca do usuário
-async function loadUserLibraryFromAPI() {
-  try {
-    const token = localStorage.getItem('bibliotec_token');
-    if (!token) {
-      console.log('Usuário não autenticado - biblioteca vazia');
-      library = [];
-      return [];
-    }
-
-    console.log('Carregando biblioteca do usuário...');
-    const userLibrary = await api.getUserLibrary();
-    library = userLibrary || [];
-
-    console.log('Biblioteca carregada:', library.length, 'livros');
-    return library;
-  } catch (error) {
-    console.error('Erro ao carregar biblioteca:', error);
-    library = [];
     return [];
   }
 }
@@ -152,6 +128,39 @@ function createCard(book) {
       } catch (error) {
         console.error('Erro ao reservar:', error);
         alert('Erro ao reservar o livro. Tente novamente.');
+      }
+    });
+  }
+
+  // Event listener para o botão "Favoritar"
+  const favBtn = card.querySelector('.btn.icon.fav');
+  if (favBtn) {
+    favBtn.addEventListener('click', async function (e) {
+      e.stopPropagation();
+      
+      const token = localStorage.getItem('bibliotec_token');
+      if (!token) {
+        alert('Por favor, faça login para favoritar um livro');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      try {
+        const response = await api.toggleFavorite(book.id);
+        
+        // Atualizar visual do botão
+        if (response.is_favorite) {
+          favBtn.classList.add('active');
+          favBtn.setAttribute('aria-pressed', 'true');
+          favBtn.setAttribute('data-active', 'true');
+        } else {
+          favBtn.classList.remove('active');
+          favBtn.setAttribute('aria-pressed', 'false');
+          favBtn.setAttribute('data-active', 'false');
+        }
+      } catch (error) {
+        console.error('Erro ao favoritar:', error);
+        alert('Erro ao favoritar o livro. Tente novamente.');
       }
     });
   }
@@ -334,7 +343,6 @@ function wireCategoriesCarousel() {
 function filterByGenre(genre) {
   const carousels = [
     { id: 'recCarousel', data: recommended },
-    { id: 'libraryCarousel', data: library },
     { id: 'topRatedCarousel', data: topRated },
     { id: 'newReleasesCarousel', data: newReleases },
     { id: 'popularNowCarousel', data: popularNow }
@@ -355,25 +363,6 @@ function wireCarousel(){
   const carousel = document.getElementById('recCarousel');
   const prevButton = document.getElementById('prevRec');
   const nextButton = document.getElementById('nextRec');
-  
-  prevButton.addEventListener('click', () => {
-    carousel.scrollBy({ left: -260, behavior: 'smooth' });
-  });
-  
-  nextButton.addEventListener('click', () => {
-    carousel.scrollBy({ left: 260, behavior: 'smooth' });
-  });
-  
-  wireCarouselBehavior(carousel, () => tagEdgeCardsGeneric(carousel));
-  wireCarouselWithNavVisibility(carousel, prevButton, nextButton, () => tagEdgeCardsGeneric(carousel));
-}
-
-function wireLibraryCarousel() {
-  const carousel = document.getElementById('libraryCarousel');
-  if (!carousel) return;
-  
-  const prevButton = document.getElementById('prevLibrary');
-  const nextButton = document.getElementById('nextLibrary');
   
   prevButton.addEventListener('click', () => {
     carousel.scrollBy({ left: -260, behavior: 'smooth' });
@@ -453,14 +442,6 @@ function renderCarousel() {
   tagEdgeCardsGeneric(root);
 }
 
-function renderLibraryCarousel() {
-  const root = document.getElementById('libraryCarousel');
-  if (!root) return;
-  root.innerHTML = '';
-  library.forEach(b => root.appendChild(createCard(b)));
-  tagEdgeCardsGeneric(root);
-}
-
 function renderTopRatedCarousel() {
   const root = document.getElementById('topRatedCarousel');
   if (!root) return;
@@ -507,29 +488,14 @@ function tagEdgeCardsGeneric(root) {
 
 // ===== INICIALIZAÇÃO =====
 document.addEventListener('DOMContentLoaded', async () => {
-  // Verificar autenticação
-  const token = localStorage.getItem('bibliotec_token');
-  if (!token && window.location.pathname !== '/login.html' && !window.location.pathname.includes('login.html')) {
-    // Usuário não autenticado - pode navegar para login se necessário
-    console.log('Usuário não autenticado');
-  }
-
   // Carregar livros do backend
   await loadBooksFromAPI();
-
-  // Se autenticado, carregar biblioteca
-  if (token) {
-    await loadUserLibraryFromAPI();
-  }
 
   // Renderizar os carrosséis
   renderCarousel();
   renderTopRatedCarousel();
   renderNewReleasesCarousel();
   renderPopularNowCarousel();
-  if (token) {
-    renderLibraryCarousel();
-  }
 
   // Renderizar categorias
   renderCategories();
@@ -540,9 +506,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   wireNewReleasesCarousel();
   wirePopularNowCarousel();
   wireCategoriesCarousel();
-  if (token) {
-    wireLibraryCarousel();
-  }
 
   // Disparar evento para indicar que os dados foram carregados
   window.dispatchEvent(new CustomEvent('booksLoaded'));
@@ -557,8 +520,4 @@ window.addEventListener('booksUpdated', async () => {
   renderNewReleasesCarousel();
   renderPopularNowCarousel();
   renderCategories();
-  if (localStorage.getItem('bibliotec_token')) {
-    await loadUserLibraryFromAPI();
-    renderLibraryCarousel();
-  }
 });

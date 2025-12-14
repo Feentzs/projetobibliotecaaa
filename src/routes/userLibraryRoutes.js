@@ -1,6 +1,6 @@
 const express = require('express');
 const UserLibraryController = require('../controllers/userLibraryController');
-const authenticateToken = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -18,5 +18,11 @@ router.put('/:book_id', UserLibraryController.updateProgress);
 
 // DELETE /api/user-library/:book_id - Remover livro da biblioteca
 router.delete('/:book_id', UserLibraryController.removeFromLibrary);
+
+// POST /api/user-library/:book_id/reserve - Reservar livro
+router.post('/:book_id/reserve', UserLibraryController.reserveBook);
+
+// POST /api/user-library/:book_id/favorite - Alternar favorito
+router.post('/:book_id/favorite', UserLibraryController.toggleFavorite);
 
 module.exports = router;

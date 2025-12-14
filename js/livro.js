@@ -294,11 +294,11 @@ function initFavoriteButton() {
     }
     
     try {
-      const isFavorite = this.classList.contains('active');
+      this.disabled = true;
+      const response = await api.toggleFavorite(currentBook.id);
       
-      if (!isFavorite) {
+      if (response.is_favorite) {
         // Adicionar aos favoritos
-        await api.addToLibrary(currentBook.id);
         this.classList.add('active');
         
         // Atualizar ícone para preenchido
@@ -310,7 +310,6 @@ function initFavoriteButton() {
         console.log('Livro adicionado aos favoritos');
       } else {
         // Remover dos favoritos
-        await api.removeFromLibrary(currentBook.id);
         this.classList.remove('active');
         
         // Atualizar ícone para vazio
@@ -318,6 +317,18 @@ function initFavoriteButton() {
         if (svg) {
           svg.innerHTML = '<path d="M12 4.8l1.76 3.57 3.94.57-2.85 2.78.67 3.92L12 13.9l-3.52 1.86.67-3.92L6.3 8.94l3.94-.57L12 4.8z" stroke="currentColor" stroke-width="1.2" fill="none"/>';
         }
+        
+        console.log('Livro removido dos favoritos');
+      }
+      
+      this.disabled = false;
+    } catch (error) {
+      console.error('Erro ao alternar favorito:', error);
+      alert('Erro ao alternar favorito. Tente novamente.');
+      this.disabled = false;
+    }
+  });
+}
         
         console.log('Livro removido dos favoritos');
       }

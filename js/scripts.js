@@ -63,13 +63,41 @@ function initSearch() {
   const headerSearchOverlay = document.getElementById('headerSearchOverlay');
   const searchBackdrop = document.getElementById('searchBackdrop');
 
+  // Debounce helper to avoid making API calls on every keystroke
+  const debounce = (fn, wait = 300) => {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), wait);
+    };
+  };
+
+  const debouncedHandleSearch = debounce((q, overlay) => handleSearch(q, overlay), 350);
+
   if (searchInput) {
-    searchInput.addEventListener('input', (e) => handleSearch(e.target.value, heroSearchOverlay));
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value;
+      if (q.trim().length === 0) {
+        // Update overlay immediately for empty queries
+        handleSearch(q, heroSearchOverlay);
+      } else {
+        debouncedHandleSearch(q, heroSearchOverlay);
+      }
+    });
+
     searchInput.addEventListener('focus', () => showSearchOverlay(heroSearchOverlay, searchBackdrop));
   }
 
   if (headerSearchInput) {
-    headerSearchInput.addEventListener('input', (e) => handleSearch(e.target.value, headerSearchOverlay));
+    headerSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value;
+      if (q.trim().length === 0) {
+        handleSearch(q, headerSearchOverlay);
+      } else {
+        debouncedHandleSearch(q, headerSearchOverlay);
+      }
+    });
+
     headerSearchInput.addEventListener('focus', () => showSearchOverlay(headerSearchOverlay, searchBackdrop));
   }
 
@@ -109,7 +137,6 @@ function hideSearchOverlays() {
 
 function handleSearch(query, overlay) {
   const q = query.trim().toLowerCase();
-  const allBooks = []; // Livros seriam carregados de outro lugar
   
   if (!overlay) return;
 
@@ -118,11 +145,43 @@ function handleSearch(query, overlay) {
     return;
   }
 
-  const results = allBooks.filter(b => 
-    (b.title + b.author + (b.genre || '')).toLowerCase().includes(q)
-  );
+  // Mostrar loading
+  overlay.innerHTML = '<div class="search-loading">Buscando...</div>';
+  
+  // Buscar livros da API
+  searchBooks(q)
+    .then(results => {
+      renderSearchResults(results, overlay);
+    })
+    .catch(error => {
+      console.error('Erro na busca:', error);
+      overlay.innerHTML = '<div class="no-results">Erro ao buscar livros</div>';
+    });
+}
 
-  renderSearchResults(results, overlay);
+async function searchBooks(query) {
+  try {
+    const response = await fetch(`/api/books/search?query=${encodeURIComponent(query)}`);
+    
+    if (!response.ok) {
+      throw new Error('Erro na busca');
+    }
+    
+    const books = await response.json();
+    if (!Array.isArray(books)) return [];
+    
+    // Deduplicar resultados por título (remove duplicatas do mesmo livro com IDs diferentes)
+    const seenTitles = new Map();
+    return books.filter(book => {
+      const titleKey = (book.title || '').toLowerCase().trim();
+      if (seenTitles.has(titleKey)) return false;
+      seenTitles.set(titleKey, true);
+      return true;
+    });
+  } catch (error) {
+    console.error('Erro ao buscar livros:', error);
+    return [];
+  }
 }
 
 function renderSearchResults(results, overlay) {
@@ -134,15 +193,15 @@ function renderSearchResults(results, overlay) {
   }
 
   const resultsHTML = results.slice(0, 8).map(book => `
-    <a href="#" class="search-result-item" data-book-id="${book.id}">
-      <img src="${book.cover}" alt="${book.title}" />
+    <a href="livro.html?id=${book.id}" class="search-result-item" data-book-id="${book.id}">
+      <img src="${book.cover_url || 'https://via.placeholder.com/60x90?text=Sem+Capa'}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/60x90?text=Sem+Capa'" />
       <div class="search-result-info">
         <h4>${book.title}</h4>
         <p>${book.author}</p>
         <div class="search-result-meta">
-          <span>${book.genre}</span>
+          <span>${book.genre || 'N/A'}</span>
           <span>•</span>
-          <span>⭐ ${book.rating?.toFixed(1).replace('.', ',') || '0,0'}</span>
+          <span>⭐ ${(parseFloat(book.rating) || 0).toFixed(1).replace('.', ',')}</span>
         </div>
       </div>
     </a>
@@ -193,8 +252,16 @@ function initUserMenu() {
     const userName = document.getElementById('current-username');
     const userEmail = document.getElementById('current-useremail');
     
-    // Tentar carregar do localStorage
-    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    // Tentar carregar do localStorage (após login)
+    const token = localStorage.getItem('bibliotec_token');
+    const userData = JSON.parse(localStorage.getItem('bibliotec_user') || '{}');
+    
+    if (!token) {
+      // Usuário não autenticado
+      if (userName) userName.textContent = 'Visitante';
+      if (userEmail) userEmail.textContent = 'faça login para continuar';
+      return;
+    }
     
     if (userName) {
       userName.textContent = userData.name || 'Usuário';

@@ -450,6 +450,7 @@
     </main>
 
     <script src="js/user-data.js"></script>
+    <script src="js/api.js"></script>
     <script src="js/scripts.js"></script>
     <script>
       // ===== GERENCIAMENTO DA PÁGINA DE CONFIGURAÇÕES =====
@@ -523,19 +524,20 @@
         }
 
         try {
-          // Atualizar no localStorage (frontend)
+          // Chamar API para atualizar perfil
+          await api.updateProfile({ name: fullName });
+
+          // Atualizar no localStorage
           const user = loadUserData();
           user.name = fullName;
           localStorage.setItem('bibliotec_user', JSON.stringify(user));
 
-          // Aqui você poderia chamar a API para atualizar no backend
-          // await api.updateProfile({ name: fullName });
-
           showSuccess('Perfil atualizado com sucesso!');
           document.getElementById('current-username').textContent = fullName;
+          clearError('fullNameError');
         } catch (error) {
           console.error('Erro ao atualizar perfil:', error);
-          showError('profileForm', 'Erro ao salvar alterações');
+          showError('fullNameError', error.message || 'Erro ao salvar alterações');
         }
       }
 
@@ -558,14 +560,17 @@
         }
 
         try {
-          // Aqui você chamaria a API para alterar a senha
-          // await api.changePassword({ currentPassword, newPassword });
+          // Chamar API para alterar senha
+          await api.changePassword({ currentPassword, newPassword });
 
           showSuccess('Senha alterada com sucesso!');
           document.getElementById('passwordForm').reset();
+          clearError('currentPasswordError');
+          clearError('newPasswordError');
+          clearError('confirmPasswordError');
         } catch (error) {
           console.error('Erro ao alterar senha:', error);
-          showError('currentPasswordError', 'Senha atual incorreta');
+          showError('currentPasswordError', error.message || 'Erro ao alterar senha');
         }
       }
 
@@ -611,8 +616,8 @@
         }
 
         try {
-          // Aqui você chamaria a API para deletar a conta
-          // await api.deleteAccount();
+          // Chamar API para deletar a conta
+          await api.deleteAccount();
 
           logoutUser();
           alert('Conta deletada com sucesso.');
@@ -652,7 +657,9 @@
         if (errorEl) {
           errorEl.textContent = '';
           errorEl.style.display = 'none';
-          errorEl.parentElement.classList.remove('error');
+          if (errorEl.parentElement) {
+            errorEl.parentElement.classList.remove('error');
+          }
         }
       }
 

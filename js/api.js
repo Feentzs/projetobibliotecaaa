@@ -306,6 +306,101 @@ class BiblioTecAPI {
       throw error;
     }
   }
+
+  // ===== MÉTODOS DE FAVORITO =====
+  async toggleFavorite(bookId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/user-library/${bookId}/favorite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...this.getAuthHeader()
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao alternar favorito');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Erro ao alternar favorito:', error);
+      throw error;
+    }
+  }
+
+  // Atualizar perfil do usuário
+  async updateProfile(userData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...this.getAuthHeader()
+        },
+        body: JSON.stringify(userData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao atualizar perfil');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Erro ao atualizar perfil:', error);
+      throw error;
+    }
+  }
+
+  // Alterar senha
+  async changePassword(passwordData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...this.getAuthHeader()
+        },
+        body: JSON.stringify(passwordData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao alterar senha');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Erro ao alterar senha:', error);
+      throw error;
+    }
+  }
+
+  // Deletar conta
+  async deleteAccount() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/delete-account`, {
+        method: 'DELETE',
+        headers: this.getAuthHeader()
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao deletar conta');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Erro ao deletar conta:', error);
+      throw error;
+    }
+  }
 }
 
 // Criar instância global

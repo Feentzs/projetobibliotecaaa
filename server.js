@@ -9,6 +9,7 @@ const pool = require('./src/config/database');
 const authRoutes = require('./src/routes/authRoutes');
 const bookRoutes = require('./src/routes/bookRoutes');
 const userLibraryRoutes = require('./src/routes/userLibraryRoutes');
+const adminRoutes = require('./src/routes/adminRoutes');
 
 const app = express();
 
@@ -22,10 +23,19 @@ app.use(cors({
 
 app.use(express.json());
 
+// ===== SERVIR ARQUIVOS ESTÁTICOS =====
+app.use(express.static(__dirname));
+
 // ===== ROTAS =====
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/user-library', userLibraryRoutes);
+app.use('/api/admin', adminRoutes);
+
+// ===== ROTA RAIZ =====
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
 
 // ===== ROTA DE HEALTH CHECK =====
 app.get('/health', (req, res) => {

@@ -2,13 +2,11 @@
 
 const JSONBIN_API_URL = 'https://api.jsonbin.io/v3/b';
 
-let JSONBIN_BIN_ID = $2a$10$ijxgoPq2BGCRfLvvRiwrlu1Su6Cmqyn9wXkh7HkE8A9Us7FC8VORq; // Coloque o ID do seu bin aqui
-let JSONBIN_API_KEY = $2a$10$0JOzLi/jrpxmlitca/Q9v.j/vulrWo9U/xQFMzQQaaacjCvzviKiC; // Coloque sua Master Key aqui
+let JSONBIN_BIN_ID = ''; // Coloque o ID do seu bin aqui
+let JSONBIN_API_KEY = ''; // Coloque sua Master Key aqui
 
 // Se não configurado, o sistema usará apenas localStorage (funciona localmente)
-const USE_CLOUD_STORAGE = JSONBIN_BIN_ID && JSONBIN_API_KEY && 
-                          JSONBIN_BIN_ID !== 'biblioTecBooks' && 
-                          JSONBIN_API_KEY !== '$2a$10$YOUR_API_KEY_HERE';
+const USE_CLOUD_STORAGE = JSONBIN_BIN_ID && JSONBIN_API_KEY;
 
 // ===== FUNÇÕES DE ARMAZENAMENTO =====
 
