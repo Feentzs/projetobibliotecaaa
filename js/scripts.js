@@ -311,11 +311,13 @@ function initUserMenu() {
 }
 
 // ===== SISTEMA DE TEMA ESCURO =====
-document.addEventListener('DOMContentLoaded', function() {
+function initDarkMode() {
   const themeToggle = document.getElementById('theme-toggle');
   const darkModeStyle = document.getElementById('dark-mode-style');
   const sunIcon = document.getElementById('sun-icon');
   const moonIcon = document.getElementById('moon-icon');
+  
+  if (!darkModeStyle) return;
   
   // Verificar preferência salva
   const savedTheme = localStorage.getItem('theme');
@@ -447,9 +449,242 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.classList.remove('dark-mode');
     }
     
+    // 5. Atualizar imagens dos estados vazios
+    updateEmptyStateImages();
+    
     console.log('Classe dark-mode no body:', document.body.classList.contains('dark-mode'));
   }
-});
+}
+
+// ===== MODAL DE REGISTRO NA PÁGINA DE LOGIN =====
+function initSignupModal() {
+  const signupLink = document.getElementById('signup-link');
+  const loginLink = document.getElementById('login-link');
+  const closeSignup = document.getElementById('closeSignup');
+  const signupModal = document.getElementById('signupModal');
+  const signupForm = document.getElementById('signup-form');
+  
+  if (!signupLink || !signupModal) return;
+  
+  // Inicializar animação dos inputs do modal
+  initModalInputs();
+  
+  // Abrir modal
+  signupLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    signupModal.style.display = 'flex';
+    // Pequeno delay para ativar a animação
+    setTimeout(() => {
+      signupModal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Previne scroll da página principal
+    }, 10);
+  });
+  
+  // Fechar modal com botão X
+  if (closeSignup) {
+    closeSignup.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeModal();
+    });
+  }
+  
+  // Fechar modal com link "Voltar ao Login"
+  if (loginLink) {
+    loginLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeModal();
+    });
+  }
+  
+  // Fechar modal clicando fora
+  signupModal.addEventListener('click', function(e) {
+    if (e.target === signupModal) {
+      closeModal();
+    }
+  });
+  
+  // Fechar modal com ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && signupModal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+  
+  // Função para fechar modal
+  function closeModal() {
+    signupModal.classList.remove('active');
+    setTimeout(() => {
+      signupModal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Restaura scroll
+    }, 300); // Tempo da animação
+  }
+  
+  // Validação do formulário
+  if (signupForm) {
+    signupForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const confirm = document.getElementById('signup-confirm').value;
+      
+      // Validações básicas
+      if (!name || !email || !password || !confirm) {
+        showFormError('Por favor, preencha todos os campos!');
+        return;
+      }
+      
+      if (password !== confirm) {
+        showFormError('As senhas não coincidem!');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showFormError('A senha deve ter pelo menos 6 caracteres!');
+        return;
+      }
+      
+      if (!validateEmail(email)) {
+        showFormError('Por favor, insira um email válido!');
+        return;
+      }
+      
+      // Aqui você pode adicionar a lógica de registro
+      console.log('Registrando:', { name, email, password });
+      
+      // Simular registro bem-sucedido
+      showFormSuccess('Conta criada com sucesso! Faça login com suas credenciais.');
+      
+      // Limpar formulário
+      signupForm.reset();
+      resetModalInputs();
+      
+      // Fechar modal após 2 segundos
+      setTimeout(() => {
+        closeModal();
+      }, 2000);
+    });
+  }
+  
+  // Adicionar validação em tempo real para "Confirmar Senha"
+  const confirmInput = document.getElementById('signup-confirm');
+  if (confirmInput) {
+    confirmInput.addEventListener('input', function() {
+      const password = document.getElementById('signup-password').value;
+      const confirm = this.value;
+      
+      if (confirm.length > 0 && password !== confirm) {
+        this.classList.add('error');
+        this.parentElement.classList.add('error');
+      } else {
+        this.classList.remove('error');
+        this.parentElement.classList.remove('error');
+      }
+    });
+  }
+  
+  // Inicializar animação dos inputs do modal
+  function initModalInputs() {
+    const modalInputs = signupModal.querySelectorAll('.input-contain input');
+    
+    modalInputs.forEach(input => {
+      // Verificar se já tem valor
+      if (input.value) {
+        input.parentElement.classList.add('has-value');
+      }
+      
+      input.addEventListener('focus', function() {
+        this.parentElement.classList.add('focused');
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.classList.remove('focused');
+        if (this.value) {
+          this.parentElement.classList.add('has-value');
+        } else {
+          this.parentElement.classList.remove('has-value');
+        }
+      });
+      
+      input.addEventListener('input', function() {
+        if (this.value) {
+          this.parentElement.classList.add('has-value');
+        } else {
+          this.parentElement.classList.remove('has-value');
+        }
+      });
+    });
+  }
+  
+  // Resetar animação dos inputs
+  function resetModalInputs() {
+    const modalInputs = signupModal.querySelectorAll('.input-contain');
+    modalInputs.forEach(container => {
+      container.classList.remove('has-value', 'focused');
+    });
+  }
+  
+  // Funções auxiliares
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+  
+  function showFormError(message) {
+    // Remover mensagens anteriores
+    removeExistingMessages();
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'form-error-message';
+    errorDiv.textContent = message;
+    
+    // Inserir após o título do modal
+    const modalTitle = document.querySelector('.modal-title');
+    if (modalTitle) {
+      modalTitle.parentNode.insertBefore(errorDiv, modalTitle.nextSibling);
+    }
+  }
+  
+  function showFormSuccess(message) {
+    // Remover mensagens anteriores
+    removeExistingMessages();
+    
+    const successDiv = document.createElement('div');
+    successDiv.className = 'form-success-message';
+    successDiv.textContent = message;
+    
+    // Inserir após o título do modal
+    const modalTitle = document.querySelector('.modal-title');
+    if (modalTitle) {
+      modalTitle.parentNode.insertBefore(successDiv, modalTitle.nextSibling);
+    }
+  }
+  
+  function removeExistingMessages() {
+    const existingErrors = document.querySelectorAll('.form-error-message, .form-success-message');
+    existingErrors.forEach(msg => msg.remove());
+  }
+}
+
+// ===== ATUALIZAR IMAGENS DOS ESTADOS VAZIOS =====
+function updateEmptyStateImages() {
+  const darkModeStyle = document.getElementById('dark-mode-style');
+  const isDarkMode = darkModeStyle && !darkModeStyle.disabled;
+  
+  const emptyStateImages = document.querySelectorAll('.empty-state-image');
+  
+  emptyStateImages.forEach(img => {
+    const lightSrc = img.getAttribute('data-light');
+    const darkSrc = img.getAttribute('data-dark');
+    
+    if (isDarkMode && darkSrc) {
+      img.src = darkSrc;
+    } else if (lightSrc) {
+      img.src = lightSrc;
+    }
+  });
+}
 
 // ===== INIT MOBILE BOTTOM NAV =====
 function initMobileBottomNav() {
@@ -479,20 +714,99 @@ function initMobileBottomNav() {
   });
 }
 
-// ===== INICIALIZAÇÃO =====
-function initHeaderAndTheme() {
-  initSearch();
-  initSearchMigration();
-  initMobileBottomNav();
-  initUserMenu();
+// ===== ANIMAÇÃO DOS INPUTS DO LOGIN =====
+function initLoginInputs() {
+  const loginInputs = document.querySelectorAll('#login-form .input-contain input');
   
-  // Configurar tema após o DOM estar pronto
-  console.log('Header e tema inicializados');
+  loginInputs.forEach(input => {
+    // Verificar se já tem valor
+    if (input.value) {
+      input.parentElement.classList.add('has-value');
+    }
+    
+    input.addEventListener('focus', function() {
+      this.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', function() {
+      this.parentElement.classList.remove('focused');
+      if (this.value) {
+        this.parentElement.classList.add('has-value');
+      } else {
+        this.parentElement.classList.remove('has-value');
+      }
+    });
+    
+    input.addEventListener('input', function() {
+      if (this.value) {
+        this.parentElement.classList.add('has-value');
+      } else {
+        this.parentElement.classList.remove('has-value');
+      }
+    });
+  });
 }
 
-// Inicializar quando o DOM estiver pronto
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initHeaderAndTheme);
-} else {
-  initHeaderAndTheme();
+// ===== INICIALIZAÇÃO GERAL =====
+function initAll() {
+  // Inicializar sistema de pesquisa (se estiver na página correta)
+  if (document.querySelector('.search') || document.querySelector('.header-search')) {
+    initSearch();
+    initSearchMigration();
+    initMobileBottomNav();
+  }
+  
+  // Inicializar menu do usuário (se existir)
+  if (document.getElementById('menu_checkbox')) {
+    initUserMenu();
+  }
+  
+  // Inicializar sistema de tema escuro
+  initDarkMode();
+  
+  // Inicializar modal de registro (se estiver na página de login)
+  if (document.getElementById('signupModal')) {
+    initSignupModal();
+  }
+  
+  // Inicializar animação dos inputs do login
+  if (document.getElementById('login-form')) {
+    initLoginInputs();
+  }
+  
+  console.log('Sistema inicializado com sucesso!');
 }
+
+// ===== INICIALIZAR QUANDO O DOM ESTIVER PRONTO =====
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAll);
+} else {
+  initAll();
+}
+
+// ===== FUNÇÕES AUXILIARES GLOBAIS =====
+window.BiblioTec = window.BiblioTec || {};
+
+window.BiblioTec.utils = {
+  showToast: function(message, type = 'info') {
+    // Implementar toast notifications se necessário
+    console.log(`${type.toUpperCase()}: ${message}`);
+  },
+  
+  formatDate: function(dateString) {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('pt-BR', options);
+  },
+  
+  debounce: function(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+};

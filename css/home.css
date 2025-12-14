@@ -1406,6 +1406,55 @@ body {
 .card.edge-left {
   border-radius: 28px;
 }
+/* ===== ESTADOS VAZIOS ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  border-radius: var(--radius);
+  background: var(--muted);
+  margin: 20px 0;
+  border: 2px dashed var(--border-color, #e2e8ff);
+}
+
+.empty-state-image {
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 24px;
+  opacity: 0.8;
+}
+
+.empty-state p {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 8px 0;
+}
+
+.empty-state-subtitle {
+  font-size: 14px;
+  color: var(--muted-text);
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Responsivo para estados vazios */
+@media (max-width: 768px) {
+  .empty-state {
+    padding: 40px 16px;
+  }
+  
+  .empty-state-image {
+    max-width: 200px;
+  }
+  
+  .empty-state p {
+    font-size: 16px;
+  }
+}
 
 /* ===== UTILITY CLASSES ===== */
 .centered {

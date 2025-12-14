@@ -8,251 +8,350 @@
     <link rel="stylesheet" href="css/home.css" />
     <link rel="stylesheet" href="css/dark-mode.css" id="dark-mode-style">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-      /* ===== ACCOUNT PAGE STYLES ===== */
-      .account-container {
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 24px;
+      /* ===== MATERIAL DESIGN - LAYOUT LATERAL ===== */
+      
+      /* Container Principal (Grid) */
+      .account-container-grid {
+        max-width: 1200px;
+        margin: 40px auto 80px;
+        padding: 0 var(--page-padding-x);
+        display: grid;
+        grid-template-columns: 280px 1fr; /* Coluna lateral fixa e conteúdo flexível */
+        gap: 48px;
+        align-items: start;
       }
 
-      .account-header {
-        text-align: center;
-        margin-bottom: 40px;
+      /* ===== SIDEBAR (ESQUERDA) ===== */
+      .account-sidebar {
+        position: sticky;
+        top: 100px; /* Para não bater no header sticky */
       }
 
-      .account-header h1 {
-        font-size: 32px;
+      /* Card do Mini Perfil na Sidebar */
+      .sidebar-profile {
+        margin-bottom: 32px;
+      }
+
+      .sidebar-avatar {
+        width: 64px;
+        height: 64px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-bottom: 16px;
+        box-shadow: 0 8px 16px rgba(74, 103, 223, 0.2);
+      }
+      
+      .sidebar-avatar svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .sidebar-info h2 {
+        font-size: 20px;
         font-weight: 700;
+        margin: 0 0 4px;
+        color: var(--text);
+      }
+
+      .sidebar-info p {
+        font-size: 14px;
+        color: var(--muted-text);
+        margin: 0;
+        word-break: break-all;
+      }
+
+      /* Navegação Lateral */
+      .account-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 20px;
+        border-radius: 50px; /* Pill shape */
+        color: var(--muted-text);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid transparent;
+      }
+
+      .nav-item:hover {
+        background-color: var(--muted);
+        color: var(--text);
+      }
+
+      .nav-item.active {
+        background-color: rgba(74, 103, 223, 0.1);
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .nav-item svg {
+        width: 20px;
+        height: 20px;
+        stroke-width: 2;
+      }
+
+      /* ===== CONTEÚDO (DIREITA) ===== */
+      .account-content {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        min-width: 0; /* Previne overflow em grids */
+      }
+
+      /* Material Cards Refinados */
+      .md-card {
+        background: var(--card);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0,0,0,0.04);
+        scroll-margin-top: 120px; /* Espaço para o scroll suave não ficar escondido pelo header */
+      }
+      
+      body.dark-mode .md-card,
+      body:has(#dark-mode-style:not([disabled])) .md-card {
+        border-color: rgba(255,255,255,0.05);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      }
+
+      .md-card-header {
+        margin-bottom: 32px;
+      }
+
+      .md-card-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
         margin: 0 0 8px;
       }
-
-      .account-header p {
+      
+      .md-card-subtitle {
         color: var(--muted-text);
-        font-size: 16px;
+        font-size: 14px;
         margin: 0;
       }
 
-      .form-section {
-        margin-bottom: 40px;
-        padding: 24px;
-        background: var(--card);
+      /* Inputs Material (Updated) */
+      .md-grid-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .md-input-group {
+        position: relative;
+        margin-bottom: 24px;
+      }
+
+      .md-input {
+        width: 100%;
+        padding: 24px 16px 8px 16px;
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--text);
+        background-color: var(--bg); /* Fundo sutil */
+        border: 1px solid rgba(0,0,0,0.1);
         border-radius: 12px;
-        border: 1px solid #e6e9ef;
+        transition: all 0.2s ease;
       }
 
-      .form-section h2 {
-        font-size: 18px;
-        font-weight: 600;
-        margin: 0 0 24px;
-        padding-bottom: 16px;
-        border-bottom: 1px solid #e6e9ef;
+      .md-input:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(74, 103, 223, 0.1);
+        background-color: var(--card);
       }
 
-      .form-group {
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .form-group:last-child {
-        margin-bottom: 0;
-      }
-
-      .form-group label {
-        font-size: 14px;
+      /* Labels que não flutuam (estilo mais limpo para formulários longos) */
+      .md-label-static {
+        display: block;
+        font-size: 13px;
         font-weight: 600;
         color: var(--text);
         margin-bottom: 8px;
-        display: block;
+        margin-left: 4px;
       }
 
-      .form-group input,
-      .form-group textarea {
-        padding: 12px 16px;
-        border: 1px solid #e6e9ef;
-        border-radius: 8px;
-        font-family: inherit;
-        font-size: 14px;
-        color: var(--text);
-        background: var(--bg);
-        transition: border-color 0.2s;
-      }
-
-      .form-group input:focus,
-      .form-group textarea:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(74, 103, 223, 0.1);
-      }
-
-      .form-group textarea {
-        resize: vertical;
-        min-height: 80px;
-      }
-
-      .form-group .help-text {
+      .md-helper-text {
         font-size: 12px;
         color: var(--muted-text);
         margin-top: 6px;
+        margin-left: 4px;
       }
 
-      .form-group .error {
+      .md-error-text {
         color: #ef4444;
         font-size: 12px;
         margin-top: 6px;
+        margin-left: 4px;
         display: none;
+        align-items: center;
+        gap: 4px;
       }
+      
+      .md-error-text.show { display: flex; }
+      .md-input-group.error .md-input { border-color: #ef4444; }
 
-      .form-group.error input,
-      .form-group.error textarea {
-        border-color: #ef4444;
-      }
-
-      .form-actions {
+      /* Botões */
+      .form-footer {
         display: flex;
-        gap: 12px;
         justify-content: flex-end;
-        padding-top: 16px;
-        border-top: 1px solid #e6e9ef;
+        gap: 12px;
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(0,0,0,0.05);
+      }
+      
+      body.dark-mode .form-footer,
+      body:has(#dark-mode-style:not([disabled])) .form-footer {
+         border-top-color: rgba(255,255,255,0.1);
       }
 
-      .btn-primary {
-        padding: 12px 32px;
+      .md-btn {
+        padding: 10px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+      }
+
+      .md-btn-primary {
         background: var(--primary);
         color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 14px;
+      }
+      .md-btn-primary:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(74, 103, 223, 0.25);
       }
 
-      .btn-primary:hover {
-        background: #3d4fc4;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(74, 103, 223, 0.3);
-      }
-
-      .btn-secondary {
-        padding: 12px 32px;
+      .md-btn-ghost {
         background: transparent;
-        color: var(--text);
-        border: 1px solid #e6e9ef;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 14px;
+        color: var(--muted-text);
       }
-
-      .btn-secondary:hover {
+      .md-btn-ghost:hover {
         background: var(--muted);
-        border-color: #d1d5db;
+        color: var(--text);
       }
 
-      .btn-danger {
-        padding: 12px 32px;
-        background: #ef4444;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 14px;
+      .md-btn-danger {
+        background: #fee2e2;
+        color: #dc2626;
       }
-
-      .btn-danger:hover {
+      .md-btn-danger:hover {
         background: #dc2626;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+        color: white;
       }
 
-      .success-message {
-        display: none;
+      /* Requisitos de Senha (Chips) */
+      .password-reqs-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      
+      .req-chip {
+        font-size: 11px;
+        padding: 4px 10px;
+        background: var(--muted);
+        border-radius: 20px;
+        color: var(--muted-text);
+        transition: all 0.3s ease;
+      }
+      
+      .req-chip.valid {
         background: #d1fae5;
         color: #065f46;
-        padding: 16px;
-        border-radius: 8px;
-        margin-bottom: 24px;
-        border: 1px solid #a7f3d0;
       }
 
-      .success-message.show {
-        display: block;
-        animation: slideIn 0.3s ease;
+      /* Danger Zone */
+      .danger-card {
+        border: 1px solid #fee2e2;
+      }
+      .danger-card .md-card-title { color: #dc2626; }
+
+      /* Toast Notification */
+      .toast-container {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        z-index: 2000;
+        pointer-events: none;
+      }
+      
+      .toast {
+        background: var(--text);
+        color: var(--bg);
+        padding: 16px 24px;
+        border-radius: 16px;
+        margin-top: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+      }
+      
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
       }
 
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
+      /* Responsividade */
+      @media (max-width: 900px) {
+        .account-container-grid {
+          grid-template-columns: 1fr; /* Empilha tudo */
+          gap: 32px;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        
+        .account-sidebar {
+          position: relative;
+          top: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          background: var(--card);
+          padding: 24px;
+          border-radius: 24px;
         }
-      }
-
-      .danger-zone {
-        margin-top: 40px;
-        padding: 24px;
-        background: #fef2f2;
-        border: 2px solid #fee2e2;
-        border-radius: 12px;
-      }
-
-      .danger-zone h2 {
-        color: #dc2626;
-        font-size: 18px;
-        font-weight: 600;
-        margin: 0 0 8px;
-      }
-
-      .danger-zone p {
-        color: #7f1d1d;
-        font-size: 14px;
-        margin: 0 0 16px;
-      }
-
-      .password-requirements {
-        font-size: 12px;
-        color: var(--muted-text);
-        margin-top: 12px;
-        padding: 12px;
-        background: var(--bg);
-        border-radius: 6px;
-        border-left: 3px solid var(--accent);
-      }
-
-      .password-requirements ul {
-        margin: 0;
-        padding-left: 20px;
-      }
-
-      .password-requirements li {
-        margin-bottom: 4px;
-      }
-
-      @media (max-width: 640px) {
-        .account-container {
-          padding: 16px;
-        }
-
-        .account-header h1 {
-          font-size: 24px;
-        }
-
-        .form-actions {
-          flex-direction: column-reverse;
-        }
-
-        .btn-primary,
-        .btn-secondary,
-        .btn-danger {
+        
+        .account-nav {
+          flex-direction: row;
+          overflow-x: auto;
           width: 100%;
+          padding-bottom: 8px;
+          justify-content: flex-start; /* Alinha a esquerda no mobile */
+        }
+        
+        .nav-item {
+          white-space: nowrap;
+          background: var(--bg);
+        }
+        
+        .md-grid-row {
+          grid-template-columns: 1fr;
+          gap: 0;
         }
       }
     </style>
@@ -265,16 +364,11 @@
           <a href="home.html">Início</a>
           <a href="library.html">Minha Biblioteca</a>
         </nav>
-        <!-- Botão hambúrguer do usuário -->
         <div class="user-menu-container">
           <input type="checkbox" id="menu_checkbox">
           <label for="menu_checkbox" class="hamburger-menu">
-            <div></div>
-            <div></div>
-            <div></div>
+            <div></div><div></div><div></div>
           </label>
-          
-          <!-- Dropdown do menu -->
           <div class="user-menu-dropdown" id="user-menu-dropdown">
             <div class="user-info">
               <div class="user-avatar">
@@ -284,24 +378,19 @@
                 </svg>
               </div>
               <div class="user-details">
-                <span class="user-name" id="current-username">Usuário</span>
-                <span class="user-email" id="current-useremail">usuario@exemplo.com</span>
+                <span class="user-name" id="menu-username">Usuário</span>
+                <span class="user-email" id="menu-useremail">usuario@exemplo.com</span>
               </div>
             </div>
-            
-            <div class="menu-divider"></div>
-            
             <div class="menu-items">
               <button type="button" class="menu-item" id="theme-toggle-menu">
                 <div class="menu-item-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="sun-icon-menu">
                     <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                    <path d="M12 4V2M12 20V22M4 12H2M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5M17.6859 17.69L18.5 18.5M21 12H20" 
-                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 4V2M12 20V22M4 12H2M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5M17.6859 17.69L18.5 18.5M21 12H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="moon-icon-menu" style="display: none;">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" 
-                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
                 <span class="menu-item-text">Modo Escuro</span>
@@ -310,7 +399,6 @@
                   <span class="switch-slider"></span>
                 </label>
               </button>
-              
               <button type="button" class="menu-item" id="account-btn">
                 <div class="menu-item-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -320,7 +408,6 @@
                 </div>
                 <span class="menu-item-text">Configurar Conta</span>
               </button>
-              
               <button type="button" class="menu-item logout-btn" id="logout-btn">
                 <div class="menu-item-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -338,331 +425,318 @@
     </header>
 
     <main>
-      <div class="account-container">
-        <div class="account-header">
-          <h1>⚙️ Configurar Conta</h1>
-          <p>Gerencie suas informações pessoais e preferências</p>
-        </div>
-
-        <div class="success-message" id="successMessage"></div>
-
-        <!-- Seção de Informações Pessoais -->
-        <form class="form-section" id="profileForm">
-          <h2>Informações Pessoais</h2>
-          
-          <div class="form-group">
-            <label for="fullName">Nome Completo</label>
-            <input type="text" id="fullName" name="fullName" placeholder="Seu nome" />
-            <span class="help-text">Este é o nome que aparecerá em sua conta</span>
-            <span class="error" id="fullNameError"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="seu@email.com" disabled />
-            <span class="help-text">O email não pode ser alterado</span>
-          </div>
-
-          <div class="form-group">
-            <label for="bio">Bio/Descrição Pessoal</label>
-            <textarea id="bio" name="bio" placeholder="Conte-nos sobre você..."></textarea>
-            <span class="help-text">Máximo 500 caracteres</span>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" id="profileCancel">Cancelar</button>
-            <button type="submit" class="btn-primary">Salvar Alterações</button>
-          </div>
-        </form>
-
-        <!-- Seção de Senha -->
-        <form class="form-section" id="passwordForm">
-          <h2>Alterar Senha</h2>
-          
-          <div class="form-group">
-            <label for="currentPassword">Senha Atual</label>
-            <input type="password" id="currentPassword" name="currentPassword" placeholder="Digite sua senha atual" />
-            <span class="error" id="currentPasswordError"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="newPassword">Nova Senha</label>
-            <input type="password" id="newPassword" name="newPassword" placeholder="Digite uma nova senha" />
-            <span class="error" id="newPasswordError"></span>
-            <div class="password-requirements">
-              <strong>Requisitos:</strong>
-              <ul>
-                <li>Mínimo de 8 caracteres</li>
-                <li>Pelo menos uma letra maiúscula</li>
-                <li>Pelo menos um número</li>
-                <li>Pelo menos um caractere especial (!@#$%)</li>
-              </ul>
+      <div class="account-container-grid">
+        
+        <aside class="account-sidebar">
+          <div class="sidebar-profile">
+            <div class="sidebar-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="sidebar-info">
+              <h2 id="page-username">Carregando...</h2>
+              <p id="page-useremail">...</p>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="confirmPassword">Confirmar Nova Senha</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme a nova senha" />
-            <span class="error" id="confirmPasswordError"></span>
-          </div>
+          <nav class="account-nav">
+            <a href="#section-profile" class="nav-item active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              Meu Perfil
+            </a>
+            <a href="#section-security" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Segurança
+            </a>
+            <a href="#section-preferences" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1.29 1.52 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              Preferências
+            </a>
+            <a href="#section-danger" class="nav-item" style="color: #ef4444;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              Zona de Risco
+            </a>
+          </nav>
+        </aside>
 
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" id="passwordCancel">Cancelar</button>
-            <button type="submit" class="btn-primary">Alterar Senha</button>
-          </div>
-        </form>
-
-        <!-- Seção de Preferências -->
-        <form class="form-section" id="preferencesForm">
-          <h2>Preferências</h2>
+        <div class="account-content">
           
-          <div class="form-group">
-            <label for="language">Idioma</label>
-            <select id="language" name="language" style="padding: 12px 16px; border: 1px solid #e6e9ef; border-radius: 8px; background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px;">
-              <option value="pt-br">Português (Brasil)</option>
-              <option value="en">English</option>
-              <option value="es">Español</option>
-            </select>
+          <form id="section-profile" class="md-card">
+            <div class="md-card-header">
+              <h3 class="md-card-title">Informações Pessoais</h3>
+              <p class="md-card-subtitle">Gerencie suas informações básicas de identificação</p>
+            </div>
+
+            <div class="md-input-group">
+              <label for="fullName" class="md-label-static">Nome Completo</label>
+              <input type="text" id="fullName" class="md-input" placeholder="Seu nome" />
+              <span class="md-error-text" id="fullNameError">Este campo é obrigatório</span>
+            </div>
+
+            <div class="md-input-group">
+              <label for="email" class="md-label-static">Email</label>
+              <input type="email" id="email" class="md-input" disabled style="opacity: 0.6; cursor: not-allowed;" />
+              <span class="md-helper-text">Para alterar seu email, entre em contato com o suporte.</span>
+            </div>
+
+            <div class="md-input-group">
+              <label for="bio" class="md-label-static">Bio / Descrição</label>
+              <textarea id="bio" class="md-input" rows="4" placeholder="Conte um pouco sobre você..."></textarea>
+            </div>
+
+            <div class="form-footer">
+              <button type="button" class="md-btn md-btn-ghost" id="profileCancel">Descartar</button>
+              <button type="submit" class="md-btn md-btn-primary">Salvar Alterações</button>
+            </div>
+          </form>
+
+          <form id="section-security" class="md-card">
+            <div class="md-card-header">
+              <h3 class="md-card-title">Segurança da Conta</h3>
+              <p class="md-card-subtitle">Atualize sua senha e mantenha sua conta segura</p>
+            </div>
+
+            <div class="md-input-group">
+              <label for="currentPassword" class="md-label-static">Senha Atual</label>
+              <input type="password" id="currentPassword" class="md-input" />
+              <span class="md-error-text" id="currentPasswordError">Senha incorreta</span>
+            </div>
+
+            <div class="md-grid-row">
+              <div class="md-input-group">
+                <label for="newPassword" class="md-label-static">Nova Senha</label>
+                <input type="password" id="newPassword" class="md-input" />
+              </div>
+              <div class="md-input-group">
+                <label for="confirmPassword" class="md-label-static">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" class="md-input" />
+                <span class="md-error-text" id="confirmPasswordError">As senhas não conferem</span>
+              </div>
+            </div>
+
+            <div class="md-input-group">
+              <label class="md-label-static" style="font-size: 12px; color: var(--muted-text);">A senha deve conter:</label>
+              <div class="password-reqs-chips">
+                <span class="req-chip" id="req-len">8+ caracteres</span>
+                <span class="req-chip" id="req-up">Letra Maiúscula</span>
+                <span class="req-chip" id="req-num">Número</span>
+                <span class="req-chip" id="req-spec">Símbolo (!@#$)</span>
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <button type="button" class="md-btn md-btn-ghost" id="passwordCancel">Limpar</button>
+              <button type="submit" class="md-btn md-btn-primary">Atualizar Senha</button>
+            </div>
+          </form>
+
+          <form id="section-preferences" class="md-card">
+            <div class="md-card-header">
+              <h3 class="md-card-title">Preferências</h3>
+              <p class="md-card-subtitle">Personalize sua experiência no BiblioTec</p>
+            </div>
+
+            <div class="md-grid-row">
+              <div class="md-input-group">
+                <label for="language" class="md-label-static">Idioma</label>
+                <select id="language" class="md-input">
+                  <option value="pt-br">Português (Brasil)</option>
+                  <option value="en">English (US)</option>
+                  <option value="es">Español</option>
+                </select>
+              </div>
+
+              <div class="md-input-group">
+                <label for="theme" class="md-label-static">Tema Visual</label>
+                <select id="theme" class="md-input">
+                  <option value="auto">Automático (Sistema)</option>
+                  <option value="light">Claro</option>
+                  <option value="dark">Escuro</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <button type="submit" class="md-btn md-btn-primary">Salvar Preferências</button>
+            </div>
+          </form>
+
+          <div id="section-danger" class="md-card danger-card">
+            <div class="md-card-header">
+              <h3 class="md-card-title">Zona de Risco</h3>
+            </div>
+            <p style="margin-bottom: 24px; color: var(--text); opacity: 0.8;">
+              Ao deletar sua conta, todos os seus dados, livros e anotações serão removidos permanentemente. Esta ação não pode ser desfeita.
+            </p>
+            <button type="button" class="md-btn md-btn-danger" id="deleteAccountBtn">
+              Excluir Conta Permanentemente
+            </button>
           </div>
 
-          <div class="form-group">
-            <label for="theme">Tema Visual</label>
-            <select id="theme" name="theme" style="padding: 12px 16px; border: 1px solid #e6e9ef; border-radius: 8px; background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px;">
-              <option value="light">Claro</option>
-              <option value="dark">Escuro</option>
-              <option value="auto">Automático</option>
-            </select>
-          </div>
+        </div> </div> <div class="toast-container" id="toastContainer"></div>
 
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" id="preferencesCancel">Cancelar</button>
-            <button type="submit" class="btn-primary">Salvar Preferências</button>
-          </div>
-        </form>
-
-        <!-- Seção Perigosa -->
-        <div class="form-section danger-zone">
-          <h2>Zona de Risco</h2>
-          <p>Estas ações são irreversíveis. Proceda com cautela.</p>
-          <button type="button" class="btn-danger" id="deleteAccountBtn">Deletar Conta Permanentemente</button>
-        </div>
-      </div>
     </main>
 
     <script src="js/user-data.js"></script>
     <script src="js/scripts.js"></script>
     <script>
-      // ===== GERENCIAMENTO DA PÁGINA DE CONFIGURAÇÕES =====
+      // ===== JS LÓGICA DA PÁGINA =====
 
       document.addEventListener('DOMContentLoaded', function() {
         loadAccountData();
         setupFormHandlers();
-        setupMenuHandlers();
+        setupNavigation();
       });
 
-      // Carregar dados da conta
       function loadAccountData() {
         const user = loadUserData();
-        
         if (!user) {
           window.location.href = 'login.html';
           return;
         }
 
-        // Preencher dados do perfil
+        // Preenche sidebar
+        document.getElementById('page-username').textContent = user.name || 'Usuário';
+        document.getElementById('page-useremail').textContent = user.email || '';
+
+        // Preenche forms
         document.getElementById('fullName').value = user.name || '';
         document.getElementById('email').value = user.email || '';
+        
+        // Header
+        const headerName = document.getElementById('menu-username');
+        if(headerName) headerName.textContent = user.name;
       }
 
-      // Configurar manipuladores de formulários
-      function setupFormHandlers() {
-        // Formulário de perfil
-        const profileForm = document.getElementById('profileForm');
-        profileForm.addEventListener('submit', handleProfileSubmit);
-        document.getElementById('profileCancel').addEventListener('click', () => {
-          profileForm.reset();
-          loadAccountData();
-        });
+      function setupNavigation() {
+        // Highlight menu item based on scroll or click
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        navItems.forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = item.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            // Smooth scroll com offset para o header sticky
+            const headerOffset = 100;
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth"
+            });
 
-        // Formulário de senha
-        const passwordForm = document.getElementById('passwordForm');
-        passwordForm.addEventListener('submit', handlePasswordSubmit);
-        document.getElementById('passwordCancel').addEventListener('click', () => {
-          passwordForm.reset();
-        });
-
-        // Formulário de preferências
-        const preferencesForm = document.getElementById('preferencesForm');
-        preferencesForm.addEventListener('submit', handlePreferencesSubmit);
-        document.getElementById('preferencesCancel').addEventListener('click', () => {
-          preferencesForm.reset();
-        });
-
-        // Botão de deletar conta
-        document.getElementById('deleteAccountBtn').addEventListener('click', handleDeleteAccount);
-      }
-
-      // Configurar menu
-      function setupMenuHandlers() {
-        const accountBtn = document.getElementById('account-btn');
-        if (accountBtn) {
-          accountBtn.addEventListener('click', () => {
-            window.location.href = 'account.html';
+            // Atualiza classe active
+            navItems.forEach(nav => nav.classList.remove('active'));
+            item.classList.add('active');
           });
-        }
+        });
       }
 
-      // Enviar formulário de perfil
-      async function handleProfileSubmit(e) {
-        e.preventDefault();
-        const fullName = document.getElementById('fullName').value.trim();
-
-        if (!fullName || fullName.length < 3) {
-          showError('fullNameError', 'Nome deve ter pelo menos 3 caracteres');
-          return;
-        }
-
-        try {
-          // Atualizar no localStorage (frontend)
+      function setupFormHandlers() {
+        // 1. Perfil
+        document.getElementById('section-profile').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('fullName').value;
+          if(name.length < 3) return showError('fullNameError', 'Nome muito curto');
+          
           const user = loadUserData();
-          user.name = fullName;
+          user.name = name;
           localStorage.setItem('bibliotec_user', JSON.stringify(user));
+          
+          loadAccountData(); // Atualiza UI
+          showToast('Perfil atualizado com sucesso!');
+        });
 
-          // Aqui você poderia chamar a API para atualizar no backend
-          // await api.updateProfile({ name: fullName });
+        // 2. Senha (com validação visual)
+        const newPassInput = document.getElementById('newPassword');
+        newPassInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            toggleChip('req-len', val.length >= 8);
+            toggleChip('req-up', /[A-Z]/.test(val));
+            toggleChip('req-num', /[0-9]/.test(val));
+            toggleChip('req-spec', /[!@#$%^&*]/.test(val));
+        });
 
-          showSuccess('Perfil atualizado com sucesso!');
-          document.getElementById('current-username').textContent = fullName;
-        } catch (error) {
-          console.error('Erro ao atualizar perfil:', error);
-          showError('profileForm', 'Erro ao salvar alterações');
-        }
+        document.getElementById('section-security').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const p1 = document.getElementById('newPassword').value;
+          const p2 = document.getElementById('confirmPassword').value;
+          
+          if(!validatePassword(p1)) return showToast('A senha não atende aos requisitos', true);
+          if(p1 !== p2) return showError('confirmPasswordError', 'Senhas não conferem');
+          
+          showToast('Senha alterada com sucesso!');
+          e.target.reset();
+          resetChips();
+        });
+
+        // 3. Preferências
+        document.getElementById('section-preferences').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const theme = document.getElementById('theme').value;
+            localStorage.setItem('userPreferences', JSON.stringify({ theme }));
+            
+            if(theme === 'dark') document.body.classList.add('dark-mode');
+            else if(theme === 'light') document.body.classList.remove('dark-mode');
+            
+            showToast('Preferências salvas');
+        });
+
+        // 4. Deletar
+        document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+            if(confirm('Tem certeza absoluta? Essa ação é irreversível.')) {
+                logoutUser();
+                window.location.href = 'index.html';
+            }
+        });
       }
 
-      // Enviar formulário de senha
-      async function handlePasswordSubmit(e) {
-        e.preventDefault();
-        const currentPassword = document.getElementById('currentPassword').value;
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        // Validações
-        if (!validatePassword(newPassword)) {
-          showError('newPasswordError', 'A senha não atende aos requisitos');
-          return;
-        }
-
-        if (newPassword !== confirmPassword) {
-          showError('confirmPasswordError', 'As senhas não coincidem');
-          return;
-        }
-
-        try {
-          // Aqui você chamaria a API para alterar a senha
-          // await api.changePassword({ currentPassword, newPassword });
-
-          showSuccess('Senha alterada com sucesso!');
-          document.getElementById('passwordForm').reset();
-        } catch (error) {
-          console.error('Erro ao alterar senha:', error);
-          showError('currentPasswordError', 'Senha atual incorreta');
-        }
+      // Helpers
+      function toggleChip(id, valid) {
+          const el = document.getElementById(id);
+          if(valid) el.classList.add('valid');
+          else el.classList.remove('valid');
+      }
+      
+      function resetChips() {
+          document.querySelectorAll('.req-chip').forEach(c => c.classList.remove('valid'));
       }
 
-      // Enviar formulário de preferências
-      async function handlePreferencesSubmit(e) {
-        e.preventDefault();
-        const language = document.getElementById('language').value;
-        const theme = document.getElementById('theme').value;
-
-        try {
-          // Salvar preferências no localStorage
-          const preferences = {
-            language: language,
-            theme: theme
-          };
-          localStorage.setItem('userPreferences', JSON.stringify(preferences));
-
-          showSuccess('Preferências salvas com sucesso!');
-        } catch (error) {
-          console.error('Erro ao salvar preferências:', error);
-          showError('preferencesForm', 'Erro ao salvar preferências');
-        }
+      function validatePassword(p) {
+        return p.length >= 8 && /[A-Z]/.test(p) && /[0-9]/.test(p) && /[!@#$%^&*]/.test(p);
       }
 
-      // Deletar conta
-      async function handleDeleteAccount() {
-        const confirmed = confirm(
-          'Tem certeza que deseja deletar sua conta? Esta ação é irreversível e você perderá todos os seus dados.'
-        );
-
-        if (!confirmed) {
-          return;
-        }
-
-        const finalConfirm = prompt(
-          'Digite seu email para confirmar a exclusão da conta:'
-        );
-
-        const user = loadUserData();
-        if (finalConfirm !== user.email) {
-          alert('Email não corresponde. Exclusão cancelada.');
-          return;
-        }
-
-        try {
-          // Aqui você chamaria a API para deletar a conta
-          // await api.deleteAccount();
-
-          logoutUser();
-          alert('Conta deletada com sucesso.');
-          window.location.href = 'index.html';
-        } catch (error) {
-          console.error('Erro ao deletar conta:', error);
-          alert('Erro ao deletar conta. Tente novamente.');
-        }
+      function showError(id, msg) {
+        const el = document.getElementById(id);
+        el.textContent = msg;
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 3000);
       }
 
-      // Funções auxiliares
-      function validatePassword(password) {
-        const minLength = 8;
-        const hasUpperCase = /[A-Z]/.test(password);
-        const hasNumber = /[0-9]/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-        return (
-          password.length >= minLength &&
-          hasUpperCase &&
-          hasNumber &&
-          hasSpecialChar
-        );
-      }
-
-      function showError(elementId, message) {
-        const errorEl = document.getElementById(elementId);
-        if (errorEl) {
-          errorEl.textContent = message;
-          errorEl.style.display = 'block';
-          errorEl.parentElement.classList.add('error');
-        }
-      }
-
-      function clearError(elementId) {
-        const errorEl = document.getElementById(elementId);
-        if (errorEl) {
-          errorEl.textContent = '';
-          errorEl.style.display = 'none';
-          errorEl.parentElement.classList.remove('error');
-        }
-      }
-
-      function showSuccess(message) {
-        const successEl = document.getElementById('successMessage');
-        successEl.textContent = message;
-        successEl.classList.add('show');
-
+      function showToast(msg, isError = false) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${isError ? '#ef4444' : '#2FD6CB'}" stroke-width="2">
+                ${isError ? '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>' : '<polyline points="20 6 9 17 4 12"></polyline>'}
+            </svg>
+            ${msg}
+        `;
+        container.appendChild(toast);
+        
+        // Animate in
+        requestAnimationFrame(() => toast.classList.add('show'));
+        
+        // Remove after 3s
         setTimeout(() => {
-          successEl.classList.remove('show');
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
         }, 3000);
       }
     </script>

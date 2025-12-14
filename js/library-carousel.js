@@ -7,6 +7,17 @@ let reservedBooks = [];
 document.addEventListener('DOMContentLoaded', function() {
   loadLibraryCarousels();
   setupCarouselControls();
+  
+  // Verificar e atualizar imagens dos estados vazios
+  checkAndShowEmptyStates();
+  updateEmptyStateImages();
+  
+  // Observar mudanças de tema
+  const darkModeStyle = document.getElementById('dark-mode-style');
+  if (darkModeStyle) {
+    const observer = new MutationObserver(updateEmptyStateImages);
+    observer.observe(darkModeStyle, { attributes: true, attributeFilter: ['disabled'] });
+  }
 });
 
 // Carregamento dos dados de favoritos e reservados
@@ -15,8 +26,8 @@ async function loadLibraryCarousels() {
     const token = localStorage.getItem('bibliotec_token');
     
     if (!token) {
-      showCarouselEmpty('favoritesCarousel', 'Faça login para ver seus livros favoritados');
-      showCarouselEmpty('reservedCarousel', 'Faça login para ver seus livros reservados');
+      showEmptyState('favorites', 'Faça login para ver seus livros favoritados');
+      showEmptyState('reserved', 'Faça login para ver seus livros reservados');
       return;
     }
 
@@ -24,8 +35,8 @@ async function loadLibraryCarousels() {
     const userLibrary = await api.getUserLibrary();
     
     if (!userLibrary || userLibrary.length === 0) {
-      showCarouselEmpty('favoritesCarousel', 'Você ainda não favoritou nenhum livro');
-      showCarouselEmpty('reservedCarousel', 'Você ainda não reservou nenhum livro');
+      showEmptyState('favorites', 'Você ainda não favoritou nenhum livro');
+      showEmptyState('reserved', 'Você ainda não reservou nenhum livro');
       return;
     }
 
@@ -34,30 +45,40 @@ async function loadLibraryCarousels() {
     reservedBooks = userLibrary.filter(book => book.status === 'reserved' || book.is_reserved === true);
 
     // Renderizar carrosséis
-    renderCarousel('favoritesCarousel', 'favoritesTrack', favoritedBooks, 'Você ainda não favoritou nenhum livro');
-    renderCarousel('reservedCarousel', 'reservedTrack', reservedBooks, 'Você ainda não reservou nenhum livro');
+    renderCarousel('favoritesCarousel', 'favoritesTrack', favoritedBooks, 'favorites');
+    renderCarousel('reservedCarousel', 'reservedTrack', reservedBooks, 'reserved');
 
   } catch (error) {
     console.error('Erro ao carregar carrosséis:', error);
-    showCarouselEmpty('favoritesCarousel', 'Erro ao carregar livros favoritados');
-    showCarouselEmpty('reservedCarousel', 'Erro ao carregar livros reservados');
+    showEmptyState('favorites', 'Erro ao carregar livros favoritados');
+    showEmptyState('reserved', 'Erro ao carregar livros reservados');
   }
+  
+  // Verificar estados vazios após carregamento
+  checkAndShowEmptyStates();
 }
 
 // Renderizar carrossel com livros
-function renderCarousel(carouselId, trackId, books, emptyMessage) {
+function renderCarousel(carouselId, trackId, books, type) {
+  const carousel = document.getElementById(carouselId);
   const track = document.getElementById(trackId);
+  const emptyState = document.getElementById(`${type}-empty`);
   
-  if (!track) {
-    console.error(`Elemento ${trackId} não encontrado`);
+  if (!track || !carousel) {
+    console.error(`Elementos não encontrados: ${carouselId}, ${trackId}`);
     return;
   }
 
   if (!books || books.length === 0) {
-    showCarouselEmpty(carouselId, emptyMessage);
+    if (emptyState) emptyState.style.display = 'flex';
+    carousel.style.display = 'none';
     return;
   }
 
+  // Mostrar carrossel e ocultar estado vazio
+  if (emptyState) emptyState.style.display = 'none';
+  carousel.style.display = 'block';
+  
   // Limpar conteúdo anterior
   track.innerHTML = '';
 
@@ -81,7 +102,7 @@ function createCarouselCard(book) {
   const ratingDisplay = rating.toFixed(1).replace('.', ',');
 
   card.innerHTML = `
-    <img src="${book.cover_url || book.cover}" alt="${book.title}" loading="lazy" />
+    <img src="${book.cover_url || book.cover || 'images/default-cover.jpg'}" alt="${book.title}" loading="lazy" />
     <div class="carousel-card-body">
       <h3 class="carousel-card-title">${book.title}</h3>
       <p class="carousel-card-author">${book.author}</p>
@@ -102,12 +123,95 @@ function createCarouselCard(book) {
   return card;
 }
 
-// Mostrar mensagem de carrossel vazio
-function showCarouselEmpty(carouselId, message) {
-  const carousel = document.getElementById(carouselId);
-  if (!carousel) return;
+// Mostrar estado vazio com imagem
+function showEmptyState(type, message) {
+  const emptyState = document.getElementById(`${type}-empty`);
+  const carousel = document.getElementById(`${type}Carousel`);
+  const title = document.getElementById(`${type}-empty-title`);
+  const subtitle = document.getElementById(`${type}-empty-subtitle`);
+  
+  if (emptyState) {
+    // Atualizar mensagens
+    if (title) title.textContent = message;
+    if (subtitle) subtitle.textContent = getEmptyStateSubtitle(type);
+    
+    // Mostrar estado vazio e ocultar carrossel
+    emptyState.style.display = 'flex';
+    
+    if (carousel) {
+      carousel.style.display = 'none';
+    }
+  }
+}
 
-  carousel.innerHTML = `<div class="carousel-empty">${message}</div>`;
+// Obter subtítulo apropriado para o estado vazio
+function getEmptyStateSubtitle(type) {
+  switch(type) {
+    case 'favorites':
+      return 'Explore a biblioteca e adicione seus livros favoritos!';
+    case 'reserved':
+      return 'Explore a biblioteca e reserve seus livros favoritos!';
+    default:
+      return '';
+  }
+}
+
+// ===== GERENCIAMENTO DE ESTADOS VAZIOS =====
+
+function checkAndShowEmptyStates() {
+  // Verificar livros favoritados
+  const favoritesTrack = document.getElementById('favoritesTrack');
+  const favoritesEmpty = document.getElementById('favorites-empty');
+  const favoritesCarousel = document.getElementById('favoritesCarousel');
+  
+  const hasFavorites = favoritesTrack && favoritesTrack.children.length > 0;
+  
+  if (favoritesEmpty && favoritesCarousel) {
+    if (hasFavorites) {
+      favoritesEmpty.style.display = 'none';
+      favoritesCarousel.style.display = 'block';
+    } else {
+      favoritesEmpty.style.display = 'flex';
+      favoritesCarousel.style.display = 'none';
+    }
+  }
+  
+  // Verificar livros reservados
+  const reservedTrack = document.getElementById('reservedTrack');
+  const reservedEmpty = document.getElementById('reserved-empty');
+  const reservedCarousel = document.getElementById('reservedCarousel');
+  
+  const hasReserved = reservedTrack && reservedTrack.children.length > 0;
+  
+  if (reservedEmpty && reservedCarousel) {
+    if (hasReserved) {
+      reservedEmpty.style.display = 'none';
+      reservedCarousel.style.display = 'block';
+    } else {
+      reservedEmpty.style.display = 'flex';
+      reservedCarousel.style.display = 'none';
+    }
+  }
+}
+
+// ===== ATUALIZAÇÃO DE IMAGENS POR TEMA =====
+
+function updateEmptyStateImages() {
+  const darkModeStyle = document.getElementById('dark-mode-style');
+  const isDarkMode = darkModeStyle && !darkModeStyle.disabled;
+  
+  const emptyStateImages = document.querySelectorAll('.empty-state-image');
+  
+  emptyStateImages.forEach(img => {
+    const lightSrc = img.getAttribute('data-light');
+    const darkSrc = img.getAttribute('data-dark');
+    
+    if (isDarkMode && darkSrc) {
+      img.src = darkSrc;
+    } else if (lightSrc) {
+      img.src = lightSrc;
+    }
+  });
 }
 
 // Configurar controles do carrossel
@@ -134,11 +238,12 @@ function scrollCarousel(trackId, direction) {
   const track = document.getElementById(trackId);
   if (!track) return;
 
+  const carousel = track.parentElement;
   const scrollAmount = 240; // Largura do card + gap
-  const currentScroll = track.parentElement.scrollLeft || 0;
+  const currentScroll = carousel.scrollLeft || 0;
   const newScroll = currentScroll + (scrollAmount * direction);
 
-  track.parentElement.scrollTo({
+  carousel.scrollTo({
     left: newScroll,
     behavior: 'smooth'
   });
@@ -168,10 +273,12 @@ function updateCarouselButtons(trackId, totalCards) {
 
   if (prevBtn) {
     prevBtn.disabled = scrollLeft <= 0;
+    prevBtn.style.opacity = scrollLeft <= 0 ? '0.5' : '1';
   }
 
   if (nextBtn) {
     nextBtn.disabled = scrollLeft >= scrollWidth - clientWidth - 10;
+    nextBtn.style.opacity = scrollLeft >= scrollWidth - clientWidth - 10 ? '0.5' : '1';
   }
 }
 
@@ -181,6 +288,7 @@ window.addEventListener('resize', () => {
   updateCarouselButtons('reservedTrack', reservedBooks.length);
 });
 
+// Atualizar botões durante o scroll
 document.addEventListener('scroll', function() {
   const favTrack = document.getElementById('favoritesTrack');
   const resTrack = document.getElementById('reservedTrack');
@@ -191,4 +299,36 @@ document.addEventListener('scroll', function() {
   if (resTrack) {
     updateCarouselButtons('reservedTrack', reservedBooks.length);
   }
+});
+
+// Adicionar event listeners para scroll nos carrosséis
+['favoritesCarousel', 'reservedCarousel'].forEach(carouselId => {
+  const carousel = document.getElementById(carouselId);
+  if (carousel) {
+    carousel.addEventListener('scroll', function() {
+      const trackId = carouselId === 'favoritesCarousel' ? 'favoritesTrack' : 'reservedTrack';
+      const books = carouselId === 'favoritesCarousel' ? favoritedBooks : reservedBooks;
+      updateCarouselButtons(trackId, books.length);
+    });
+  }
+});
+
+// ===== ATUALIZAÇÃO EM TEMPO REAL =====
+
+// Função para recarregar carrosséis (pode ser chamada de outros scripts)
+window.reloadLibraryCarousels = async function() {
+  await loadLibraryCarousels();
+  checkAndShowEmptyStates();
+  updateEmptyStateImages();
+};
+
+// Listener para eventos de atualização
+window.addEventListener('booksUpdated', async () => {
+  console.log('Livros atualizados, recarregando carrosséis...');
+  await reloadLibraryCarousels();
+});
+
+// Listener para mudanças de tema do sistema
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  updateEmptyStateImages();
 });

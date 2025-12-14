@@ -151,6 +151,27 @@ body:has(#dark-mode-style:not([disabled])) .menu-item::after {
 body:has(#dark-mode-style:not([disabled])) .menu-item:active::after {
   opacity: 0.12 !important;
 }
+/* ===== ESTADOS VAZIOS NO MODO ESCURO ===== */
+.dark-mode .empty-state,
+body:has(#dark-mode-style:not([disabled])) .empty-state {
+  background: var(--muted) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark-mode .empty-state p,
+body:has(#dark-mode-style:not([disabled])) .empty-state p {
+  color: var(--text) !important;
+}
+
+.dark-mode .empty-state-subtitle,
+body:has(#dark-mode-style:not([disabled])) .empty-state-subtitle {
+  color: var(--muted-text) !important;
+}
+
+.dark-mode .empty-state-image,
+body:has(#dark-mode-style:not([disabled])) .empty-state-image {
+  filter: brightness(0.9) contrast(1.1);
+}
 /* ===== CORREÇÕES ESPECÍFICAS PARA O INDEX.HTML ===== */
 
 /* Corrigir cores dos textos no hero */
@@ -255,7 +276,8 @@ body {
 /* ===== HEADER E NAVEGAÇÃO ===== */
 .site-header {
   background: var(--card) !important;
-  border-bottom: 1px solid var(--border-color) !important;
+  border-bottom: none !important;
+  border-right: none !important;
 }
 
 .nav-links a {
@@ -558,4 +580,76 @@ a {
 .feature-image-1,
 .quote-image {
   border-color: var(--border-color) !important;
+}
+/* Certifique-se de que estas regras estão no dark-mode.css também */
+body.dark-mode .empty-state-image,
+body:has(#dark-mode-style:not([disabled])) .empty-state-image {
+  content: url('../images/ilust2dark.webp');
+}
+
+/* Ou se preferir usar atributos data-light/data-dark */
+body.dark-mode .empty-state-image[data-light][data-dark],
+body:has(#dark-mode-style:not([disabled])) .empty-state-image[data-light][data-dark] {
+  content: attr(data-dark);
+}
+/* ===== MODAL DE REGISTRO NO DARK MODE ===== */
+body.dark-mode .signup-modal-card,
+body:has(#dark-mode-style:not([disabled])) .signup-modal-card {
+  background: var(--card) !important;
+}
+
+body.dark-mode .signup-modal-card input,
+body:has(#dark-mode-style:not([disabled])) .signup-modal-card input {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  border-color: var(--text) !important;
+}
+
+body.dark-mode .signup-modal-card input:focus,
+body:has(#dark-mode-style:not([disabled])) .signup-modal-card input:focus {
+  border-color: var(--primary) !important;
+}
+
+body.dark-mode .signup-modal-card .placeholder-text .text,
+body:has(#dark-mode-style:not([disabled])) .signup-modal-card .placeholder-text .text {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+body.dark-mode .signup-modal-card input:focus + .placeholder-text .text,
+body.dark-mode .signup-modal-card :not(input[value=""]) + .placeholder-text .text,
+body:has(#dark-mode-style:not([disabled])) .signup-modal-card input:focus + .placeholder-text .text,
+body:has(#dark-mode-style:not([disabled])) .signup-modal-card :not(input[value=""]) + .placeholder-text .text {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+body.dark-mode .signup-modal-card input:focus + .placeholder-text .text,
+body:has(#dark-mode-style:not([disabled])) .signup-modal-card input:focus + .placeholder-text .text {
+  color: var(--primary) !important;
+}
+/* ===== MODAL DE REGISTRO NO DARK MODE ===== */
+body.dark-mode .modal-overlay,
+body:has(#dark-mode-style:not([disabled])) .modal-overlay {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+body.dark-mode .modal-logo,
+body:has(#dark-mode-style:not([disabled])) .modal-logo {
+  content: url('../images/logo-dark.svg');
+}
+
+body.dark-mode .modal-title .highlight,
+body:has(#dark-mode-style:not([disabled])) .modal-title .highlight {
+  text-decoration-color: var(--accent) !important;
+}
+
+body.dark-mode .modal-btn,
+body:has(#dark-mode-style:not([disabled])) .modal-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, #3a56e6 100%) !important;
+}
+
+body.dark-mode .modal-btn:hover,
+body:has(#dark-mode-style:not([disabled])) .modal-btn:hover {
+  background: linear-gradient(135deg, #3a56e6 0%, var(--primary) 100%) !important;
 }

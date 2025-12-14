@@ -211,87 +211,151 @@ input:focus + .placeholder-text .text {
   text-decoration: underline;
 }
 
-/* ===== Modal de Registro ===== */
-.login-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.login-modal .modal-card {
-  position: relative;
-  width: 600px;
-  height: auto;
-  max-height: 90vh;
+/* ===== MODAL DE REGISTRO ESPECÍFICO ===== */
+.signup-modal-card {
+  height: auto !important;
+  min-height: 700px !important;
+  max-height: 85vh !important;
   overflow-y: auto;
-  animation: slideUp 0.3s ease-out;
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+/* Ajustar título no modal de registro */
+.signup-modal-card .welcome {
+  margin-right: 0 !important;
+  align-self: center !important;
+  text-align: center !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Ajustar os inputs no modal de registro - MESMO ESTILO DO LOGIN */
+.signup-modal-card .input-contain {
+  width: 495px !important;
+  margin-bottom: 2rem !important;
+}
+
+.signup-modal-card input {
+  height: 5rem !important;
+  width: 100% !important;
+  border: 2px solid black !important;
+  border-radius: 1rem !important;
+  padding: 0 1.2rem !important;
+  font-size: 1.4rem !important;
+  background-color: #E9F0EF !important;
+}
+
+.signup-modal-card input:focus {
+  outline: none !important;
+  border-color: #4A67DF !important;
+}
+
+/* Placeholder animado - MESMO ESTILO DO LOGIN */
+.signup-modal-card .placeholder-text {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  border: 3px solid transparent !important;
+  background-color: transparent !important;
+  pointer-events: none !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 1.2rem !important;
+  font-size: 1.4rem !important;
+}
+
+.signup-modal-card .text {
+  font-size: 1.4rem !important;
+  padding: 0 0.5rem !important;
+  background-color: #E9F0EF !important;
+  color: black !important;
+  transform: translate(0) !important;
+  transition: transform 0.15s ease-out, 
+              font-size 0.15s ease-out, 
+              background-color 0.2s ease-out, 
+              color 0.15s ease-out !important;
+}
+
+/* Efeito quando o input está em foco OU tem valor - MESMO ANIMAÇÃO DO LOGIN */
+.signup-modal-card input:focus + .placeholder-text .text,
+.signup-modal-card :not(input[value=""]) + .placeholder-text .text {
+  background-color: #E9F0EF !important;
+  font-size: 1.1rem !important;
+  color: black !important;
+  transform: translate(0, -170%) !important;
+}
+
+/* Cor específica para o estado de foco */
+.signup-modal-card input:focus + .placeholder-text .text {
+  border-color: #4A67DF !important;
+  color: #4A67DF !important;
+}
+
+/* Botão no modal de registro */
+.signup-modal-card .enter-btn {
+  margin-left: 0 !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+  align-self: center !important;
+  display: block !important;
+}
+
+/* Ajustar link de voltar ao login */
+.signup-modal-card .signup {
+  margin-top: 1.5rem !important;
+  text-align: center !important;
+}
+
+/* DARK MODE PARA O MODAL DE REGISTRO */
+body.dark-mode .signup-modal-card input {
+  background-color: #1a202c !important;
+  color: #fff !important;
+  border-color: #4b5563 !important;
+}
+
+body.dark-mode .signup-modal-card input:focus {
+  border-color: #4A67DF !important;
+  background-color: #1a202c !important;
+}
+
+body.dark-mode .signup-modal-card .text {
+  background-color: #1a202c !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .signup-modal-card input:focus + .placeholder-text .text,
+body.dark-mode .signup-modal-card :not(input[value=""]) + .placeholder-text .text {
+  background-color: #1a202c !important;
+  color: #e2e8f0 !important;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 650px) {
+  .signup-modal-card {
+    width: 90% !important;
+    min-height: 650px !important;
+    padding: 1.5rem !important;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .signup-modal-card .input-contain,
+  .signup-modal-card input {
+    width: 100% !important;
+    max-width: 400px !important;
+  }
+  
+  .signup-modal-card .enter-btn {
+    width: 120px !important;
+    height: 80px !important;
   }
 }
 
-.modal-close-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  color: #333;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-close-btn:hover {
-  color: #4A67DF;
-}
-
-.login-modal .welcome {
-  margin-right: 0;
-  margin-top: 10px;
-}
-
-.login-modal input {
-  height: 4rem;
-  font-size: 1.2rem;
-}
-
-.login-modal .input-contain {
-  width: 100%;
-  margin-bottom: 1.5rem;
-}
-
-.login-modal .placeholder-text {
-  font-size: 1.2rem;
-}
-
-.login-modal .text {
-  font-size: 1.2rem;
-}
-
-.login-modal .enter-btn {
-  margin-top: 20px;
-  margin-bottom: 20px;
+@media (max-height: 800px) {
+  .signup-modal-card {
+    max-height: 90vh !important;
+    min-height: 600px !important;
+  }
 }
 
 /* ===== Rodapé ===== */
@@ -404,4 +468,383 @@ body.dark-mode .form-success-message {
   background-color: #064e3b;
   color: #a7f3d0;
   border-left-color: #a7f3d0;
+}
+
+/* No style.css, na seção do modal */
+.login-modal {
+  /* ... propriedades existentes ... */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.login-modal .modal-card {
+  /* ... propriedades existentes ... */
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+/* ===== MODAL OVERLAY ===== */
+
+
+/* ===== MODAL OVERLAY - MAIOR ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal Content - Quase ocupando a tela toda */
+.modal-content {
+  background: #E9F0EF;
+  border-radius: 40px;
+  width: 90%;
+  max-width: 1024px;
+  height: 85vh;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* Modal Header */
+.modal-header {
+  padding: 3rem 3rem 1rem 3rem;
+  text-align: center;
+  position: relative;
+}
+
+.modal-logo {
+  height: 50px;
+}
+
+/* Modal Body */
+.modal-body {
+  padding: 0 3rem 3rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 52px;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  text-align: left;
+  width: 100%;
+}
+
+.modal-title .highlight {
+  text-decoration: underline wavy #2FD6CB;
+  text-underline-offset: 12%;
+  text-decoration-thickness: 11%;
+}
+
+/* Modal Form */
+.signup-modal .form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Inputs do Modal - MESMO ESTILO DO LOGIN */
+.signup-modal .input-contain {
+  position: relative;
+  margin-bottom: 2.5rem;
+  width: 100%;
+}
+
+.signup-modal input {
+  height: 5.5rem;
+  width: 100%;
+  border: 2px solid black;
+  border-radius: 1.2rem;
+  padding: 0 1.5rem;
+  font-size: 1.5rem;
+  background-color: #E9F0EF;
+  transition: all 0.2s ease;
+}
+
+.signup-modal input:focus {
+  outline: none;
+  border-color: #4A67DF;
+  box-shadow: 0 0 0 3px rgba(74, 103, 223, 0.1);
+}
+
+/* Placeholder animado - EXATAMENTE IGUAL AO LOGIN */
+.signup-modal .placeholder-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 3px solid transparent;
+  background-color: transparent;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  font-size: 1.5rem;
+}
+
+.signup-modal .text {
+  font-size: 1.5rem;
+  padding: 0 0.8rem;
+  background-color: #E9F0EF;
+  color: black;
+  transform: translate(0);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animações para foco e valor */
+.signup-modal .input-contain.focused .placeholder-text .text,
+.signup-modal .input-contain.has-value .placeholder-text .text {
+  background-color: #E9F0EF;
+  font-size: 1.2rem;
+  color: black;
+  transform: translate(0, -180%);
+}
+
+.signup-modal .input-contain.focused .placeholder-text .text {
+  color: #4A67DF;
+}
+
+/* Botão do Modal - IGUAL AO DE ENTRAR */
+.modal-btn {
+  width: 140px;
+  height: 100px;
+  font-size: 22px;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  background: #4A67DF;
+  color: #E9F0EF;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+  margin: 3rem auto 2rem auto;
+  box-shadow: 0 6px 20px rgba(74, 103, 223, 0.3);
+}
+
+.modal-btn:hover {
+  background: #3c56b6;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(74, 103, 223, 0.4);
+}
+
+.modal-btn:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 4px 15px rgba(74, 103, 223, 0.3);
+}
+
+.modal-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.modal-btn:disabled:hover {
+  background: #4A67DF;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Modal Footer */
+.modal-footer {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 2rem;
+  color: #666;
+}
+
+/* Modal Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  font-size: 36px;
+  cursor: pointer;
+  color: #333;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background: rgba(74, 103, 223, 0.1);
+  color: #4A67DF;
+  transform: rotate(90deg);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .modal-content {
+    width: 95%;
+    height: 90vh;
+    max-height: 90vh;
+    border-radius: 30px;
+  }
+  
+  .modal-header {
+    padding: 2rem 2rem 1rem 2rem;
+  }
+  
+  .modal-body {
+    padding: 0 2rem 2rem 2rem;
+  }
+  
+  .modal-title {
+    font-size: 42px;
+  }
+  
+  .modal-btn {
+    width: 130px;
+    height: 90px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .modal-content {
+    width: 98%;
+    height: 95vh;
+    max-height: 95vh;
+    border-radius: 25px;
+  }
+  
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+  }
+  
+  .modal-body {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+  }
+  
+  .modal-title {
+    font-size: 36px;
+    margin-bottom: 2rem;
+  }
+  
+  .signup-modal input {
+    height: 5rem;
+    font-size: 1.4rem;
+  }
+  
+  .signup-modal .placeholder-text {
+    font-size: 1.4rem;
+  }
+  
+  .signup-modal .text {
+    font-size: 1.4rem;
+  }
+  
+  .modal-btn {
+    width: 120px;
+    height: 80px;
+    font-size: 18px;
+  }
+  
+  .modal-close-btn {
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+  }
+}
+
+/* Scrollbar personalizada para o modal */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: rgba(74, 103, 223, 0.5);
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 103, 223, 0.7);
+}
+
+/* DARK MODE PARA O MODAL */
+body.dark-mode .modal-content {
+  background: #1a2322;
+}
+
+body.dark-mode .signup-modal input {
+  background-color: #1a202c;
+  color: #fff;
+  border-color: #4b5563;
+}
+
+body.dark-mode .signup-modal input:focus {
+  border-color: #4A67DF;
+  background-color: #1a202c;
+}
+
+body.dark-mode .signup-modal .text {
+  background-color: #1a202c;
+  color: #e2e8f0;
+}
+
+body.dark-mode .signup-modal .input-contain.focused .placeholder-text .text,
+body.dark-mode .signup-modal .input-contain.has-value .placeholder-text .text {
+  background-color: #1a202c;
+  color: #e2e8f0;
+}
+
+body.dark-mode .signup-modal .input-contain.focused .placeholder-text .text {
+  color: #4A67DF;
+}
+
+body.dark-mode .modal-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+body.dark-mode .modal-close-btn:hover {
+  background: rgba(74, 103, 223, 0.2);
+  color: #4A67DF;
+}
+
+body.dark-mode .modal-footer {
+  color: #a0a3b8;
 }

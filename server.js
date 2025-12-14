@@ -41,13 +41,13 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-  console.log(`📖 BiblioTec Backend - ${process.env.NODE_ENV || 'development'}`);
+  console.log(`[LAUNCH] Servidor rodando em http://localhost:${PORT}`);
+  console.log(`[BACKEND] BiblioTec Backend - ${process.env.NODE_ENV || 'development'}`);
 });
 
 // ===== TRATAMENTO DE ERROS NÃO CAPTURADOS =====
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Promise rejeitada não tratada:', reason);
+  console.error('[ERROR] Promise rejeitada não tratada:', reason);
 });
 
 process.on('uncaughtException', (error) => {

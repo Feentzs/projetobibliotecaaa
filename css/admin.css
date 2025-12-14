@@ -11,19 +11,6 @@
   --color-text-main: #0f172a;
   --color-text-muted: #64748b;
   
-  /* --- MD3 Token Mapping --- */
-  --md-sys-color-primary: var(--color-primary);
-  --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #e0e7ff;
-  --md-sys-color-on-primary-container: #001d36;
-
-  --md-sys-color-secondary-container: #dbe4f9; /* Active state background */
-  
-  --md-sys-color-background: var(--color-bg);
-  --md-sys-color-surface: var(--color-surface);
-  --md-sys-color-on-surface: var(--color-text-main);
-  --md-sys-color-outline: #cbd5e1;
-  
   /* Shapes & Shadows (Home Style) */
   --radius-xl: 28px;    /* Matches Home .r28 */
   --radius-lg: 20px;    /* Matches Home .r20 */
@@ -46,9 +33,6 @@ body.dark-mode {
   --color-surface: #1e293b;
   --color-text-main: #f1f5f9;
   --color-text-muted: #94a3b8;
-  --md-sys-color-outline: #334155;
-  --md-sys-color-primary-container: #1e293b;
-  --md-sys-color-secondary-container: #334155;
   --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
   --shadow-md: 0 12px 28px rgba(0,0,0,0.4);
 }
@@ -60,8 +44,6 @@ body.dark-mode {
 }
 
 body.admin-body {
-  background-color: var(--md-sys-color-background);
-  color: var(--md-sys-color-on-surface);
   font-family: var(--font-brand);
   font-size: 15px;
   overflow: hidden; 
@@ -74,16 +56,43 @@ body.admin-body {
   width: 100vw;
 }
 
+
+/* Make header visually part of admin sidebar (no separating border) */
+body.admin-body{
+  background: var(--color-bg) !important;
+  border-bottom: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+}
+
+/* Dark mode for admin header */
+body.admin-body.dark-mode .site-header,
+body.admin-body:has(#dark-mode-style:not([disabled])) .site-header {
+  background: var(--card) !important;
+}
+
+/* Make header icons/text match admin color when on admin pages */
+body.admin-body .site-header .nav { align-items: center; }
+body.admin-body .site-header .logo { height: 32px; }
+
 /* --- SIDEBAR --- */
 .admin-sidebar {
   width: var(--sidebar-width);
-  background-color: var(--md-sys-color-surface); /* White sidebar */
+  background-color: var(--color-surface); /* White sidebar */
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1rem;
   transition: var(--transition-standard);
   z-index: 10;
   border-right: 1px solid rgba(0,0,0,0.03); /* Very subtle separator */
+  margin-top: 0; /* Remove gap from header */
+  padding-top: 1.5rem; /* Keep internal padding */
+}
+
+/* Dark mode for sidebar */
+body.dark-mode .admin-sidebar,
+body:has(#dark-mode-style:not([disabled])) .admin-sidebar {
+  background-color: var(--card) !important;
 }
 
 .admin-sidebar.collapsed {
@@ -109,6 +118,11 @@ body.admin-body {
   display: none;
 }
 
+/* If the page includes a top header (site header), hide duplicate sidebar logo */
+.site-header + .admin-wrapper .admin-sidebar .sidebar-logo {
+  display: none;
+}
+
 .sidebar-toggle-btn {
   background: transparent;
   color: var(--color-text-muted);
@@ -124,7 +138,7 @@ body.admin-body {
 }
 
 .sidebar-toggle-btn:hover {
-  background-color: #f1f5f9;
+  background-color: var(--color-bg);
   color: var(--color-primary);
 }
 
@@ -154,6 +168,19 @@ body.admin-body {
   white-space: nowrap;
 }
 
+/* Dark mode for sidebar items */
+body.dark-mode .sidebar-item,
+body:has(#dark-mode-style:not([disabled])) .sidebar-item {
+  color: var(--muted-text) !important;
+}
+
+body.dark-mode .sidebar-item.active,
+body:has(#dark-mode-style:not([disabled])) .sidebar-item.active {
+  background: var(--primary) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(32, 62, 182, 0.3) !important;
+}
+
 .admin-sidebar.collapsed .sidebar-item {
   padding: 0;
   justify-content: center;
@@ -162,13 +189,13 @@ body.admin-body {
 }
 
 .sidebar-item:hover {
-  background-color: #f8fafc;
+  background-color: var(--color-bg);
   color: var(--color-primary);
 }
 
 /* Active State - Gradient Style like Home Buttons */
 .sidebar-item.active {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #6b8cff 100%);
+  background: var(--color-primary);
   color: white;
   box-shadow: 0 4px 12px rgba(74, 103, 223, 0.25);
 }
@@ -222,6 +249,12 @@ body.admin-body {
   padding: 2rem;
   overflow-y: auto;
   position: relative;
+}
+
+/* Dark mode for main content */
+body.dark-mode .admin-main,
+body:has(#dark-mode-style:not([disabled])) .admin-main {
+  background-color: var(--bg) !important;
 }
 
 .admin-tab-content {
@@ -280,7 +313,7 @@ body.admin-body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #6b8cff 100%);
+  background: var(--color-primary);
   color: white;
   box-shadow: 0 6px 16px rgba(74, 103, 223, 0.25);
 }
@@ -310,7 +343,7 @@ body.admin-body {
 
 .hero-card {
   /* Gradient from Home Hero */
-  background: linear-gradient(90deg, #4A67DF 18%, #2FD6CB 68%);
+  background: var(--color-primary);
   border-radius: var(--radius-xl);
   padding: 1.5rem;
   display: flex;
@@ -324,9 +357,11 @@ body.admin-body {
   transition: transform 0.3s ease;
 }
 
-.hero-card:hover {
-  transform: translateY(-5px);
+body.dark-mode .hero-card,
+body:has(#dark-mode-style:not([disabled])) .hero-card {
+  background: var(--primary) !important;
 }
+
 
 /* Abstract shapes decoration for cards (simplified from home) */
 .hero-card::before {
@@ -393,6 +428,12 @@ body.admin-body {
   border: 1px solid rgba(255,255,255,0.5);
 }
 
+body.dark-mode .dashboard-card,
+body:has(#dark-mode-style:not([disabled])) .dashboard-card {
+  background-color: var(--card) !important;
+  border-color: var(--border-color) !important;
+}
+
 .dashboard-card h3 {
   font-size: 1.1rem;
   color: var(--color-text-main);
@@ -426,6 +467,12 @@ body.admin-body {
   transition: all 0.2s;
 }
 
+body.dark-mode .search-bar,
+body:has(#dark-mode-style:not([disabled])) .search-bar {
+  background-color: var(--card) !important;
+  border-color: transparent !important;
+}
+
 .search-bar:focus-within {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 4px rgba(74, 103, 223, 0.1);
@@ -440,6 +487,27 @@ body.admin-body {
   width: 100%;
   outline: none;
   margin-left: 12px;
+}
+
+body.dark-mode .search-bar input,
+body:has(#dark-mode-style:not([disabled])) .search-bar input {
+  color: var(--text) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.search-bar input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+body.dark-mode .search-bar input::placeholder,
+body:has(#dark-mode-style:not([disabled])) .search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 /* List Items as Cards */
@@ -476,16 +544,16 @@ body.admin-body {
 
 /* Status Badges */
 .status-badge {
-  padding: 6px 14px;
+  padding: 6px 4px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.status-active, .status-ready { background: #dcfce7; color: #15803d; }
-.status-inactive, .status-reserved { background: #fee2e2; color: #b91c1c; }
-.status-pending { background: #e0e7ff; color: #4338ca; }
+.status-active, .status-ready { color: #15803d; }
+.status-inactive, .status-reserved {color: #b91c1c; }
+.status-pending {color: #4338ca; }
 
 /* --- MODALS --- */
 .modal-overlay {
@@ -504,8 +572,43 @@ body.admin-body {
 .modal-header {
   border: none;
   padding: 0 0 1.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.modal-header h2 { font-weight: 800; font-size: 1.5rem; }
+.modal-header h2 { font-weight: 800; font-size: 1.5rem; margin: 0; }
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: #ef4444;
+}
+
+body.dark-mode .modal-close,
+body:has(#dark-mode-style:not([disabled])) .modal-close {
+  color: var(--text);
+}
+
+body.dark-mode .modal-close:hover,
+body:has(#dark-mode-style:not([disabled])) .modal-close:hover {
+  color: #ef4444;
+}
 
 .form-group label {
   font-size: 0.85rem;
@@ -545,4 +648,280 @@ body.admin-body {
   }
   .admin-sidebar.mobile-open { transform: translateX(0); }
   .admin-main { padding: 1rem; }
+}
+
+/* Generic modal wrapper - ensure consistent modal behavior on admin page */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal .modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.modal .modal-content {
+  position: relative;
+  z-index: 2001;
+  max-width: 640px;
+  width: 100%;
+}
+
+/* ===== MODAL INPUT STYLING (LIKE LOGIN) ===== */
+.modal-content .input-contain {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.modal-content .input-contain input {
+  height: 3rem;
+  width: 100%;
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: 12px;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+  background-color: #f5f5f5;
+  color: var(--color-text-main);
+  font-family: var(--font-brand);
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.modal-content .input-contain input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: #f5f5f5;
+}
+
+/* Placeholder text with animation */
+.modal-content .placeholder-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 3px solid transparent;
+  background-color: transparent;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+}
+
+.modal-content .placeholder-text .text {
+  font-size: 0.95rem;
+  padding: 0 0.5rem;
+  background-color: #f5f5f5;
+  color: var(--color-text-muted);
+  transform: translate(0);
+  transition: transform 0.15s ease-out,
+              font-size 0.15s ease-out,
+              background-color 0.2s ease-out,
+              color 0.15s ease-out;
+}
+
+/* Animate placeholder on focus or when input has value */
+.modal-content .input-contain input:focus + .placeholder-text .text {
+  background-color: #f5f5f5;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  transform: translate(0, -150%);
+}
+
+.modal-content .input-contain input:focus + .placeholder-text .text {
+  background-color: #f5f5f5;
+  color: var(--color-primary);
+}
+
+/* Modal select styling */
+.input-contain .modal-select {
+  height: 3rem;
+  width: 100%;
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: 12px;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+  background-color: #f5f5f5;
+  color: var(--color-text-main);
+  font-family: var(--font-brand);
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.input-contain .modal-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: #f5f5f5;
+}
+
+/* Modal textarea styling */
+.modal-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: 12px;
+  background-color: var(--md-sys-color-background);
+  color: var(--color-text-main);
+  font-family: var(--font-brand);
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.modal-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+/* Dark mode for modal inputs */
+body.dark-mode .modal-content .input-contain input,
+body:has(#dark-mode-style:not([disabled])) .modal-content .input-contain input {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-mode .modal-content .input-contain input:focus,
+body:has(#dark-mode-style:not([disabled])) .modal-content .input-contain input:focus {
+  background-color: var(--bg) !important;
+  border-color: var(--primary) !important;
+}
+
+body.dark-mode .modal-content .placeholder-text .text,
+body:has(#dark-mode-style:not([disabled])) .modal-content .placeholder-text .text {
+  background-color: var(--bg) !important;
+  color: var(--muted-text) !important;
+}
+
+body.dark-mode .modal-content .input-contain input:focus + .placeholder-text .text,
+body:has(#dark-mode-style:not([disabled])) .modal-content .input-contain input:focus + .placeholder-text .text {
+  background-color: var(--bg) !important;
+  color: var(--primary) !important;
+}
+
+body.dark-mode .input-contain .modal-select,
+body:has(#dark-mode-style:not([disabled])) .input-contain .modal-select {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-mode .input-contain .modal-select:focus,
+body:has(#dark-mode-style:not([disabled])) .input-contain .modal-select:focus {
+  background-color: var(--bg) !important;
+  border-color: var(--primary) !important;
+}
+
+body.dark-mode .modal-textarea,
+body:has(#dark-mode-style:not([disabled])) .modal-textarea {
+  background-color: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-mode .modal-textarea:focus,
+body:has(#dark-mode-style:not([disabled])) .modal-textarea:focus {
+  background-color: #2a3534 !important;
+  border-color: var(--primary) !important;
+}
+/* ===== ESTADOS VAZIOS PARA ADMIN ===== */
+.empty-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  border-radius: var(--radius-xl);
+  background: var(--color-bg);
+  margin: 20px 0;
+  border: 2px dashed var(--color-text-muted);
+  min-height: 300px;
+}
+
+.empty-state-image {
+  max-width: 250px;
+  height: auto;
+  margin-bottom: 24px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.empty-state p {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin: 0 0 8px 0;
+}
+
+.empty-state-subtitle {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Dark mode para estados vazios */
+body.dark-mode .empty-state,
+body:has(#dark-mode-style:not([disabled])) .empty-state {
+  background: var(--color-surface) !important;
+  border-color: var(--color-text-muted) !important;
+}
+
+body.dark-mode .empty-state p,
+body:has(#dark-mode-style:not([disabled])) .empty-state p {
+  color: var(--color-text-main) !important;
+}
+
+body.dark-mode .empty-state-subtitle,
+body:has(#dark-mode-style:not([disabled])) .empty-state-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+body.dark-mode .empty-state-image,
+body:has(#dark-mode-style:not([disabled])) .empty-state-image {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* Responsivo para estados vazios */
+@media (max-width: 768px) {
+  .empty-state {
+    padding: 40px 16px;
+    min-height: 250px;
+  }
+  
+  .empty-state-image {
+    max-width: 180px;
+  }
+  
+  .empty-state p {
+    font-size: 16px;
+  }
+}
+/* Certifique-se de que estas regras estão no dark-mode.css também */
+body.dark-mode .empty-state-image,
+body:has(#dark-mode-style:not([disabled])) .empty-state-image {
+  content: url('../images/ilust2dark.webp');
+}
+
+/* Ou se preferir usar atributos data-light/data-dark */
+body.dark-mode .empty-state-image[data-light][data-dark],
+body:has(#dark-mode-style:not([disabled])) .empty-state-image[data-light][data-dark] {
+  content: attr(data-dark);
 }

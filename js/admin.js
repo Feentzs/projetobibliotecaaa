@@ -10,9 +10,62 @@ class AdminManager {
 
   init() {
     this.setupEventListeners();
+    this.setupTestDataButton();
     this.setupThemeToggle();
     this.restoreSidebarState();
     this.loadDashboardData();
+    
+    // Atualizar imagens dos estados vazios
+    this.updateEmptyStateImages();
+    
+    // Observar mudanças de tema
+    const darkModeStyle = document.getElementById('dark-mode-style');
+    if (darkModeStyle) {
+      const observer = new MutationObserver(() => this.updateEmptyStateImages());
+      observer.observe(darkModeStyle, { attributes: true, attributeFilter: ['disabled'] });
+    }
+    
+    // Auto-create demo data if no data exists (safe fallback)
+    try {
+      const hasBooks = !!localStorage.getItem('biblioTecBooks');
+      const hasUsers = !!localStorage.getItem('testUsers');
+      const hasReservations = !!localStorage.getItem('testReservations');
+      if (!hasBooks && !hasUsers && !hasReservations) {
+        // Slight delay so UI finishes setup before creating and loading data
+        setTimeout(() => {
+          if (typeof window.createTestData === 'function') {
+            window.createTestData();
+            // Reload data to reflect in UI
+            this.loadDashboardData();
+            this.showNotification('Dados de exemplo carregados');
+          }
+        }, 200);
+      }
+    } catch (e) {
+      // ignore localStorage errors
+    }
+  }
+
+  setupTestDataButton() {
+    const btn = document.getElementById('btnCreateTestData');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      if (typeof window.createTestData === 'function') {
+        window.createTestData();
+        // Reload data to reflect in UI
+        this.loadDashboardData();
+        // Switch to 'books' tab to show created books immediately
+        document.querySelectorAll('.sidebar-item').forEach(t => t.classList.remove('active'));
+        const booksTab = document.querySelector('.sidebar-item[data-tab="books"]');
+        if (booksTab) booksTab.classList.add('active');
+        document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+        const booksContent = document.getElementById('books-tab');
+        if (booksContent) booksContent.classList.add('active');
+        this.showNotification('Dados de exemplo gerados com sucesso');
+      } else {
+        this.showNotification('Função de dados de teste indisponível', 'error');
+      }
+    });
   }
 
   restoreSidebarState() {
@@ -36,19 +89,28 @@ class AdminManager {
     });
 
     // Books section
-    document.getElementById('btnAddBook').addEventListener('click', () => this.openBookModal());
-    document.getElementById('closeBookModal').addEventListener('click', () => this.closeBookModal());
-    document.getElementById('bookForm').addEventListener('submit', (e) => this.handleBookSubmit(e));
-    document.getElementById('bookSearchInput').addEventListener('input', (e) => this.filterBooks(e.target.value));
+    const btnAddBook = document.getElementById('btnAddBook');
+    if (btnAddBook) btnAddBook.addEventListener('click', () => this.openBookModal());
+    const closeBookBtn = document.getElementById('closeBookModal');
+    if (closeBookBtn) closeBookBtn.addEventListener('click', () => this.closeBookModal());
+    const bookForm = document.getElementById('bookForm');
+    if (bookForm) bookForm.addEventListener('submit', (e) => this.handleBookSubmit(e));
+    const bookSearchInput = document.getElementById('bookSearchInput');
+    if (bookSearchInput) bookSearchInput.addEventListener('input', (e) => this.filterBooks(e.target.value));
 
     // Users section
-    document.getElementById('btnAddUser').addEventListener('click', () => this.openUserModal());
-    document.getElementById('closeUserModal').addEventListener('click', () => this.closeUserModal());
-    document.getElementById('userForm').addEventListener('submit', (e) => this.handleUserSubmit(e));
-    document.getElementById('userSearchInput').addEventListener('input', (e) => this.filterUsers(e.target.value));
+    const btnAddUser = document.getElementById('btnAddUser');
+    if (btnAddUser) btnAddUser.addEventListener('click', () => this.openUserModal());
+    const closeUserBtn = document.getElementById('closeUserModal');
+    if (closeUserBtn) closeUserBtn.addEventListener('click', () => this.closeUserModal());
+    const userForm = document.getElementById('userForm');
+    if (userForm) userForm.addEventListener('submit', (e) => this.handleUserSubmit(e));
+    const userSearchInput = document.getElementById('userSearchInput');
+    if (userSearchInput) userSearchInput.addEventListener('input', (e) => this.filterUsers(e.target.value));
 
     // Reservations section
-    document.getElementById('reservationSearchInput').addEventListener('input', (e) => this.filterReservations(e.target.value));
+    const reservationSearchInput = document.getElementById('reservationSearchInput');
+    if (reservationSearchInput) reservationSearchInput.addEventListener('input', (e) => this.filterReservations(e.target.value));
 
     // Modal overlay close
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -61,25 +123,31 @@ class AdminManager {
   }
 
   setupThemeToggle() {
-    const themeToggle = document.getElementById('themeToggleAdmin');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => {
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        if (isDarkMode) {
-          document.body.classList.remove('dark-mode');
-          document.body.classList.add('light-mode');
-          localStorage.setItem('theme', 'light');
-        } else {
-          document.body.classList.remove('light-mode');
-          document.body.classList.add('dark-mode');
-          localStorage.setItem('theme', 'dark');
-        }
-      });
+    // Use the same dark-mode-style approach as scripts.js for consistency
+    const darkModeStyle = document.getElementById('dark-mode-style');
+    const headerSwitch = document.getElementById('theme-switch');
+    
+    if (!darkModeStyle) return; // Exit if dark-mode-style not available
 
-      // Load saved theme preference
-      const savedTheme = localStorage.getItem('theme') || 'dark';
+    // Apply theme based on darkModeStyle.disabled state
+    const applyTheme = () => {
+      const isDark = !darkModeStyle.disabled;
       document.body.classList.remove('light-mode', 'dark-mode');
-      document.body.classList.add(savedTheme + '-mode');
+      document.body.classList.add(isDark ? 'dark-mode' : 'light-mode');
+      if (headerSwitch) headerSwitch.checked = isDark;
+    };
+
+    // Initialize from localStorage or default
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    darkModeStyle.disabled = (savedTheme === 'light');
+    applyTheme();
+
+    // Listen to header switch changes
+    if (headerSwitch) {
+      headerSwitch.addEventListener('change', () => {
+        // Let scripts.js handle the main change, we just sync
+        setTimeout(() => applyTheme(), 100);
+      });
     }
   }
 
@@ -103,6 +171,50 @@ class AdminManager {
     if (tabName === 'books') this.loadBooks();
     if (tabName === 'users') this.loadUsers();
     if (tabName === 'reservations') this.loadReservations();
+  }
+
+  // ===== FUNÇÕES DE ESTADOS VAZIOS =====
+
+  updateEmptyStateImages() {
+    const darkModeStyle = document.getElementById('dark-mode-style');
+    const isDarkMode = darkModeStyle && !darkModeStyle.disabled;
+    
+    const emptyStateImages = document.querySelectorAll('.empty-state-image');
+    
+    emptyStateImages.forEach(img => {
+      const lightSrc = img.getAttribute('data-light');
+      const darkSrc = img.getAttribute('data-dark');
+      
+      if (isDarkMode && darkSrc) {
+        img.src = darkSrc;
+      } else if (lightSrc) {
+        img.src = lightSrc;
+      }
+    });
+  }
+
+  showEmptyState(type, message = null) {
+    const emptyState = document.getElementById(`${type}-empty`);
+    const listElement = document.getElementById(`${type}List`);
+    const titleElement = document.getElementById(`${type}-empty-title`);
+    const subtitleElement = document.getElementById(`${type}-empty-subtitle`);
+    
+    if (emptyState && listElement) {
+      if (message && titleElement) {
+        titleElement.textContent = message;
+      }
+      
+      // Verificar se há itens na lista
+      const hasItems = listElement.children.length > 0;
+      
+      if (!hasItems) {
+        emptyState.style.display = 'flex';
+        listElement.style.display = 'none';
+      } else {
+        emptyState.style.display = 'none';
+        listElement.style.display = 'block';
+      }
+    }
   }
 
   // ===== DASHBOARD =====
@@ -193,12 +305,12 @@ class AdminManager {
           datasets: [{
             label: 'Reservas',
             data: data,
-            borderColor: '#6750a4',
-            backgroundColor: 'rgba(103, 80, 164, 0.1)',
+            borderColor: '#4A67DF',
+            backgroundColor: 'rgba(74, 103, 223, 0.1)',
             tension: 0.4,
             fill: true,
             pointRadius: 5,
-            pointBackgroundColor: '#6750a4',
+            pointBackgroundColor: '#4A67DF',
             pointBorderColor: '#fff',
             pointBorderWidth: 2
           }]
@@ -256,8 +368,8 @@ class AdminManager {
           datasets: [{
             label: 'Reservas',
             data: data,
-            backgroundColor: '#6750a4',
-            borderColor: '#6750a4',
+            backgroundColor: '#4A67DF',
+            borderColor: '#4A67DF',
             borderRadius: 6,
             borderSkipped: false
           }]
@@ -284,7 +396,7 @@ class AdminManager {
     }
   }
 
-  // ===== BOOKS MANAGEMENT =====
+  // ===== LIVROS (ACERVO) =====
   async loadBooks() {
     try {
       const response = await this.api.getBooks();
@@ -311,22 +423,23 @@ class AdminManager {
       }
       
       this.renderBooks();
+      this.showEmptyState('books', 'Nenhum livro no catálogo');
       
-      if (this.books.length === 0) {
-        this.showEmptyState('booksList', 'Nenhum livro no catálogo. Adicione um novo livro para começar.');
-      }
     } catch (error) {
       console.error('Error loading books:', error);
-      this.showEmptyState('booksList', 'Erro ao carregar livros');
+      this.books = [];
+      this.showEmptyState('books', 'Erro ao carregar livros');
     }
   }
 
   renderBooks(books = this.books) {
     const booksList = document.getElementById('booksList');
-    booksList.innerHTML = '';
+    if (!booksList) return;
 
-    if (books.length === 0) {
-      this.showEmptyState('booksList', 'Nenhum livro no catálogo');
+    booksList.innerHTML = '';
+    
+    if (!books || books.length === 0) {
+      this.showEmptyState('books', 'Nenhum livro no catálogo');
       return;
     }
 
@@ -334,7 +447,7 @@ class AdminManager {
       const item = document.createElement('div');
       item.className = 'list-item';
       item.innerHTML = `
-        <img src="${book.cover_url || 'images/placeholder.jpg'}" alt="${book.title}" class="list-item-image">
+        <img src="${book.cover_url || book.cover || 'images/placeholder.jpg'}" alt="${book.title}" class="list-item-image">
         <div class="list-item-content">
           <h3 class="list-item-title">${book.title}</h3>
           <p class="list-item-subtitle">${book.author}</p>
@@ -354,12 +467,14 @@ class AdminManager {
           </div>
         </div>
         <div class="list-item-actions">
-          <button class="btn btn-sm btn-primary" onclick="adminManager.openBookModal(${book.id})">Editar</button>
-          <button class="btn btn-sm btn-danger" onclick="adminManager.deleteBook(${book.id})">Deletar</button>
+          <button class="btn btn-sm btn-primary" onclick="adminManager.openBookModal('${book.id}')">Editar</button>
+          <button class="btn btn-sm btn-danger" onclick="adminManager.deleteBook('${book.id}')">Deletar</button>
         </div>
       `;
       booksList.appendChild(item);
     });
+    
+    this.showEmptyState('books');
   }
 
   filterBooks(searchTerm) {
@@ -380,7 +495,7 @@ class AdminManager {
     document.getElementById('bookId').value = '';
 
     if (bookId) {
-      const book = this.books.find(b => b.id === bookId);
+      const book = this.books.find(b => b.id == bookId);
       if (book) {
         document.getElementById('bookModalTitle').textContent = 'Editar Livro';
         document.getElementById('bookId').value = book.id;
@@ -388,7 +503,7 @@ class AdminManager {
         document.getElementById('bookAuthor').value = book.author;
         document.getElementById('bookGenre').value = book.genre;
         document.getElementById('bookRating').value = book.rating;
-        document.getElementById('bookCover').value = book.cover_url;
+        document.getElementById('bookCover').value = book.cover_url || book.cover || '';
         document.getElementById('bookPages').value = book.pages || '';
         document.getElementById('bookDescription').value = book.description || '';
       }
@@ -397,6 +512,12 @@ class AdminManager {
     }
 
     modal.classList.add('active');
+    
+    // Reset placeholder positions after modal opens
+    setTimeout(() => {
+      const inputs = form.querySelectorAll('.input-contain input');
+      inputs.forEach(input => resetPlaceholder(input));
+    }, 0);
   }
 
   closeBookModal() {
@@ -446,7 +567,7 @@ class AdminManager {
     }
   }
 
-  // ===== USERS MANAGEMENT =====
+  // ===== USUÁRIOS =====
   async loadUsers() {
     try {
       // Try to load from API first
@@ -461,6 +582,7 @@ class AdminManager {
           this.users = await response.json();
           if (Array.isArray(this.users)) {
             this.renderUsers();
+            this.showEmptyState('users', 'Nenhum usuário encontrado');
             return;
           }
         }
@@ -475,6 +597,7 @@ class AdminManager {
           this.users = JSON.parse(testUsers);
           if (Array.isArray(this.users) && this.users.length > 0) {
             this.renderUsers();
+            this.showEmptyState('users');
             return;
           }
         } catch (e) {
@@ -502,23 +625,23 @@ class AdminManager {
       }
       
       this.renderUsers();
+      this.showEmptyState('users', 'Nenhum usuário encontrado');
       
-      if (this.users.length === 0) {
-        this.showEmptyState('usersList', 'Nenhum usuário encontrado. Crie um novo usuário para começar.');
-      }
     } catch (error) {
       console.error('Error loading users:', error);
       this.users = [];
-      this.showEmptyState('usersList', 'Erro ao carregar usuários');
+      this.showEmptyState('users', 'Erro ao carregar usuários');
     }
   }
 
   renderUsers(users = this.users) {
     const usersList = document.getElementById('usersList');
-    usersList.innerHTML = '';
+    if (!usersList) return;
 
-    if (users.length === 0) {
-      this.showEmptyState('usersList', 'Nenhum usuário encontrado');
+    usersList.innerHTML = '';
+    
+    if (!users || users.length === 0) {
+      this.showEmptyState('users', 'Nenhum usuário encontrado');
       return;
     }
 
@@ -543,12 +666,14 @@ class AdminManager {
           </div>
         </div>
         <div class="list-item-actions">
-          <button class="btn btn-sm btn-primary" onclick="adminManager.openUserModal(${user.id})">Editar</button>
-          <button class="btn btn-sm btn-danger" onclick="adminManager.deleteUser(${user.id})">Deletar</button>
+          <button class="btn btn-sm btn-primary" onclick="adminManager.openUserModal('${user.id}')">Editar</button>
+          <button class="btn btn-sm btn-danger" onclick="adminManager.deleteUser('${user.id}')">Deletar</button>
         </div>
       `;
       usersList.appendChild(item);
     });
+    
+    this.showEmptyState('users');
   }
 
   filterUsers(searchTerm) {
@@ -568,7 +693,7 @@ class AdminManager {
     document.getElementById('userPassword').required = true;
 
     if (userId) {
-      const user = this.users.find(u => u.id === userId);
+      const user = this.users.find(u => u.id == userId);
       if (user) {
         document.getElementById('userModalTitle').textContent = 'Editar Usuário';
         document.getElementById('userId').value = user.id;
@@ -582,6 +707,12 @@ class AdminManager {
     }
 
     modal.classList.add('active');
+    
+    // Reset placeholder positions after modal opens
+    setTimeout(() => {
+      const inputs = form.querySelectorAll('.input-contain input');
+      inputs.forEach(input => resetPlaceholder(input));
+    }, 0);
   }
 
   closeUserModal() {
@@ -656,7 +787,7 @@ class AdminManager {
     }
   }
 
-  // ===== RESERVATIONS MANAGEMENT =====
+  // ===== RESERVAS =====
   async loadReservations() {
     try {
       try {
@@ -670,6 +801,7 @@ class AdminManager {
           this.reservations = await response.json();
           if (Array.isArray(this.reservations)) {
             this.renderReservations();
+            this.showEmptyState('reservations', 'Nenhuma reserva encontrada');
             return;
           }
         }
@@ -684,6 +816,7 @@ class AdminManager {
           this.reservations = JSON.parse(testReservations);
           if (Array.isArray(this.reservations) && this.reservations.length > 0) {
             this.renderReservations();
+            this.showEmptyState('reservations');
             return;
           }
         } catch (e) {
@@ -694,23 +827,23 @@ class AdminManager {
       // Fallback to empty array
       this.reservations = [];
       this.renderReservations();
+      this.showEmptyState('reservations', 'Nenhuma reserva encontrada');
       
-      if (this.reservations.length === 0) {
-        this.showEmptyState('reservationsList', 'Nenhuma reserva encontrada');
-      }
     } catch (error) {
       console.error('Error loading reservations:', error);
       this.reservations = [];
-      this.showEmptyState('reservationsList', 'Nenhuma reserva encontrada');
+      this.showEmptyState('reservations', 'Erro ao carregar reservas');
     }
   }
 
   renderReservations(reservations = this.reservations) {
     const reservationsList = document.getElementById('reservationsList');
-    reservationsList.innerHTML = '';
+    if (!reservationsList) return;
 
-    if (reservations.length === 0) {
-      this.showEmptyState('reservationsList', 'Nenhuma reserva encontrada');
+    reservationsList.innerHTML = '';
+    
+    if (!reservations || reservations.length === 0) {
+      this.showEmptyState('reservations', 'Nenhuma reserva encontrada');
       return;
     }
 
@@ -721,7 +854,7 @@ class AdminManager {
       const item = document.createElement('div');
       item.className = 'list-item';
       item.innerHTML = `
-        <img src="${book?.cover_url || 'images/placeholder.jpg'}" alt="${book?.title}" class="list-item-image" style="width: 60px; height: 90px;">
+        <img src="${book?.cover_url || book?.cover || 'images/placeholder.jpg'}" alt="${book?.title}" class="list-item-image" style="width: 60px; height: 90px;">
         <div class="list-item-content" style="flex: 1;">
           <h3 class="list-item-title">${book?.title || 'Livro Desconhecido'}</h3>
           <p class="list-item-subtitle">${user?.name || 'Usuário Desconhecido'}</p>
@@ -739,7 +872,7 @@ class AdminManager {
           </div>
         </div>
         <div class="list-item-actions">
-          <select onchange="adminManager.updateReservationStatus(${reservation.id}, this.value)" class="btn btn-sm" style="padding: 0.5rem;">
+          <select onchange="adminManager.updateReservationStatus('${reservation.id}', this.value)" class="btn btn-sm" style="padding: 0.5rem;">
             <option value="reserved" ${reservation.status === 'reserved' ? 'selected' : ''}>Reservado</option>
             <option value="ready" ${reservation.status === 'ready' ? 'selected' : ''}>Pronto</option>
             <option value="completed" ${reservation.status === 'completed' ? 'selected' : ''}>Completo</option>
@@ -749,6 +882,8 @@ class AdminManager {
       `;
       reservationsList.appendChild(item);
     });
+    
+    this.showEmptyState('reservations');
   }
 
   filterReservations(searchTerm) {
@@ -783,17 +918,7 @@ class AdminManager {
     }
   }
 
-  // ===== UTILITY FUNCTIONS =====
-  showEmptyState(elementId, message) {
-    const element = document.getElementById(elementId);
-    element.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">📭</div>
-        <p>${message}</p>
-      </div>
-    `;
-  }
-
+  // ===== FUNÇÕES AUXILIARES =====
   formatDate(dateString) {
     if (!dateString) return '—';
     const date = new Date(dateString);
@@ -845,9 +970,71 @@ function closeUserModal() {
   document.getElementById('userModal').classList.remove('active');
 }
 
+// Reset placeholder to normal position
+function resetPlaceholder(input) {
+  const label = input.nextElementSibling;
+  if (label && label.classList.contains('placeholder-text')) {
+    const text = label.querySelector('.text');
+    text.style.transform = 'translate(0)';
+    text.style.fontSize = '0.95rem';
+  }
+}
+
+// Setup modal input placeholder animations
+function setupModalInputAnimations() {
+  const inputs = document.querySelectorAll('.modal-content .input-contain input');
+  
+  inputs.forEach(input => {
+    // Check on load if input has a value
+    if (input.value) {
+      updatePlaceholder(input);
+    }
+    
+    // Listen to input changes
+    input.addEventListener('input', () => {
+      updatePlaceholder(input);
+    });
+    
+    // Listen to focus/blur
+    input.addEventListener('focus', () => {
+      updatePlaceholder(input);
+    });
+    
+    input.addEventListener('blur', () => {
+      updatePlaceholder(input);
+    });
+  });
+  
+  function updatePlaceholder(input) {
+    const hasValue = input.value.trim() !== '';
+    const label = input.nextElementSibling;
+    
+    if (label && label.classList.contains('placeholder-text')) {
+      const text = label.querySelector('.text');
+      if (hasValue || document.activeElement === input) {
+        text.style.transform = 'translate(0, -150%)';
+        text.style.fontSize = '0.75rem';
+      } else {
+        text.style.transform = 'translate(0)';
+        text.style.fontSize = '0.95rem';
+      }
+    }
+  }
+}
+
 // Initialize admin manager when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   window.adminManager = new AdminManager();
+  
+  // Setup modal input animations (placeholder text like login)
+  setupModalInputAnimations();
+  
+  // Atualizar imagens de estado vazio após carregamento
+  setTimeout(() => {
+    if (window.adminManager && window.adminManager.updateEmptyStateImages) {
+      window.adminManager.updateEmptyStateImages();
+    }
+  }, 100);
 });
 
 // Add slide in animation
@@ -865,4 +1052,3 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-

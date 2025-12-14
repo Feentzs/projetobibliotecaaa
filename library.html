@@ -99,61 +99,96 @@
       </div>
     </header>
 
-  <main>
-    <section class="container">
-      <h1>Minha Biblioteca</h1>
+  <!-- Substitua o conteúdo da seção "Minha Biblioteca" pelo código abaixo -->
+<main>
+  <section class="container">
+    <h1>Minha Biblioteca</h1>
+    
+    <!-- Container para estado sem livros favoritados -->
+    <div class="carousel-section" id="favorites-section">
+      <div class="section-header">
+        <h2>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; margin-right: 8px;">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+          </svg>
+          Livros Favoritados
+        </h2>
+        <div class="carousel-controls">
+          <button class="carousel-btn prev" id="favorites-prev" aria-label="Anterior">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="carousel-btn next" id="favorites-next" aria-label="Próximo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
       
-      <!-- Carrossel de Livros Favoritados -->
-      <div class="carousel-section">
-        <div class="section-header">
-          <h2>📚 Livros Favoritados</h2>
-          <div class="carousel-controls">
-            <button class="carousel-btn prev" id="favorites-prev" aria-label="Anterior">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <button class="carousel-btn next" id="favorites-next" aria-label="Próximo">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="carousel" id="favoritesCarousel">
-          <div class="carousel-track" id="favoritesTrack"></div>
-        </div>
+      <!-- Carrossel de favoritos -->
+      <div class="carousel" id="favoritesCarousel">
+        <div class="carousel-track" id="favoritesTrack"></div>
       </div>
+      
+      <!-- Estado vazio para favoritos -->
+      <div id="favorites-empty" class="empty-state" style="display: none;">
+        <img src="images/ilust2.webp" alt="Nenhum livro favoritado" class="empty-state-image" 
+             data-light="images/ilust2.webp" data-dark="images/ilust2dark.webp">
+        <p>Você ainda não tem livros favoritados.</p>
+        <p class="empty-state-subtitle">Explore a biblioteca e adicione seus livros favoritos!</p>
+      </div>
+    </div>
 
-      <!-- Carrossel de Livros Reservados -->
-      <div class="carousel-section">
-        <div class="section-header">
-          <h2>⏳ Livros Reservados</h2>
-          <div class="carousel-controls">
-            <button class="carousel-btn prev" id="reserved-prev" aria-label="Anterior">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <button class="carousel-btn next" id="reserved-next" aria-label="Próximo">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="carousel" id="reservedCarousel">
-          <div class="carousel-track" id="reservedTrack"></div>
+    <!-- Container para estado sem livros reservados -->
+    <div class="carousel-section" id="reserved-section">
+      <div class="section-header">
+        <h2>⏳ Livros Reservados</h2>
+        <div class="carousel-controls">
+          <button class="carousel-btn prev" id="reserved-prev" aria-label="Anterior">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="carousel-btn next" id="reserved-next" aria-label="Próximo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
         </div>
       </div>
+      
+      <!-- Carrossel de reservados -->
+      <div class="carousel" id="reservedCarousel">
+        <div class="carousel-track" id="reservedTrack"></div>
+      </div>
+      
+      <!-- Estado vazio para reservados -->
+<div id="reserved-empty" class="empty-state" style="display: none;">
+  <img src="images/ilust2.webp" alt="Nenhum livro reservado" class="empty-state-image"
+       data-light="images/ilust2.webp" data-dark="images/ilust2dark.webp">
+  <p id="reserved-empty-title">Você ainda não tem livros reservados.</p>
+  <p id="reserved-empty-subtitle" class="empty-state-subtitle">Explore a biblioteca e reserve seus livros favoritos!</p>
+</div>
 
-      <!-- Grade de Todos os Livros da Biblioteca -->
-      <div class="section-header" style="margin-top: 40px;">
-        <h2>📖 Todos os Livros</h2>
-      </div>
-      <div id="libraryGridPage" class="grid"></div>
-    </section>
-  </main>
+    <!-- Grade de Todos os Livros da Biblioteca -->
+    <div class="section-header" style="margin-top: 40px;">
+      <h2>📖 Todos os Livros</h2>
+    </div>
+    
+   <!-- Estado vazio para favoritos -->
+<div id="favorites-empty" class="empty-state" style="display: none;">
+  <img src="images/ilust2.webp" alt="Nenhum livro favoritado" class="empty-state-image" 
+       data-light="images/ilust2.webp" data-dark="images/ilust2dark.webp">
+  <p id="favorites-empty-title">Você ainda não tem livros favoritados.</p>
+  <p id="favorites-empty-subtitle" class="empty-state-subtitle">Explore a biblioteca e adicione seus livros favoritos!</p>
+</div>
+    <!-- Grade de livros -->
+    <div id="libraryGridPage" class="grid"></div>
+  </section>
+</main>
 
   <script src=".\js\storage.js"></script>
   <script src=".\js\scripts.js"></script>

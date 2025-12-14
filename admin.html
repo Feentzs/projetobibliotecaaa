@@ -6,18 +6,98 @@
     <title>Painel Administrativo — BiblioTec</title>
     <link rel="icon" href="images/logosemtxt.svg">
     <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="stylesheet" href="css/dark-mode.css" id="dark-mode-style">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     </head>
+    
   <body class="admin-body">
+    
+    <header class="site-header sticky-header">
+      <div class="container nav">
+        <img src="images/logo-light.svg" alt="BiblioTec Logo" class="logo" id="header-logo" style="width: 180px; height: 44px;">
+        <nav class="nav-links">
+          <a href="index.html" class="active">Início</a>
+          <a href="library.html">Minha Biblioteca</a>
+        </nav>
+        <div class="user-menu-container">
+          <input type="checkbox" id="menu_checkbox">
+          <label for="menu_checkbox" class="hamburger-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+          </label>
+          <div class="user-menu-dropdown" id="user-menu-dropdown">
+            <div class="user-info">
+              <div class="user-avatar">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                  <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="user-details">
+                <span class="user-name" id="current-username">Usuário</span>
+                <span class="user-email" id="current-useremail">usuario@exemplo.com</span>
+              </div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-items">
+              <button type="button" class="menu-item" id="theme-toggle-menu">
+                <div class="menu-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="sun-icon-menu">
+                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path d="M12 4V2M12 20V22M4 12H2M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5M17.6859 17.69L18.5 18.5M21 12H20" 
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="moon-icon-menu" style="display: none;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" 
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <span class="menu-item-text">Modo Escuro</span>
+                <label class="theme-switch">
+                  <input type="checkbox" id="theme-switch">
+                  <span class="switch-slider"></span>
+                </label>
+              </button>
+              <button type="button" class="menu-item" id="account-btn">
+                <div class="menu-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="menu-item-text">Configurar Conta</span>
+              </button>
+              <button type="button" class="menu-item logout-btn" id="logout-btn">
+                <div class="menu-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M16 17l5-5-5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 12H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="menu-item-text">Sair</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="header-search hidden">
+          <input id="headerSearchInput" placeholder="Buscar por título, autor ou assunto" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none">
+            <circle cx="11" cy="11" r="6" stroke="#4A67DF" stroke-width="1.6" fill="none" />
+            <path d="M21 21l-4.3-4.3" stroke="#4A67DF" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <div class="search-overlay" id="headerSearchOverlay"></div>
+        </div>
+      </div>
+    </header>
+
     <div class="admin-wrapper">
       
       <aside class="admin-sidebar" id="adminSidebar">
         <div class="sidebar-header">
           <img src="images/logo-light.svg" alt="BiblioTec" class="sidebar-logo">
-          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
         </div>
 
         <nav class="sidebar-nav">
@@ -53,22 +133,16 @@
             </svg>
             <span>Reservas</span>
           </button>
+
+          
         </nav>
 
         <div class="sidebar-footer">
-          <button class="sidebar-theme-btn" id="themeToggleAdmin" title="Tema">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="5"/>
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
-          <a href="home.html" class="sidebar-logout-btn" title="Sair">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round"/>
-              <path d="M16 17l5-5-5-5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 12H9" stroke-linecap="round"/>
-            </svg>
-          </a>
         </div>
       </aside>
 
@@ -77,28 +151,50 @@
         <section class="admin-tab-content active" id="dashboard-tab">
           <div class="content-header">
             <div>
-              <h1>Visão Geral</h1>
-              <p class="content-subtitle">Bem-vindo de volta, Administrador.</p>
-            </div>
+                <h1>Visão Geral</h1>
+                <p class="content-subtitle">Bem-vindo de volta, Administrador.</p>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button id="btnCreateTestData" class="btn btn-secondary" title="Gerar dados de exemplo">Gerar dados de exemplo</button>
+              </div>
             </div>
 
           <div class="dashboard-hero">
             <div class="hero-card">
-              <div class="hero-icon">📚</div>
+              <div class="hero-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+                </svg>
+              </div>
               <div class="hero-content">
                 <h3>Total de Livros</h3>
                 <p class="hero-value" id="totalBooksValue">0</p>
               </div>
             </div>
             <div class="hero-card">
-              <div class="hero-icon">👥</div>
+              <div class="hero-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
               <div class="hero-content">
                 <h3>Usuários Ativos</h3>
                 <p class="hero-value" id="totalUsersValue">0</p>
               </div>
             </div>
             <div class="hero-card">
-              <div class="hero-icon">📅</div>
+              <div class="hero-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
               <div class="hero-content">
                 <h3>Reservas (Semana)</h3>
                 <p class="hero-value" id="weekReservationsValue">0</p>
@@ -125,76 +221,99 @@
           </div>
         </section>
 
-        <section class="admin-tab-content" id="books-tab">
-          <div class="content-header">
-            <div>
-              <h1>Acervo</h1>
-              <p class="content-subtitle">Gerencie o catálogo da biblioteca</p>
-            </div>
-            <button id="btnAddBook" class="btn btn-primary">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-              Novo Livro
-            </button>
-          </div>
-          
-          <div class="search-bar">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" id="bookSearchInput" placeholder="Pesquisar por título, autor..." />
-          </div>
+       <section class="admin-tab-content" id="books-tab">
+  <div class="content-header">
+    <div>
+      <h1>Acervo</h1>
+      <p class="content-subtitle">Gerencie o catálogo da biblioteca</p>
+    </div>
+    <button id="btnAddBook" class="btn btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Novo Livro
+    </button>
+  </div>
+  
+  <div class="search-bar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input type="text" id="bookSearchInput" placeholder="Pesquisar por título, autor..." />
+  </div>
 
-          <div class="books-list" id="booksList"></div>
-        </section>
+  <div class="books-list" id="booksList"></div>
+  
+  <!-- Estado vazio para livros -->
+  <div id="books-empty" class="empty-state" style="display: none;">
+    <img src="images/ilust2.webp" alt="Nenhum livro encontrado" class="empty-state-image"
+         data-light="images/ilust2.webp" data-dark="images/ilust2dark.webp">
+    <p id="books-empty-title">Nenhum livro no catálogo</p>
+    <p id="books-empty-subtitle" class="empty-state-subtitle">Adicione um novo livro para começar.</p>
+  </div>
+</section>
+       <section class="admin-tab-content" id="users-tab">
+  <div class="content-header">
+    <div>
+      <h1>Usuários</h1>
+      <p class="content-subtitle">Controle de membros e permissões</p>
+    </div>
+    <button id="btnAddUser" class="btn btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Adicionar Usuário
+    </button>
+  </div>
 
-        <section class="admin-tab-content" id="users-tab">
-          <div class="content-header">
-            <div>
-              <h1>Usuários</h1>
-              <p class="content-subtitle">Controle de membros e permissões</p>
-            </div>
-            <button id="btnAddUser" class="btn btn-primary">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-              Adicionar Usuário
-            </button>
-          </div>
+  <div class="search-bar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input type="text" id="userSearchInput" placeholder="Buscar por nome ou email..." />
+  </div>
 
-          <div class="search-bar">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" id="userSearchInput" placeholder="Buscar por nome ou email..." />
-          </div>
+  <div class="users-list" id="usersList"></div>
+  
+  <!-- Estado vazio para usuários -->
+  <div id="users-empty" class="empty-state" style="display: none;">
+    <img src="images/ilust2.webp" alt="Nenhum usuário encontrado" class="empty-state-image"
+         data-light="images/ilust2.webp" data-dark="images/ilust2dark.webp">
+    <p id="users-empty-title">Nenhum usuário encontrado</p>
+    <p id="users-empty-subtitle" class="empty-state-subtitle">Adicione um novo usuário para começar.</p>
+  </div>
+</section>
+<!-- Na seção de Reservas -->
+<section class="admin-tab-content" id="reservations-tab">
+  <div class="content-header">
+    <div>
+      <h1>Reservas</h1>
+      <p class="content-subtitle">Monitoramento de empréstimos</p>
+    </div>
+  </div>
 
-          <div class="users-list" id="usersList"></div>
-        </section>
+  <div class="search-bar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input type="text" id="reservationSearchInput" placeholder="Filtrar reservas..." />
+  </div>
 
-        <section class="admin-tab-content" id="reservations-tab">
-          <div class="content-header">
-            <div>
-              <h1>Reservas</h1>
-              <p class="content-subtitle">Monitoramento de empréstimos</p>
-            </div>
-          </div>
-
-          <div class="search-bar">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" id="reservationSearchInput" placeholder="Filtrar reservas..." />
-          </div>
-
-          <div class="reservations-list" id="reservationsList"></div>
-        </section>
+  <div class="reservations-list" id="reservationsList"></div>
+  
+  <!-- Estado vazio para reservas -->
+  <div id="reservations-empty" class="empty-state" style="display: none;">
+    <img src="images/ilust2.webp" alt="Nenhuma reserva encontrada" class="empty-state-image"
+         data-light="images/ilust2.webp" data-dark="images/ilust2dark.webp">
+    <p id="reservations-empty-title">Nenhuma reserva encontrada</p>
+    <p id="reservations-empty-subtitle" class="empty-state-subtitle">As reservas aparecerão aqui.</p>
+  </div>
+</section>
       </main>
     </div>
 
@@ -215,52 +334,73 @@
           
           <div class="form-row">
             <div class="form-group">
-              <label for="bookTitle">Título</label>
-              <input type="text" id="bookTitle" name="title" required placeholder="Ex: Dom Casmurro" />
+              <div class="input-contain">
+                <input type="text" id="bookTitle" name="title" required autocomplete="off">
+                <label class="placeholder-text" for="bookTitle">
+                  <div class="text">Título</div>
+                </label>
+              </div>
             </div>
             <div class="form-group">
-              <label for="bookAuthor">Autor</label>
-              <input type="text" id="bookAuthor" name="author" required placeholder="Ex: Machado de Assis" />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="bookGenre">Gênero</label>
-              <select id="bookGenre" name="genre" required>
-                <option value="">Selecione...</option>
-                <option value="Clássico">Clássico</option>
-                <option value="Romance">Romance</option>
-                <option value="Ficção Científica">Ficção Científica</option>
-                <option value="Fantasia">Fantasia</option>
-                <option value="Suspense">Suspense</option>
-                <option value="Biografia">Biografia</option>
-                <option value="História">História</option>
-                <option value="Infantojuvenil">Infantojuvenil</option>
-                <option value="Poesia">Poesia</option>
-                <option value="Autoajuda">Autoajuda</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="bookRating">Avaliação</label>
-              <input type="number" id="bookRating" name="rating" min="0" max="5" step="0.1" value="4" required />
+              <div class="input-contain">
+                <input type="text" id="bookAuthor" name="author" required autocomplete="off">
+                <label class="placeholder-text" for="bookAuthor">
+                  <div class="text">Autor</div>
+                </label>
+              </div>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="bookCover">URL da Capa</label>
-              <input type="url" id="bookCover" name="cover_url" required placeholder="https://..." />
+              <div class="input-contain">
+                <select id="bookGenre" name="genre" required class="modal-select">
+                  <option value="">Gêneros, (selecionar...)</option>
+                  <option value="Clássico">Clássico</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Ficção Científica">Ficção Científica</option>
+                  <option value="Fantasia">Fantasia</option>
+                  <option value="Suspense">Suspense</option>
+                  <option value="Biografia">Biografia</option>
+                  <option value="História">História</option>
+                  <option value="Infantojuvenil">Infantojuvenil</option>
+                  <option value="Poesia">Poesia</option>
+                  <option value="Autoajuda">Autoajuda</option>
+                </select>
+              </div>
             </div>
             <div class="form-group">
-              <label for="bookPages">Páginas</label>
-              <input type="number" id="bookPages" name="pages" min="1" />
+              <div class="input-contain">
+                <input type="number" id="bookRating" name="rating" min="0" max="5" step="0.1" value="4" required>
+                <label class="placeholder-text" for="bookRating">
+                  <div class="text">Avaliação</div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="input-contain">
+                <input type="url" id="bookCover" name="cover_url" required autocomplete="off">
+                <label class="placeholder-text" for="bookCover">
+                  <div class="text">URL da Capa</div>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-contain">
+                <input type="number" id="bookPages" name="pages" min="1">
+                <label class="placeholder-text" for="bookPages">
+                  <div class="text">Páginas</div>
+                </label>
+              </div>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="bookDescription">Sinopse</label>
-            <textarea id="bookDescription" name="description" rows="3"></textarea>
+            <label for="bookDescription" style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.85rem;">Sinopse</label>
+            <textarea id="bookDescription" name="description" rows="3" class="modal-textarea"></textarea>
           </div>
 
           <div class="form-actions">
@@ -288,18 +428,30 @@
           
           <div class="form-row">
             <div class="form-group">
-              <label for="userName">Nome Completo</label>
-              <input type="text" id="userName" name="name" required />
+              <div class="input-contain">
+                <input type="text" id="userName" name="name" required autocomplete="off">
+                <label class="placeholder-text" for="userName">
+                  <div class="text">Nome Completo</div>
+                </label>
+              </div>
             </div>
             <div class="form-group">
-              <label for="userEmail">E-mail</label>
-              <input type="email" id="userEmail" name="email" required />
+              <div class="input-contain">
+                <input type="email" id="userEmail" name="email" required autocomplete="off">
+                <label class="placeholder-text" for="userEmail">
+                  <div class="text">E-mail</div>
+                </label>
+              </div>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="userPassword">Senha</label>
-            <input type="password" id="userPassword" name="password" required />
+            <div class="input-contain">
+              <input type="password" id="userPassword" name="password" required autocomplete="off">
+              <label class="placeholder-text" for="userPassword">
+                <div class="text">Senha</div>
+              </label>
+            </div>
           </div>
 
           <div class="form-actions">
@@ -313,6 +465,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="test-data.js"></script>
     <script src="js/user-data.js"></script>
+    <script src="js/scripts.js"></script>
     <script src="js/admin.js"></script>
+    <div class="search-backdrop" id="searchBackdrop"></div>
   </body>
 </html>

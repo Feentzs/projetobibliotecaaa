@@ -140,15 +140,15 @@ function createTestData() {
     booksData.recommended.push(book);
   });
   localStorage.setItem('biblioTecBooks', JSON.stringify(booksData));
-  console.log('✓ Livros de teste salvos', testBooks.length);
+  console.log('[OK] Livros de teste salvos', testBooks.length);
 
   // Salvar usuários (simulado)
   localStorage.setItem('testUsers', JSON.stringify(testUsers));
-  console.log('✓ Usuários de teste salvos', testUsers.length);
+  console.log('[OK] Usuários de teste salvos', testUsers.length);
 
   // Salvar reservas
   localStorage.setItem('testReservations', JSON.stringify(testReservations));
-  console.log('✓ Reservas de teste salvas', testReservations.length);
+  console.log('[OK] Reservas de teste salvas', testReservations.length);
 
   // Salvar dados do usuário logado
   localStorage.setItem('userData', JSON.stringify({
@@ -156,13 +156,13 @@ function createTestData() {
     name: "Admin",
     email: "admin@example.com"
   }));
-  console.log('✓ Dados do usuário logado salvos');
+  console.log('[OK] Dados do usuário logado salvos');
 
-  alert('✓ Dados de teste criados com sucesso!\n\nVocê pode agora visualizar:\n- Livros na aba "Livros"\n- Usuários na aba "Usuários"\n- Reservas na aba "Reservas"');
+  alert('[OK] Dados de teste criados com sucesso!\n\nVocê pode agora visualizar:\n- Livros na aba "Livros"\n- Usuários na aba "Usuários"\n- Reservas na aba "Reservas"');
 }
 
 // Executar quando chamado
 if (typeof window !== 'undefined') {
   window.createTestData = createTestData;
-  console.log('Para criar dados de teste, execute: createTestData()');
+  console.log('[INFO] Para criar dados de teste, execute: createTestData()');
 }

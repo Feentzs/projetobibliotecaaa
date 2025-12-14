@@ -12,27 +12,27 @@
 <body>
   <div class="login-container">
     <div class="login-card">
-      <img src="images/logo-light.svg" alt="BiblioTec Logo" class="logo">
+      <img src="images/logo-light.svg" alt="BiblioTec Logo" class="logo" id="header-logo">
 
       <h1 class="welcome">
         Bem-vindo de <br>
         <span class="highlight">Volta</span>!
       </h1>
 
-      <form class="form">
-        <!-- Campo de E-mail corrigido -->
+      <form class="form" id="login-form">
+        <!-- Campo de E-mail -->
         <div class="input-contain">
           <input type="text" id="email" name="email" autocomplete="off" value="">
           <label class="placeholder-text" for="email" id="placeholder-email">
-             <div class="text">Email</div>
+            <div class="text">Email</div>
           </label>
         </div>
 
-        <!-- Campo de Senha corrigido -->
+        <!-- Campo de Senha -->
         <div class="input-contain">
           <input type="password" id="password" name="password" autocomplete="off" value="">
           <label class="placeholder-text" for="password" id="placeholder-password">
-             <div class="text">Senha</div>
+            <div class="text">Senha</div>
           </label>
         </div>
 
@@ -53,16 +53,24 @@
       </p>
     </div>
 
-    <!-- Modal de Registro -->
-    <div id="signupModal" class="login-modal" style="display: none;">
-      <div class="login-card modal-card">
-        <button class="modal-close-btn" id="closeSignup">&times;</button>
-        
-        <img src="images/logo-light.svg" alt="BiblioTec Logo" class="logo">
+    <p class="terms">
+      Ao entrar, você concorda com os nossos 
+      <a href="#" class="underline">Termos de Uso</a> e 
+      <a href="#" class="underline">Política de Privacidade</a>
+    </p>
+  </div>
 
-        <h1 class="welcome">
-          Criar <br>
-          <span class="highlight">Conta</span>
+  <!-- Modal de Registro SEPARADO - Fora do container principal -->
+  <div id="signupModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content signup-modal">
+      <div class="modal-header">
+        <button class="modal-close-btn" id="closeSignup">&times;</button>
+        <img src="images/logo-light.svg" alt="BiblioTec Logo" class="modal-logo">
+      </div>
+      
+      <div class="modal-body">
+        <h1 class="modal-title">
+          Criar <span class="highlight">Conta</span>:
         </h1>
 
         <form class="form" id="signup-form">
@@ -94,24 +102,20 @@
             </label>
           </div>
 
-          <button type="submit" class="enter-btn">Registrar</button>
+          <button type="submit" class="enter-btn modal-btn">Registrar</button>
         </form>
 
-        <p class="signup" style="margin-top: 10px;">
+        <p class="modal-footer">
           Já tem uma conta? 
           <a href="#" class="link" id="login-link">Voltar ao Login</a>
         </p>
       </div>
     </div>
-
-    <p class="terms">
-      Ao entrar, você concorda com os nossos 
-      <a href="#" class="underline">Termos de Uso</a> e 
-      <a href="#" class="underline">Política de Privacidade</a>
-    </p>
   </div>
   
   <script src="js/api.js"></script>
+  <script src="js/dark-mode.js"></script>
+  <script src="js/scripts.js"></script>
   <script src="js/auth.js"></script>
 </body>
 </html>
