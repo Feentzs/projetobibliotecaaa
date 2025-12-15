@@ -16,9 +16,9 @@ class AdminController {
       const [usersResult] = await connection.query('SELECT COUNT(*) as total FROM users');
       const totalUsers = usersResult[0].total;
 
-      // Total de reservas (status = 'reserved')
+      // Total de livros na biblioteca dos usuários
       const [reservationsResult] = await connection.query(
-        "SELECT COUNT(*) as total FROM user_library WHERE status = 'reserved'"
+        'SELECT COUNT(*) as total FROM user_library'
       );
       const totalReservations = reservationsResult[0].total;
 
@@ -33,10 +33,10 @@ class AdminController {
       );
       const topBook = topBookResult.length > 0 ? topBookResult[0].title : 'N/A';
 
-      // Reservas da semana
+      // Livros adicionados na semana
       const [weekReservationsResult] = await connection.query(
         `SELECT COUNT(*) as total FROM user_library 
-         WHERE status = 'reserved' AND added_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)`
+         WHERE added_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)`
       );
       const weekReservations = weekReservationsResult[0].total;
 

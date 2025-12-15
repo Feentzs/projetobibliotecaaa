@@ -42,15 +42,170 @@
 
 /* --- Dark Mode Overrides (Optional but preserved) --- */
 body.dark-mode {
-  --color-bg: #0f172a;
-  --color-surface: #1e293b;
-  --color-text-main: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --md-sys-color-outline: #334155;
-  --md-sys-color-primary-container: #1e293b;
-  --md-sys-color-secondary-container: #334155;
+  --color-bg: #0e1514;
+  --color-surface: #1a2322;
+  --color-text-main: #eae9fc;
+  --color-text-muted: #a0a3b8;
+  --md-sys-color-outline: #2a3534;
+  --md-sys-color-primary-container: #1a2322;
+  --md-sys-color-secondary-container: #222b2a;
   --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
   --shadow-md: 0 12px 28px rgba(0,0,0,0.4);
+}
+
+/* --- Dark Mode Sidebar --- */
+body.dark-mode .admin-sidebar {
+  background-color: #1a2322;
+  border-right-color: #2a3534;
+}
+
+body.dark-mode .sidebar-toggle-btn:hover {
+  background-color: #222b2a;
+  color: var(--color-primary);
+}
+
+body.dark-mode .sidebar-item:hover {
+  background-color: #222b2a;
+  color: var(--color-primary);
+}
+
+body.dark-mode .sidebar-theme-btn,
+body.dark-mode .sidebar-logout-btn {
+  border-color: #2a3534;
+  color: var(--color-text-muted);
+  background: transparent;
+}
+
+body.dark-mode .sidebar-theme-btn:hover,
+body.dark-mode .sidebar-logout-btn:hover {
+  background: #222b2a;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* --- Dark Mode Main Content --- */
+body.dark-mode .admin-main {
+  background-color: #0e1514;
+}
+
+body.dark-mode .search-bar {
+  background-color: #1a2322;
+  border-color: transparent;
+}
+
+body.dark-mode .search-bar:focus-within {
+  border-color: var(--color-primary);
+}
+
+body.dark-mode .search-bar input {
+  color: var(--color-text-main);
+}
+
+body.dark-mode .search-bar svg {
+  color: var(--color-text-muted);
+}
+
+/* --- Dark Mode Buttons --- */
+body.dark-mode .btn-secondary {
+  background: #1a2322;
+  color: var(--color-text-main);
+  border-color: #2a3534;
+}
+
+body.dark-mode .btn-secondary:hover {
+  background: #222b2a;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* --- Dark Mode Cards --- */
+body.dark-mode .dashboard-card {
+  background-color: #1a2322;
+  border-color: #2a3534;
+}
+
+body.dark-mode .dashboard-card h3::after {
+  background: #2a3534;
+}
+
+body.dark-mode .list-item {
+  background-color: #1a2322;
+  border-color: #2a3534;
+}
+body.dark-mode .list-item:hover {
+  border-color: rgba(32, 62, 182, 0.4);
+}
+
+body.dark-mode .reservation-info p strong {
+  color: var(--color-text-main);
+}
+
+body.dark-mode .book-card {
+  background: #1a2322;
+}
+
+body.dark-mode .book-card-image {
+  background: linear-gradient(135deg, #222b2a 0%, #1a2322 100%);
+}
+
+body.dark-mode .book-genre {
+  background: rgba(32, 62, 182, 0.2);
+  color: #6b8cff;
+}
+
+/* --- Dark Mode Form --- */
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+  background-color: #222b2a;
+  border-color: #2a3534;
+  color: var(--color-text-main);
+}
+
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group select:focus {
+  border-color: var(--color-primary);
+  background: #2a3534;
+  box-shadow: 0 0 0 4px rgba(32, 62, 182, 0.2);
+}
+
+/* --- Dark Mode Modal --- */
+body.dark-mode .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .modal-content {
+  background-color: #1a2322;
+}
+
+/* --- Dark Mode User/Reservation Items --- */
+body.dark-mode .user-item,
+body.dark-mode .reservation-item {
+  background: #1a2322;
+  border-left-color: var(--color-primary);
+}
+
+body.dark-mode .user-item:hover,
+body.dark-mode .reservation-item:hover {
+  background: #222b2a;
+}
+
+/* --- Dark Mode Status Badges --- */
+body.dark-mode .status-active,
+body.dark-mode .status-ready {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+body.dark-mode .status-inactive,
+body.dark-mode .status-reserved {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+body.dark-mode .status-pending {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
 }
 
 * {
@@ -222,6 +377,7 @@ body.admin-body {
   padding: 2rem;
   overflow-y: auto;
   position: relative;
+  background-color: white;
 }
 
 .admin-tab-content {
@@ -727,7 +883,13 @@ body.admin-body {
 .reservation-info p {
   font-size: 0.85rem;
   color: var(--color-text-muted);
-  margin: 4px 0;
+  margin: 6px 0;
+  line-height: 1.4;
+}
+
+.reservation-info p strong {
+  color: var(--color-text-main);
+  font-weight: 600;
 }
 
 .user-actions,
